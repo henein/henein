@@ -1,0 +1,21 @@
+{
+  "name": "@henein/client",
+  "version": "0.1.0",
+  "description": "> TODO: description",
+  "author": "Pdom <ahb0327@naver.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "10.0.8",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.3"
+  }
+}

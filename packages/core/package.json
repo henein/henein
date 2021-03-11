@@ -1,0 +1,14 @@
+{
+  "name": "@henein/core",
+  "version": "0.1.0",
+  "description": "> TODO: description",
+  "author": "Pdom <ahb0327@naver.com>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "private": true,
+  "scripts": {
+    "dev": "tsc -watch",
+    "build": "tsc"
+  }
+}
