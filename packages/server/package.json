@@ -1,0 +1,28 @@
+{
+  "name": "@henein/server",
+  "version": "0.1.0",
+  "description": "> TODO: description",
+  "author": "Pdom <ahb0327@naver.com>",
+  "homepage": "https://github.com/henein/henein#readme",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "serverless offline start",
+    "deploy": "serverless deploy"
+  },
+  "dependencies": {
+    "koa": "^2.13.1",
+    "mysql2": "^2.2.5",
+    "reflect-metadata": "^0.1.13",
+    "serverless-http": "^2.7.0",
+    "typeorm": "^0.2.31"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.13.1",
+    "serverless-offline": "^6.8.0",
+    "serverless-webpack": "^5.3.5",
+    "ts-loader": "^8.0.18",
+    "webpack": "^5.25.1",
+    "webpack-node-externals": "^2.5.2"
+  }
+}
