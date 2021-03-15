@@ -7,11 +7,17 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "serverless offline start",
+    "offline": "serverless offline start",
+    "dev": "ts-node-dev --respawn ./src/server.ts",
     "deploy": "serverless deploy"
   },
   "dependencies": {
+    "@koa/cors": "^3.1.0",
+    "apollo-server-koa": "^2.21.1",
+    "graphql": "^15.5.0",
     "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
+    "koa-helmet": "^6.1.0",
     "mysql2": "^2.2.5",
     "reflect-metadata": "^0.1.13",
     "serverless-http": "^2.7.0",
@@ -22,6 +28,7 @@
     "serverless-offline": "^6.8.0",
     "serverless-webpack": "^5.3.5",
     "ts-loader": "^8.0.18",
+    "ts-node-dev": "^1.1.6",
     "webpack": "^5.25.1",
     "webpack-node-externals": "^2.5.2"
   }

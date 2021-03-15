@@ -1,15 +1,31 @@
 import Koa from 'koa';
-import serverless from 'serverless-http';
+import cors from '@koa/cors';
+import helmet from 'koa-helmet';
+import koaBody from 'koa-body';
+import { ApolloServer, gql } from 'apollo-server-koa';
 
 const app = new Koa();
 
-app.use(async (ctx) => {
-  ctx.body = 'Hello, World!';
-});
+const typeDefs = gql`
+  type Query {
+    hello: String
+  }
+`;
 
-app.listen(3000);
+const resolvers = {
+  Query: {
+    hello: () => 'Hello world!',
+  },
+};
 
-export const handler = serverless(app);
+const apolloServer = new ApolloServer({ typeDefs, resolvers });
+
+app.use(cors());
+app.use(helmet({ contentSecurityPolicy: (process.env.NODE_ENV === 'production') ? undefined : false }));
+app.use(koaBody());
+app.use(apolloServer.getMiddleware());
+
+export default app;
 
 // import "reflect-metadata";
 // import {createConnection} from "typeorm";

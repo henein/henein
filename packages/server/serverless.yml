@@ -29,7 +29,7 @@ provider:
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
 
-# you can overwrite defaults here
+  # you can overwrite defaults here
   stage: dev
   region: ap-northeast-2
 
@@ -67,14 +67,14 @@ provider:
 
 functions:
   app:
-    handler: src/index.handler
+    handler: src/serverless.handler
     events:
       - http:
-          path: /
-          method: ANY
+          path: /graphql
+          method: post
       - http:
-          path: /{any+}
-          method: ANY
+          path: /graphql
+          method: get
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -131,3 +131,5 @@ custom:
   webpack:
     includeModules: true
     packager: 'yarn'
+  serverless-offline:
+    httpPort: 4000
