@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",
-    "apollo-server-koa": "^2.21.1",
     "graphql": "^15.5.0",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
@@ -25,6 +24,7 @@
   },
   "devDependencies": {
     "@types/koa": "^2.13.1",
+    "@types/koa__cors": "^3.0.2",
     "serverless-offline": "^6.8.0",
     "serverless-webpack": "^5.3.5",
     "ts-loader": "^8.0.18",

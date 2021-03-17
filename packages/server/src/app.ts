@@ -2,28 +2,12 @@ import Koa from 'koa';
 import cors from '@koa/cors';
 import helmet from 'koa-helmet';
 import koaBody from 'koa-body';
-import { ApolloServer, gql } from 'apollo-server-koa';
 
 const app = new Koa();
 
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => 'Hello world!',
-  },
-};
-
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
-
 app.use(cors());
-app.use(helmet({ contentSecurityPolicy: (process.env.NODE_ENV === 'production') ? undefined : false }));
+app.use(helmet());
 app.use(koaBody());
-app.use(apolloServer.getMiddleware());
 
 export default app;
 
