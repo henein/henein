@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import Koa from 'koa';
 import cors from '@koa/cors';
 import helmet from 'koa-helmet';
@@ -8,6 +9,10 @@ const app = new Koa();
 app.use(cors());
 app.use(helmet());
 app.use(koaBody());
+
+app.use((ctx, next) => {
+  ctx.body = 'Hello World!';
+});
 
 export default app;
 

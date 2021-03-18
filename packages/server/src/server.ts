@@ -1,3 +1,11 @@
+import dotenv from 'dotenv';
 import app from './app';
+import Database from './database';
 
-app.listen(4000);
+dotenv.config();
+
+const database = new Database();
+
+database.getConnection().then(() => {
+  app.listen(4000);
+});

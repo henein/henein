@@ -70,11 +70,11 @@ functions:
     handler: src/serverless.handler
     events:
       - http:
-          path: /graphql
-          method: post
+          path: /
+          method: ANY
       - http:
-          path: /graphql
-          method: get
+          path: /{any+}
+          method: ANY
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
