@@ -2,17 +2,19 @@ import 'reflect-metadata';
 import Koa from 'koa';
 import cors from '@koa/cors';
 import helmet from 'koa-helmet';
-import koaBody from 'koa-body';
+import bodyParser from 'koa-bodyparser';
+import passport from 'koa-passport';
+import router from './routes';
 
 const app = new Koa();
 
 app.use(cors());
 app.use(helmet());
-app.use(koaBody());
+app.use(bodyParser());
 
-app.use((ctx, next) => {
-  ctx.body = 'Hello World!';
-});
+app.use(passport.initialize());
+
+app.use(router.routes());
 
 export default app;
 

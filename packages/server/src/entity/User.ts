@@ -1,18 +1,24 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import { IsEmail } from 'class-validator';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import argon2 from 'argon2';
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-    @PrimaryGeneratedColumn()
-    id!: number;
+  @Column()
+  name!: string;
 
-    @Column()
-    firstName!: string;
+  @Column()
+  @IsEmail()
+  email!: string;
 
-    @Column()
-    lastName!: string;
+  @Column()
+  password!: string;
 
-    @Column()
-    age!: number;
+  // @Column()
+  // @IsDate()
+  // birthday!: Date;
 
 }
