@@ -4,13 +4,35 @@ import cors from '@koa/cors';
 import helmet from 'koa-helmet';
 import bodyParser from 'koa-bodyparser';
 import passport from 'koa-passport';
+import passportLocal from 'passport-local';
 import router from './routes';
+import { User } from './entity/User';
 
 const app = new Koa();
 
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser());
+
+passport.use(
+  'local',
+  new passportLocal.Strategy(
+    { usernameField: 'email', session: false },
+    async (email, password, done) => {
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        return done(null, false);
+      }
+
+      if (!user.verifyPassword(password)) {
+        return done(null, false);
+      }
+
+      return done(null, user);
+    }
+  )
+);
 
 app.use(passport.initialize());
 
