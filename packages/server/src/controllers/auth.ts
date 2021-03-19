@@ -1,4 +1,5 @@
 import { Middleware } from 'koa';
+import passport from 'koa-passport';
 import argon2 from 'argon2';
 import { validate } from 'class-validator';
 import { User } from '../entity/User';
@@ -12,6 +13,11 @@ export type RegisterBody = {
 };
 
 export default class Controller {
+  static login: Middleware = async (context, next) => {
+    passport.authenticate('local', ())
+    context.login();
+  };
+
   static register: Middleware = async (context, next) => {
     const body = context.request.body as RegisterBody;
 
