@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import Koa from 'koa';
 import cors from '@koa/cors';
+import logger from 'koa-logger';
 import helmet from 'koa-helmet';
 import bodyParser from 'koa-bodyparser';
 import passport from 'koa-passport';
@@ -17,7 +18,7 @@ app.use(bodyParser());
 
 app.use(passport.initialize());
 
-app.use(router.routes());
+app.use(router.routes()).use(router.allowedMethods());
 
 export default app;
 

@@ -4,6 +4,7 @@ import argon2 from 'argon2';
 import { validate } from 'class-validator';
 import { User } from '../entity/User';
 import { ResponseError } from './../errors/responseError';
+import { Token } from '../entity/Token';
 
 export type RegisterBody = {
   name: string;
@@ -14,14 +15,34 @@ export type RegisterBody = {
 
 export default class Controller {
   static login: Middleware = async (context, next) => {
-    passport.authenticate('local', ())
-    context.login();
+    return passport.authenticate(
+      'local',
+      { session: false },
+      async (error, user) => {
+        if (error) {
+          throw error;
+        }
+
+        if (!user) {
+          throw new ResponseError(400, '잘못된 이메일 또는 비밀번호입니다');
+        }
+
+        const { refreshToken, accessToken } = await Token.generateToken(user);
+
+        context.cookies.set('refreshToken', refreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          maxAge: 1000 * 60 * 60 * 24 * 14,
+        });
+        context.body = { accessToken };
+      }
+    )(context, next);
   };
 
   static register: Middleware = async (context, next) => {
     const body = context.request.body as RegisterBody;
 
-    if (!User.findOne({ email: body.email })) {
+    if (await User.findOne({ email: body.email })) {
       throw new ResponseError(409, '중복된 이메일입니다');
     }
 

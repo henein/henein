@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "offline": "serverless offline start",
-    "dev": "ts-node-dev --respawn ./src/server.ts",
+    "dev": "ts-node-dev --respawn --debug ./src/server.ts",
     "deploy": "serverless deploy"
   },
   "dependencies": {
@@ -18,9 +18,11 @@
     "class-validator": "^0.13.1",
     "dotenv": "^8.2.0",
     "graphql": "^15.5.0",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-helmet": "^6.1.0",
+    "koa-logger": "^3.2.1",
     "koa-passport": "^4.1.4",
     "mysql2": "^2.2.5",
     "passport-local": "^1.0.0",
@@ -29,8 +31,10 @@
     "typeorm": "^0.2.31"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.1",
     "@types/koa": "^2.13.1",
     "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-logger": "^3.1.1",
     "@types/koa-passport": "^4.0.2",
     "@types/koa__cors": "^3.0.2",
     "@types/koa__router": "^8.0.4",
