@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "offline": "serverless offline start",
-    "dev": "ts-node-dev --respawn --transpileOnly --debug ./src/server.ts",
+    "dev": "ts-node-dev --respawn --debug ./src/server.ts",
     "deploy": "serverless deploy"
   },
   "dependencies": {
