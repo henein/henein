@@ -7,6 +7,7 @@ import bodyParser from 'koa-bodyparser';
 import passport from 'koa-passport';
 import router from './routes';
 import './passport';
+import './configs';
 
 const app = new Koa();
 
