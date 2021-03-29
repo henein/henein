@@ -68,4 +68,8 @@ export default class Controller {
       context.status = 201;
     }
   };
+
+  static mapleVerification: Middleware = async (context, next) => {
+    // maple
+  };
 }
