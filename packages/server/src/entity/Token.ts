@@ -15,7 +15,7 @@ import config from '../configs';
 @Entity()
 export class Token extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id!: number;
+  id!: string;
 
   @Column({ default: false })
   disabled!: boolean;
