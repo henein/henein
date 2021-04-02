@@ -1,4 +1,5 @@
 import React from 'react';
+import { Divider } from './Divider';
 
 export const CardTitle: React.FC = (props) => {
   return (
@@ -6,7 +7,7 @@ export const CardTitle: React.FC = (props) => {
       <h2 className="font-bold text-black text-opacity-90 text-3xl">
         {props.children}
       </h2>
-      <hr className="my-4 border-gray-200" />
+      <Divider />
     </>
   );
 };
