@@ -36,7 +36,9 @@ module.exports = {
   variants: {
     filter: ['responsive'],
     backdropFilter: ['responsive'],
-    extend: {},
+    extend: {
+      opacity: ['disabled'],
+    },
   },
   plugins: [require('tailwindcss-filters')],
 };
