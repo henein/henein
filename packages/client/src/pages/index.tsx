@@ -1,13 +1,15 @@
 import Head from 'next/head';
+import { Header } from '../components/oraganisms/Header';
 
 export default function Home() {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>헤네인</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1 className="text-3xl">index</h1>
+      <Header />
+      <h1 className="text-3xl">게시판</h1>
     </>
   );
 }
