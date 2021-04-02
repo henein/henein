@@ -2,6 +2,7 @@ import { Middleware } from 'koa';
 import jwt from 'jsonwebtoken';
 import { ResponseError } from './../errors/responseError';
 import config from '../configs';
+import { AccessTokenPayload } from '../entity/Token';
 
 export const authenticateHandler: Middleware = async (context, next) => {
   const { authorization } = context.headers;
@@ -20,7 +21,7 @@ export const authenticateHandler: Middleware = async (context, next) => {
     subject: 'accessToken',
     issuer: 'henein.club',
     ignoreExpiration: false,
-  }) as { userId: string };
+  }) as AccessTokenPayload;
 
   context.user = {
     id: decodedToken.userId,

@@ -12,6 +12,15 @@ import jwt from 'jsonwebtoken';
 import { User } from './User';
 import config from '../configs';
 
+export interface RefreshTokenPayload {
+  userId: string;
+  tokenId: string;
+}
+
+export interface AccessTokenPayload {
+  userId: string;
+}
+
 @Entity()
 export class Token extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -36,7 +45,7 @@ export class Token extends BaseEntity {
     await token.save();
 
     const refreshToken = jwt.sign(
-      { userId: user.id, tokenId: token.id },
+      { userId: user.id, tokenId: token.id } as RefreshTokenPayload,
       config.jwtSecret,
       {
         subject: 'refreshToken',
@@ -45,11 +54,15 @@ export class Token extends BaseEntity {
       }
     );
 
-    const accessToken = jwt.sign({ userId: user.id }, config.jwtSecret, {
-      subject: 'accessToken',
-      issuer: 'henein.club',
-      expiresIn: '30m',
-    });
+    const accessToken = jwt.sign(
+      { userId: user.id } as AccessTokenPayload,
+      config.jwtSecret,
+      {
+        subject: 'accessToken',
+        issuer: 'henein.club',
+        expiresIn: '30m',
+      }
+    );
 
     return { refreshToken, accessToken };
   }
