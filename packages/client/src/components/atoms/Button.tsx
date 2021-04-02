@@ -5,6 +5,7 @@ export interface ButtonProps {
   color?: 'primary' | 'secondary' | 'danger';
   className?: string;
   isLoading?: boolean;
+  disabled?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
@@ -25,12 +26,8 @@ export const Button: React.VFC<ButtonProps> = ({
 
   return (
     <button
-      className={`px-4 py-2 rounded-full font-semibold text-opacity-90 ${
-        props.isLoading ? 'opacity-50' : ''
-      } focus:outline-none focus:ring-2 focus:ring-opacity-50 ${buttonClass} ${
-        props.className
-      }`}
-      disabled={props.isLoading}
+      className={`px-4 py-2 rounded-full font-semibold text-opacity-90 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-opacity-50 ${buttonClass} ${props.className}`}
+      disabled={props.isLoading || props.disabled}
       onClick={props.onClick}
     >
       {props.title}

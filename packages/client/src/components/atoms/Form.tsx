@@ -8,7 +8,7 @@ export const Form: React.FC<FormProps> = ({
   ...props
 }) => {
   return (
-    <form className={`space-y-4 ${className}`} {...props}>
+    <form className={`space-y-4 ${className}`} noValidate {...props}>
       {children}
     </form>
   );
