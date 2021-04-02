@@ -2,9 +2,11 @@ import { Middleware } from 'koa';
 import passport from 'koa-passport';
 import argon2 from 'argon2';
 import { validate } from 'class-validator';
+import jwt from 'jsonwebtoken';
 import { User } from '../entity/User';
 import { ResponseError } from './../errors/responseError';
-import { Token } from '../entity/Token';
+import { RefreshTokenPayload, Token } from '../entity/Token';
+import config from '../configs';
 
 export type RegisterBody = {
   name: string;
@@ -37,6 +39,31 @@ export default class Controller {
         context.body = { accessToken };
       }
     )(context, next);
+  };
+
+  static logout: Middleware = async (context, next) => {
+    const signedToken = context.cookies.get('refreshToken');
+
+    if (!signedToken) {
+      throw new ResponseError(401);
+    }
+
+    const decodedToken = jwt.verify(signedToken, config.jwtSecret, {
+      subject: 'refreshToken',
+      issuer: 'henein.club',
+      ignoreExpiration: false,
+    }) as RefreshTokenPayload;
+
+    const token = await Token.findOne(decodedToken.tokenId);
+
+    if (!token || token.disabled) {
+      throw new ResponseError(401);
+    }
+
+    token.disabled = true;
+    token.save();
+
+    context.cookies.set('refreshToken');
   };
 
   static register: Middleware = async (context, next) => {
