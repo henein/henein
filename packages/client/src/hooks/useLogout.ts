@@ -9,7 +9,7 @@ export const useLogout = () => {
     isLoading: false,
   });
 
-  const logout = async (email: string, password: string) => {
+  const logout = async () => {
     try {
       setState({ isLoading: true });
       await axios.post('/api/auth/logout');
