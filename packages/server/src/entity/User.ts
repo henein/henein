@@ -1,5 +1,12 @@
 import { IsEmail } from 'class-validator';
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import argon2 from 'argon2';
 
 @Entity()
@@ -21,10 +28,10 @@ export class User extends BaseEntity {
   // @IsDate()
   // birthday!: Date;
 
-  @CreateDateColumn({name: 'created_at'})
+  @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
 
-  @UpdateDateColumn({name: 'updated_at'})
+  @UpdateDateColumn({ name: 'updated_at' })
   UpdatedAt!: Date;
 
   async verifyPassword(password: string) {
