@@ -5,6 +5,7 @@ import {
   createConnection,
   getConnectionManager,
 } from 'typeorm';
+import entities from './entity';
 
 export default class Database {
   private connectionManager: ConnectionManager;
@@ -34,8 +35,7 @@ export default class Database {
         database: process.env.TYPEORM_DATABASE,
         synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
         logging: process.env.TYPEORM_LOGGING === 'true',
-        entities: [process.env.TYPEORM_ENTITIES ?? ''],
-        migrations: [process.env.TYPEORM_MIGRATIONS ?? ''],
+        entities: entities,
       };
 
       connection = await createConnection(connectionOptions);
