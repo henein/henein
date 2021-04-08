@@ -11,6 +11,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@henein/core": "^0.1.0",
     "autoprefixer": "^10.2.5",
     "axios": "^0.21.1",
     "next": "10.0.8",
