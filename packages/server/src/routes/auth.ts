@@ -9,6 +9,4 @@ router.post('/logout', Controller.logout);
 
 router.post('/register', Controller.register);
 
-router.get('/maple-verification', Controller.mapleVerification);
-
 export default router;
