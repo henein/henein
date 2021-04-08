@@ -29,7 +29,7 @@ export class Token extends BaseEntity {
   @Column({ default: false })
   disabled!: boolean;
 
-  @ManyToOne((type) => User, (user) => user.id, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.tokens, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user!: User;
 

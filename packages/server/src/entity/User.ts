@@ -6,8 +6,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import argon2 from 'argon2';
+import { Token } from './Token';
 
 @Entity()
 export class User extends BaseEntity {
@@ -24,9 +26,8 @@ export class User extends BaseEntity {
   @Column()
   password!: string;
 
-  // @Column()
-  // @IsDate()
-  // birthday!: Date;
+  @OneToMany(() => Token, (token) => token.user)
+  tokens!: Token[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
