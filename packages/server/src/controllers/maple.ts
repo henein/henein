@@ -20,5 +20,6 @@ export default class Controller {
   };
 
   static verification: Middleware = async (context, next) => {
+    await getJobs();
   };
 }

@@ -1,6 +1,12 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 
+interface JobData {
+  name: string;
+  code: number;
+  detailCode: number;
+}
+
 export const getCharacterDetailToken = async (nickname: string) => {
   const searchPage = await axios.get(
     `https://maplestory.nexon.com/Ranking/World/Total?c=${encodeURI(nickname)}`
@@ -55,4 +61,26 @@ export const getCharacterStorageMoney = async (
   console.log(money);
 
   return money;
+};
+
+export const getJobs = async () => {
+  const rankingPage = await axios.get(
+    'https://maplestory.nexon.com/Ranking/World/Total'
+  );
+
+  const $ = cheerio.load(rankingPage.data);
+
+  const $job = $('.rank_search_wrapper select[name=job]').children('option');
+
+  const result: JobData[] = [];
+
+  $job.each(async function (this: any, index, element) {
+    const jobRankingPage = await axios.get(
+      `https://maplestory.nexon.com/Ranking/World/Total?j=${$(this).attr(
+        'value'
+      )}`
+    );
+  });
+
+  return result;
 };
