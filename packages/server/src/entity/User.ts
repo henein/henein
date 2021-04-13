@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import argon2 from 'argon2';
 import { Token } from './Token';
+import { Post } from './Post';
 
 @Entity()
 export class User extends BaseEntity {
@@ -28,6 +29,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Token, (token) => token.user)
   tokens!: Token[];
+
+  @OneToMany(() => Post, (post) => post.author)
+  posts!: Post[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;

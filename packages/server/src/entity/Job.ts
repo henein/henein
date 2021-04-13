@@ -5,6 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { StatType } from '../constants/jobs';
 import { Character } from './Character';
 
 @Entity()
@@ -15,11 +16,13 @@ export class Job extends BaseEntity {
   @Column()
   name!: string;
 
-  @Column({ name: 'code' })
-  code!: number;
-
-  @Column({ name: 'detail_code' })
-  detailCode!: number;
+  @Column({
+    name: 'main_stat_type',
+    type: 'enum',
+    enum: StatType,
+    default: StatType.NULL,
+  })
+  mainStatType!: StatType;
 
   @OneToMany(() => Character, (character) => character.job)
   characters!: Character[];
