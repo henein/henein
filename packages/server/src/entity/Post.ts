@@ -7,11 +7,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Category } from './Category';
 import { User } from './User';
+import { Comment } from './Comment';
 
 @Entity()
 export class Post extends BaseEntity {
@@ -22,7 +24,7 @@ export class Post extends BaseEntity {
   title!: string;
 
   @ManyToOne(() => User, (user) => user.posts)
-  @JoinColumn()
+  @JoinColumn({ name: 'author_id' })
   author!: User;
 
   @ManyToOne(() => Category, (category) => category.posts)
@@ -31,6 +33,9 @@ export class Post extends BaseEntity {
 
   @Column('text')
   content!: string;
+
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments!: Comment;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;

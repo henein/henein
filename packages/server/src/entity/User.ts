@@ -27,6 +27,9 @@ export class User extends BaseEntity {
   @Column()
   password!: string;
 
+  @Column()
+  emailVerification;
+
   @OneToMany(() => Token, (token) => token.user)
   tokens!: Token[];
 

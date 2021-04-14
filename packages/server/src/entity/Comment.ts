@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Category } from './Category';
+import { Post } from './Post';
 import { User } from './User';
 
 @Entity()
@@ -18,8 +18,12 @@ export class Comment extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @ManyToOne(() => Post, (post) => post.comments)
+  @JoinColumn({ name: 'post_id' })
+  post!: Post;
+
   @ManyToOne(() => User, (user) => user.posts)
-  @JoinColumn()
+  @JoinColumn({ name: 'author_id' })
   author!: User;
 
   @Column({ length: 200 })
