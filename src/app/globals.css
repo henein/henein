@@ -1,0 +1,97 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css");
+
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-*: initial;
+  --color-black-25: #0000000d;
+  --color-black-50: #0000001a;
+  --color-black-100: #00000033;
+  --color-black-200: #0000004d;
+  --color-black-300: #00000066;
+  --color-black-400: #00000080;
+  --color-black-500: #00000099;
+  --color-black-600: #000000b2;
+  --color-black-700: #000000cc;
+  --color-black-800: #000000e5;
+  --color-black-900: #000000;
+  --color-danger-50: #ffeaed;
+  --color-danger-100: #ffcace;
+  --color-danger-200: #f59492;
+  --color-danger-300: #ec6968;
+  --color-danger-400: #f64341;
+  --color-danger-500: #fa2c21;
+  --color-danger-600: #eb1d22;
+  --color-danger-700: #da091d;
+  --color-danger-800: #cd0015;
+  --color-danger-900: #bf0003;
+  --color-grey-50: #f9faff;
+  --color-grey-100: #f4f5fa;
+  --color-grey-200: #eeeef3;
+  --color-grey-300: #e0e1e6;
+  --color-grey-400: #bdbec3;
+  --color-grey-500: #9e9fa4;
+  --color-grey-600: #75767a;
+  --color-grey-600a: #75767ae5;
+  --color-grey-700: #616266;
+  --color-grey-700a: #616266e5;
+  --color-grey-800: #424347;
+  --color-grey-800a: #424347e5;
+  --color-grey-900: #212225;
+  --color-primary-50: #fef3e1;
+  --color-primary-100: #fde0b5;
+  --color-primary-200: #fdcc85;
+  --color-primary-300: #fcb756;
+  --color-primary-400: #fba735;
+  --color-primary-500: #fa9821;
+  --color-primary-600: #f68d1f;
+  --color-primary-700: #ef7e1c;
+  --color-primary-800: #e86e1a;
+  --color-primary-900: #de5617;
+  --color-secondary-50: #e3f2ff;
+  --color-secondary-100: #bbddff;
+  --color-secondary-200: #bbddff;
+  --color-secondary-300: #5eb2ff;
+  --color-secondary-400: #39a1ff;
+  --color-secondary-500: #1791ff;
+  --color-secondary-600: #2183fa;
+  --color-secondary-700: #2570e6;
+  --color-secondary-800: #265ed3;
+  --color-secondary-900: #273db4;
+  --color-white-25: #ffffff0d;
+  --color-white-50: #ffffff1a;
+  --color-white-100: #ffffff33;
+  --color-white-200: #ffffff4d;
+  --color-white-300: #ffffff66;
+  --color-white-400: #ffffff80;
+  --color-white-500: #ffffff99;
+  --color-white-600: #ffffffb2;
+  --color-white-700: #ffffffcc;
+  --color-white-800: #ffffffe5;
+  --color-white-900: #ffffff;
+  --color-border: var(--color-black-50);
+  --color-dark-border: var(--color-white-50);
+  --color-brand: var(--color-primary-600);
+  --color-dark-brand: var(--color-primary-500);
+  --color-brand-hover: var(--color-primary-400);
+  --color-dark-brand-hover: var(--color-primary-300);
+  --color-brand-active: var(--color-primary-700);
+  --color-dark-brand-active: var(--color-primary-600);
+}
+
+body {
+  line-height: 1;
+}
+
+body {
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+  BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+  "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+  "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
