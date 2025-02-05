@@ -193,6 +193,10 @@ export const Streamers: Streamer[] = [
         platform: 'youtube',
         link: 'https://www.youtube.com/@udeong'
       }
+      {
+        platform: 'chzzk',
+        link: 'https://chzzk.naver.com/4cc2031a4597b6dd2d75c13fd375e433'
+      }
     ],
   },
 ]
