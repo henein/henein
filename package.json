@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.4.1",
     "chzzk": "^1.10.4",
     "classnames": "^2.5.1",
     "next": "15.1.6",

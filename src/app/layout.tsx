@@ -1,7 +1,6 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { MamudaeLayout } from "@/components";
+import './globals.css';
+import { MamudaeLayout } from '@/components';
+import { Analytics } from '@vercel/analytics/next';
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -25,12 +24,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="dark">
-      <body className="bg-white-900 text-black-800 dark:bg-grey-900 dark:text-white-900"
+      <body
+        className="bg-white-900 text-black-800 dark:bg-grey-900 dark:text-white-900"
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <MamudaeLayout>
-          {children}
-        </MamudaeLayout>
+        <MamudaeLayout>{children}</MamudaeLayout>
+        <Analytics />
       </body>
     </html>
   );
