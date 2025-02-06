@@ -1,6 +1,7 @@
 import './globals.css';
 import { MamudaeLayout } from '@/components';
 import { Analytics } from '@vercel/analytics/next';
+import 'material-symbols';
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
