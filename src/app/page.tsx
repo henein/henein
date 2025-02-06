@@ -103,7 +103,8 @@ export default function Home() {
             </ul>
           </li>
           <li>자유 전직 및 직업 중복 금지</li>
-          <li>메이플스토리M 유니온 점령 금지</li>
+          <li>메이플스토리M 금지</li>
+          <li>사전 육성 중 모든 이벤트 참여 금지</li>
         </ul>
       </div>
     </div>

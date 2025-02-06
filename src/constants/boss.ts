@@ -22,6 +22,7 @@ export enum BossId {
   DUSK = 'dusk',
   DARKNELL = 'darknell',
   GUARDIAN_ANGEL_SLIME = 'guardian-angel-slime',
+  CHOSEN_SEREN = 'chosen-seren',
 }
 
 export type BossDifficulty = 'easy' | 'normal' | 'hard' | 'chaos';
@@ -146,6 +147,11 @@ export const Bosses: Boss[] = [
   {
     id: BossId.GUARDIAN_ANGEL_SLIME,
     name: '가디언 엔젤 슬라임',
+    difficulties: ['normal', 'hard'],
+  },
+  {
+    id: BossId.CHOSEN_SEREN,
+    name: '선택받은 세렌',
     difficulties: ['normal', 'hard'],
   },
 ];

@@ -1,5 +1,5 @@
-import { BossDifficultyLabel, BossIcon, BossImage } from "@/components";
-import { BossDifficulty, BossId } from "@/constants";
+import { BossDifficultyLabel, BossIcon, BossImage } from '@/components';
+import { BossDifficulty, BossId } from '@/constants';
 
 const BossList: { bossId: BossId; difficulty: BossDifficulty }[][] = [
   [{ bossId: BossId.ZAKUM, difficulty: 'easy' }],
@@ -37,7 +37,7 @@ const BossList: { bossId: BossId; difficulty: BossDifficulty }[][] = [
   ],
   [
     { bossId: BossId.CYGNUS, difficulty: 'easy' },
-    { bossId: BossId.VERUS_HILLA, difficulty: 'hard' },
+    { bossId: BossId.HILLA, difficulty: 'hard' },
     { bossId: BossId.PINKBEAN, difficulty: 'chaos' },
   ],
   [
@@ -87,15 +87,18 @@ const BossList: { bossId: BossId; difficulty: BossDifficulty }[][] = [
     { bossId: BossId.DUSK, difficulty: 'chaos' },
     { bossId: BossId.DARKNELL, difficulty: 'hard' },
   ],
-  [{ bossId: BossId.VERUS_HILLA, difficulty: 'hard' }],
+  [
+    { bossId: BossId.VERUS_HILLA, difficulty: 'hard' },
+    { bossId: BossId.CHOSEN_SEREN, difficulty: 'normal' },
+  ],
   [{ bossId: BossId.BLACK_MAGE, difficulty: 'hard' }],
 ];
 
 const MamudaeBossPage = () => {
   return (
     <div className="mx-auto w-full max-w-5xl">
-      <h2 className="mt-6 mb-6 text-3xl font-bold">보스 현황</h2>
-      <div className="flex flex-col gap-4 rounded-2xl border border-dark-border bg-black-900 px-6 py-5">
+      <h2 className="mb-6 mt-6 text-3xl font-bold">보스 현황</h2>
+      <div className="border-dark-border bg-black-900 flex flex-col gap-4 rounded-2xl border px-6 py-5">
         {BossList.map((bosses, index) => (
           <div
             key={index}
@@ -106,7 +109,7 @@ const MamudaeBossPage = () => {
                 <BossImage key={boss.bossId + boss.difficulty} {...boss} />
               ))}
             </div>
-            <div className="h-fit w-[463px] rounded-2xl border border-dark-border bg-grey-900">
+            <div className="border-dark-border bg-grey-900 h-fit w-[463px] rounded-2xl border">
               {bosses.map((boss) => (
                 <div
                   key={boss.bossId + boss.difficulty}
