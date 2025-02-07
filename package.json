@@ -16,6 +16,7 @@
     "chzzk": "^1.10.4",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "dotenv-cli": "^8.0.0",
     "material-symbols": "^0.28.1",
     "next": "15.1.6",

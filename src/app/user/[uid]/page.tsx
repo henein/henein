@@ -15,12 +15,12 @@ const Userpage = ({ params, searchParams }: Props) => {
   const { uid } = use(params);
   const { type } = use(searchParams);
   const data = use(fetchUser(uid));
-  console.log(data);
 
   return (
     <div className="m-[0_auto] flex w-full max-w-[1024px] flex-col">
-      <h2 className="mb-6 mt-6 text-left text-3xl font-bold">유저 페이지</h2>
-      <Profile />
+      <h2 className="mb-6 mt-6 text-left text-3xl font-bold">유저 프로필</h2>
+
+      <Profile {...data} />
       <ContentsNavigator type={type || 'post'} />
       <Contents type={type || 'post'} />
       <Pagenate />
@@ -35,7 +35,8 @@ const fetchUser = async (uid: string) => {
   const { data, error } = await supabase
     .from('users')
     .select('*')
-    .eq('id', uid);
+    .eq('id', uid)
+    .single();
 
   if (error) {
     // 해당되는 데이터를 못찾았다면, 404로 리다이렉트
