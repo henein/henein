@@ -7,14 +7,15 @@ export default function Home() {
     <div className="mx-auto flex w-full max-w-5xl flex-col items-center leading-6">
       <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center pb-16">
         <Image
-          src="/images/mamudae/logo.png"
+          className="rounded-2xl"
+          src="/images/mamudae/poster.png"
           alt=""
-          width={770}
-          height={536}
+          width={1920}
+          height={1080}
           quality={100}
         />
       </div>
-      <h2 className="mt-6 mb-6 text-3xl font-bold">참여자</h2>
+      <h2 className="mb-6 mt-6 text-3xl font-bold">참여자</h2>
       <div className="flex justify-between gap-1">
         <StreamerProfile streamerId={StreamerId.NACHO} />
         <StreamerProfile streamerId={StreamerId.TERO} />
@@ -31,8 +32,8 @@ export default function Home() {
         <StreamerProfile streamerId={StreamerId.NUSEUNYANG} />
         <StreamerProfile streamerId={StreamerId.UDEONG} />
       </div>
-      <h2 className="mt-32 mb-6 text-3xl font-bold">규정</h2>
-      <div className="rounded-2xl border border-dark-border bg-grey-800 px-6 py-5">
+      <h2 className="mb-6 mt-32 text-3xl font-bold">규정</h2>
+      <div className="border-dark-border bg-grey-800 rounded-2xl border px-6 py-5">
         <h3 className="font-bold">시청자 지원 가능</h3>
         <ul className="list-inside list-disc">
           <li>
