@@ -7,10 +7,10 @@ export default function Home() {
     <div className="mx-auto flex w-full max-w-5xl flex-col items-center leading-6">
       <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center pb-16">
         <Image
-          src="/images/mamudae/logo.png"
+          src="/images/mamudae/poster.png"
           alt=""
-          width={770}
-          height={536}
+          width={1920}
+          height={1080}
           quality={100}
         />
       </div>
