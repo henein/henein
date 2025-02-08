@@ -1,5 +1,4 @@
 import './globals.css';
-import { MamudaeLayout } from '@/components';
 import { Analytics } from '@vercel/analytics/next';
 import 'material-symbols';
 
@@ -29,7 +28,7 @@ export default function RootLayout({
         className="bg-white-900 text-black-800 dark:bg-grey-900 dark:text-white-900"
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <MamudaeLayout>{children}</MamudaeLayout>
+        {children}
         <Analytics />
       </body>
     </html>
