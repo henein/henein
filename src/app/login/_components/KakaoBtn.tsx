@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/client';
 import Image from 'next/image';
 import React from 'react';
 
-const KakaoBtn = () => {
+const KakaoLoginButton = () => {
   const supabase = createClient();
 
   const signInWithKakao = async () => {
@@ -20,7 +20,7 @@ const KakaoBtn = () => {
 
   return (
     <button
-      className="text-black-900 border-border relative flex w-full items-center justify-center gap-2 rounded-[8px] bg-[#FEE500] p-[12px_25px] text-[14px] font-medium hover:cursor-pointer hover:bg-[#F9D547] active:scale-[98%]"
+      className="text-black-800 border-border relative flex w-full items-center justify-center gap-2 rounded-[8px] bg-[#FEE500] p-[12px_25px] text-[14px] font-medium hover:cursor-pointer hover:bg-[#F9D547] active:scale-[98%]"
       onClick={signInWithKakao}
     >
       <Image
@@ -28,11 +28,11 @@ const KakaoBtn = () => {
         alt="kakao"
         width={18}
         height={18}
-        className="absolute left-[16px]"
+        className="fill-black-800 absolute left-4"
       />
       <span>Kakao로 로그인하기</span>
     </button>
   );
 };
 
-export default KakaoBtn;
+export default KakaoLoginButton;

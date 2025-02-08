@@ -37,13 +37,13 @@ export const MamudaeHeader = () => {
             </div>
           </div>
           <div className="flex gap-4">
-            {/* <Link href="/sign-in"> */}
-              <NavigationItem isIcon isWIP>
+            <Link href="/login">
+              <NavigationItem isIcon>
                 <span className="material-symbols-outlined">
                   account_circle
                 </span>
               </NavigationItem>
-            {/* </Link> */}
+            </Link>
           </div>
         </div>
       </div>
