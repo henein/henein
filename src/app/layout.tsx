@@ -14,7 +14,10 @@ import type { Metadata } from 'next';
 // });
 
 export const metadata: Metadata = {
-  title: '헤네인 - 메무대2',
+  title: {
+    template: '%s | 헤네인',
+    default: '헤네인',
+  }
   // description: '',
 };
 

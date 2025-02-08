@@ -1,6 +1,11 @@
 import { StreamerProfile } from '@/components';
 import { StreamerId } from '@/constants';
+import type { Metadata } from 'next';
 import Image from 'next/image';
+
+export const metadata: Metadata = {
+  title: '메무대 시즌2',
+};
 
 export default function Home() {
   return (

@@ -1,5 +1,6 @@
 import { BossDifficultyLabel, BossIcon, BossImage } from '@/components';
 import { BossDifficulty, BossId } from '@/constants';
+import type { Metadata } from 'next';
 
 const BossList: { bossId: BossId; difficulty: BossDifficulty }[][] = [
   [{ bossId: BossId.ZAKUM, difficulty: 'easy' }],
@@ -93,6 +94,10 @@ const BossList: { bossId: BossId; difficulty: BossDifficulty }[][] = [
   ],
   [{ bossId: BossId.BLACK_MAGE, difficulty: 'hard' }],
 ];
+
+export const metadata: Metadata = {
+  title: '보스',
+};
 
 const MamudaeBossPage = () => {
   return (
