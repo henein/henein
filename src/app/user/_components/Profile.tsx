@@ -18,11 +18,11 @@ const Profile = async (props: User) => {
     <div className="flex h-[148px] w-full items-center justify-between gap-8 p-5">
       <div className="flex items-center gap-8">
         <Image
-          src={profile_img || '/images/mamudae/profile/namjio.png'}
+          src={profile_img || '/images/dark-defaultImg.svg'}
           width={100}
           height={100}
           alt="profile"
-          className="rounded-full"
+          className="border-grey-700 rounded-full border"
         />
         <div className="flex flex-col gap-1.5">
           <span className="text-sm font-bold text-gray-500">
