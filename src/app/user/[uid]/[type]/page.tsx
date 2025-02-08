@@ -1,22 +1,31 @@
 import Contents from '../../_components/Contents';
 import ContentsNavigator from '../../_components/ContentsNavigator';
-import React, { use } from 'react';
+import { createClient } from '@/utils/supabase/server';
+import React from 'react';
 
 interface Props {
   params: Promise<{ uid: string; type: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-const Userpage = ({ params, searchParams }: Props) => {
-  const { uid, type } = use(params);
-  const { page } = use(searchParams);
+const Userpage = async ({ params, searchParams }: Props) => {
+  const { uid, type } = await params;
+  const { page } = await searchParams;
 
-  console.log(uid, type, page);
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <>
-      <ContentsNavigator uid={uid} type={type} />
-      <Contents type={type} page={page} />
+      <ContentsNavigator uid={uid} type={type} isMyProfile={user?.id === uid} />
+      <Contents
+        uid={uid}
+        type={type}
+        page={page}
+        isMyProfile={user?.id === uid}
+      />
     </>
   );
 };

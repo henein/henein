@@ -1,13 +1,16 @@
 import Pagenate from './Pagenate';
 import PostItem from './PostItem';
+import CharacterContents from './character';
 import React from 'react';
 
 interface Props {
-  type: string | string[];
+  uid: string;
+  type: string;
   page: string | string[] | undefined;
+  isMyProfile: boolean;
 }
 
-const Contents = ({ type }: Props) => {
+const Contents = ({ uid, type, isMyProfile }: Props) => {
   const dummy = {
     boardType: '자유',
     id: 1,
@@ -39,12 +42,8 @@ const Contents = ({ type }: Props) => {
       </>
     );
 
-  if (type === 'character')
-    return (
-      <div className="flex h-full w-full flex-col justify-between">
-        캐릭터 조회 UI
-      </div>
-    );
+  if (type === 'character' && isMyProfile)
+    return <CharacterContents uid={uid} />;
 
   return (
     <div className="flex h-full min-h-[300px] w-full items-center justify-center">
