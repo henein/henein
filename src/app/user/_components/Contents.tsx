@@ -1,8 +1,10 @@
+import Pagenate from './Pagenate';
 import PostItem from './PostItem';
 import React from 'react';
 
 interface Props {
   type: string | string[];
+  page: string | string[] | undefined;
 }
 
 const Contents = ({ type }: Props) => {
@@ -21,15 +23,20 @@ const Contents = ({ type }: Props) => {
 
   if (type === 'post' || type === 'comment')
     return (
-      <div className="flex h-full w-full flex-col justify-between">
-        <PostItem {...dummy} />
-        <hr />
-        <PostItem {...dummy} />
-        <hr />
-        <PostItem {...dummy} />
-        <hr />
-        <PostItem {...dummy} />
-      </div>
+      <>
+        <div className="flex h-full w-full flex-col justify-between">
+          <PostItem {...dummy} />
+          <hr className="text-grey-600" />
+          <PostItem {...dummy} />
+          <hr className="text-grey-600" />
+          <PostItem {...dummy} />
+          <hr className="text-grey-600" />
+          <PostItem {...dummy} />
+          <hr className="text-grey-600" />
+          <PostItem {...dummy} />
+        </div>
+        <Pagenate />
+      </>
     );
 
   if (type === 'character')

@@ -10,7 +10,7 @@ const page = async () => {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (user) return redirect(`/user/${user.id}`);
+  if (user) return redirect(`/user/${user.id}/post`);
 
   return (
     <div className="m-[0_auto] flex w-full max-w-[1024px] items-center justify-center">
