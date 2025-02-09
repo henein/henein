@@ -1,8 +1,8 @@
 ---
-name: feature 이슈 템플릿
-about: 기능 구현에 관련한 이슈 템플릿입니다.
-title: ''
-labels: feat
+name: Feature 이슈 템플릿
+about: 기능 구현에 관련한 이슈 템플릿
+title: "[FEAT] "
+labels: enhancement
 assignees: ''
 
 ---
