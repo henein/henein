@@ -1,7 +1,8 @@
-import React from "react";
+import clsx from 'clsx';
+import React from 'react';
 
-type BtnStyle = "primary" | "secondary" | "danger";
-type BtnType = "reset" | "submit" | "button";
+type BtnStyle = 'primary' | 'secondary' | 'danger';
+type BtnType = 'reset' | 'submit' | 'button';
 
 interface ButtonProps {
   sort: BtnStyle;
@@ -22,20 +23,31 @@ export const Button = ({
   fontWeight,
   ...props
 }: React.PropsWithChildren<ButtonProps>) => {
-  const baseStyles = "flex items-center justify-center rounded-lg h-10 px-4 text-sm cursor-pointer transition-all hover:ring-4 hover:ring-black-25 active:ring-2 active:ring-black-50";
+  const baseStyles =
+    'flex items-center justify-center rounded-lg h-10 px-4 text-sm cursor-pointer transition-all';
+
   const sortStyles = {
-    primary: "bg-primary-600 dark:bg-primary-500 hover:bg-primary-400 hover:dark:bg-primary-300 active:bg-primary-700 active:dark:bg-primary-600 text-white-900",
-    secondary: "bg-button text-black hover:bg-buttonHover active:bg-buttonActive",
-    danger: "bg-danger text-white hover:bg-dangerHover active:bg-dangerActive",
+    primary:
+      'bg-primary-600 dark:bg-primary-500 text-white-900 ' +
+      'enabled:hover:bg-primary-400 enabled:dark:hover:bg-primary-300 ' +
+      'enabled:active:bg-primary-700 enabled:dark:active:bg-primary-600',
+    secondary:
+      'bg-button text-black ' +
+      'enabled:hover:bg-buttonHover enabled:active:bg-buttonActive',
+    danger:
+      'bg-danger text-white ' +
+      'enabled:hover:bg-dangerHover enabled:active:bg-dangerActive',
   }[sort];
-  const disabledStyles = "bg-buttonDisableBackground text-buttonDisableText cursor-not-allowed";
+
+  const disabledStyles =
+    'disabled:bg-buttonDisableBackground disabled:text-buttonDisableText disabled:cursor-not-allowed disabled:bg-grey-200 disabled:text-grey-400';
 
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`${baseStyles} ${sortStyles}`}
+      className={clsx(baseStyles, sortStyles, disabledStyles)}
       {...props}
     >
       {children}
