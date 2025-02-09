@@ -1,35 +1,37 @@
-import { Button } from '@/components';
+import ModifyBtn from './ModifyBtn';
+import { formatToHyphenDate } from '@/utils/date/formattedDate';
+import { Database } from '@/utils/supabase/database.types';
+import { createClient } from '@/utils/supabase/server';
 import Image from 'next/image';
 import React from 'react';
 
-const Profile = () => {
-  const dummy = {
-    userName: '동균',
-    userEmail: 'email@gmail.com',
-    imageUrl: '',
-    signUpDate: '2025-02-05',
-    uid: 'abcd',
-  };
-  const { userName, imageUrl, signUpDate } = dummy;
+type User = Database['public']['Tables']['users']['Row'];
+
+const Profile = async (props: User) => {
+  const { id, created_at, nickname, profile_img } = props;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <div className="flex h-[148px] w-full items-center justify-between gap-8 p-5">
       <div className="flex items-center gap-8">
         <Image
-          src={imageUrl || '/images/mamudae/profile/namjio.png'}
+          src={profile_img || '/images/dark-defaultImg.svg'}
           width={100}
           height={100}
           alt="profile"
-          className="rounded-full"
+          className="border-grey-700 rounded-full border"
         />
         <div className="flex flex-col gap-1.5">
           <span className="text-sm font-bold text-gray-500">
-            {`가입일 ${signUpDate}`}
+            {`가입일 ${formatToHyphenDate(created_at)}`}
           </span>
-          <h1 className="text-2xl font-bold text-gray-900">{userName}</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{nickname}</h1>
         </div>
       </div>
-      <Button sort="secondary">수정하기</Button>
+      {id === user?.id && <ModifyBtn />}
     </div>
   );
 };

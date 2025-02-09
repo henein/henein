@@ -1,8 +1,17 @@
 import { Button } from '@/components';
+import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
-const page = () => {
+const page = async () => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) return redirect(`/user/${user.id}/post`);
+
   return (
     <div className="m-[0_auto] flex w-full max-w-[1024px] items-center justify-center">
       <div className="flex flex-col items-center gap-5">
