@@ -7,154 +7,9 @@ export type Json =
   | Json[]
 
 export type Database = {
-  public: {
+  henein: {
     Tables: {
-      categories: {
-        Row: {
-          created_at: string
-          id: string
-          name: string
-        }
-        Insert: {
-          created_at?: string
-          id: string
-          name: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          name?: string
-        }
-        Relationships: []
-      }
-      characters: {
-        Row: {
-          class: string
-          created_at: string
-          exp: string
-          exp_rate: number
-          id: number
-          image: string
-          level: number
-          name: string
-          stat: Json
-          updated_at: string
-          user_id: string | null
-          world: string
-        }
-        Insert: {
-          class: string
-          created_at?: string
-          exp: string
-          exp_rate: number
-          id: number
-          image: string
-          level: number
-          name?: string
-          stat: Json
-          updated_at?: string
-          user_id?: string | null
-          world: string
-        }
-        Update: {
-          class?: string
-          created_at?: string
-          exp?: string
-          exp_rate?: number
-          id?: number
-          image?: string
-          level?: number
-          name?: string
-          stat?: Json
-          updated_at?: string
-          user_id?: string | null
-          world?: string
-        }
-        Relationships: []
-      }
-      comments: {
-        Row: {
-          author: string
-          content: string
-          created_at: string
-          deleted_at: string | null
-          id: number
-          parent_id: number | null
-          post_id: number | null
-          updated_at: string
-        }
-        Insert: {
-          author: string
-          content: string
-          created_at?: string
-          deleted_at?: string | null
-          id?: number
-          parent_id?: number | null
-          post_id?: number | null
-          updated_at?: string
-        }
-        Update: {
-          author?: string
-          content?: string
-          created_at?: string
-          deleted_at?: string | null
-          id?: number
-          parent_id?: number | null
-          post_id?: number | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "comments_post_id_fkey"
-            columns: ["post_id"]
-            isOneToOne: false
-            referencedRelation: "posts"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      posts: {
-        Row: {
-          author_id: string
-          category_id: string
-          content: string
-          created_at: string
-          deleted_at: string | null
-          id: number
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          author_id: string
-          category_id: string
-          content: string
-          created_at?: string
-          deleted_at?: string | null
-          id?: number
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          author_id?: string
-          category_id?: string
-          content?: string
-          created_at?: string
-          deleted_at?: string | null
-          id?: number
-          title?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "posts_category_id_fkey"
-            columns: ["category_id"]
-            isOneToOne: false
-            referencedRelation: "categories"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      users: {
+      profiles: {
         Row: {
           created_at: string
           id: string
@@ -172,6 +27,40 @@ export type Database = {
           id?: string
           nickname?: string
           profile_img?: string | null
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      [_ in never]: never
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+  mamudae: {
+    Tables: {
+      streamer: {
+        Row: {
+          id: string
+          nickname: string
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          nickname: string
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          nickname?: string
+          user_id?: string | null
         }
         Relationships: []
       }
