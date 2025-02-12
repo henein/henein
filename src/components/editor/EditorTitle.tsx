@@ -1,14 +1,17 @@
 import { ToolBarDivider } from './ToolBarDivider';
 import classNames from 'classnames';
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 export interface EditorTitleProps {
   board?: string;
   className?: string;
 }
 
-export const EditorTitle: React.FC<EditorTitleProps> = (props) => {
-  // const { data: boardList } = useGetBoardList();
+export const EditorTitle = (
+  props: EditorTitleProps,
+) => {
+  const { register } = useFormContext();
 
   return (
     <div
@@ -28,7 +31,8 @@ export const EditorTitle: React.FC<EditorTitleProps> = (props) => {
 
       <ToolBarDivider />
 
-      <input // Title
+      <input
+        {...register('title')}
         className="placeholder-black-500 dark:placeholder-white-600 h-12 w-full outline-none"
         placeholder="제목"
         type="text"
