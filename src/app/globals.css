@@ -1,10 +1,12 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css");
 
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@config "../../tailwind.config.js";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme {
+@theme inline {
   --color-*: initial;
   --color-black-25: #0000000d;
   --color-black-50: #0000001a;
