@@ -7,15 +7,19 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "_gen-type-windows": "supabase gen types typescript --project-id \"%SUPABASE_PROJECT_ID%\" -s henein,mamudae > src/utils/supabase/database.types.ts",
-    "gen-type-windows": "npx dotenv -- npm run _gen-type-windows",
-    "_gen-type": "supabase gen types typescript --project-id \"$SUPABASE_PROJECT_ID\" -s henein,mamudae > src/utils/supabase/database.types.ts",
-    "gen-type": "dotenv -- npm run _gen-type"
+    "prisma-generate": "npx prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "^6.3.1",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.48.1",
-    "@types/color-thief-node": "^1.0.4",
+    "@tiptap/extension-image": "^2.11.5",
+    "@tiptap/extension-placeholder": "^2.11.5",
+    "@tiptap/extension-text-align": "^2.11.5",
+    "@tiptap/extension-underline": "^2.11.5",
+    "@tiptap/pm": "^2.11.5",
+    "@tiptap/react": "^2.11.5",
+    "@tiptap/starter-kit": "^2.11.5",
     "@vercel/analytics": "^1.4.1",
     "chzzk": "^1.10.4",
     "classnames": "^2.5.1",
@@ -31,7 +35,9 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.0.3",
+    "@tailwindcss/typography": "^0.5.16",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/color-thief-node": "^1.0.4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -41,6 +47,7 @@
     "postcss": "^8.5.1",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
+    "prisma": "^6.3.1",
     "supabase": "^2.12.0",
     "tailwindcss": "^4.0.3",
     "typescript": "^5"
