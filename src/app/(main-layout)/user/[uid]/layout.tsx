@@ -42,6 +42,5 @@ const fetchUser = async (uid: string) => {
     if (error instanceof Error) {
       console.log('Error: ', error.stack);
     }
-    notFound();
   }
 };

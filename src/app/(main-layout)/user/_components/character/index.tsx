@@ -18,7 +18,7 @@ const CharacterContents = ({ uid }: Props) => {
           </h3>
           <CharacterSortSelector />
         </div>
-        <TokenForm />
+        <TokenForm uid={uid} />
       </div>
     );
   }
@@ -30,7 +30,7 @@ const CharacterContents = ({ uid }: Props) => {
         <br />
         하단의 캐릭터 동기화 버튼을 이용하여 캐릭터를 불러와주세요.
       </h3>
-      <TokenForm />
+      <TokenForm uid={uid} />
     </div>
   );
 };
@@ -43,8 +43,6 @@ const fetchCharacter = async (uid: string) => {
     .from('characters')
     .select('*')
     .eq('user_id', uid);
-
   if (error) throw new Error(error.message);
-
   return data;
 };
