@@ -1,4 +1,4 @@
-import { Streamer } from '@/constants';
+import { Streamer, StreamerId } from '@/constants';
 import classNames from 'classnames';
 
 export interface StreamerImageProps {
@@ -10,11 +10,12 @@ export interface StreamerImageProps {
 export const StreamerImage = (props: StreamerImageProps) => {
   return (
     <img
-      className={classNames(
-        'rounded-full',
-        props.className,
-      )}
-      src={`/images/mamudae/profile/${props.streamer.id}.png`}
+      className={classNames('rounded-full', props.className)}
+      src={
+        props.streamer?.id != StreamerId.NULL
+          ? `/images/mamudae/profile/${props.streamer.id}.png`
+          : '/images/mamudae/profile/null.png'
+      }
       alt={props.streamer.nickname}
       width={props.size || 160}
       height={props.size || 160}

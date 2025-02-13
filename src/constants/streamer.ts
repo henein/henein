@@ -1,4 +1,5 @@
 export enum StreamerId {
+  NULL = '',
   NACHO = 'nacho',
   TERO = 'tero',
   BAEKDOA = 'baekdoa',
@@ -27,6 +28,11 @@ export type Streamer = {
 };
 
 export const Streamers: Streamer[] = [
+  {
+    id: StreamerId.NULL,
+    nickname: '미정',
+    links: [],
+  },
   {
     id: StreamerId.NACHO,
     nickname: '나초',
