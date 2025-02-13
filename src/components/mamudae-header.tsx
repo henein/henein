@@ -20,7 +20,7 @@ export const MamudaeHeader = () => {
             </Link>
             <div className="flex items-center">
               {/* <Link href="/mamudae/prize"> */}
-                <NavigationItem isWIP>상금</NavigationItem>
+              <NavigationItem isWIP>상금</NavigationItem>
               {/* </Link> */}
               <Link href="/mamudae/boss">
                 <NavigationItem>보스</NavigationItem>
@@ -31,9 +31,9 @@ export const MamudaeHeader = () => {
               {/* <Link href="/mamudae/daily"> */}
               <NavigationItem isWIP>일일미션</NavigationItem>
               {/* </Link> */}
-              {/* <Link href="/"> */}
-              <NavigationItem isWIP>커뮤니티</NavigationItem>
-              {/* </Link> */}
+              <Link href="/community">
+                <NavigationItem>커뮤니티</NavigationItem>
+              </Link>
             </div>
           </div>
           <div className="flex gap-4">

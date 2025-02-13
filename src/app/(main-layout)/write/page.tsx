@@ -1,6 +1,6 @@
 'use client';
 
-import { writePost } from '@/actions/post';
+import { writePost } from '@/actions/post-action';
 import { Button } from '@/components';
 import { Editor } from '@/components/editor/Editor';
 import { EditorTitle } from '@/components/editor/EditorTitle';
