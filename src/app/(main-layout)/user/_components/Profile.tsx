@@ -1,13 +1,11 @@
 import ModifyBtn from './ModifyBtn';
 import { formatToHyphenDate } from '@/utils/date/formattedDate';
-import { Database } from '@/utils/supabase/database.types';
 import { createClient } from '@/utils/supabase/server';
+import { profiles as Profiles } from '@prisma/client';
 import Image from 'next/image';
 import React from 'react';
 
-type User = Database['public']['Tables']['users']['Row'];
-
-const Profile = async (props: User) => {
+const Profile = async (props: Profiles) => {
   const { id, created_at, nickname, profile_img } = props;
   const supabase = await createClient();
   const {
@@ -26,7 +24,7 @@ const Profile = async (props: User) => {
         />
         <div className="flex flex-col gap-1.5">
           <span className="text-sm font-bold text-gray-500">
-            {`가입일 ${formatToHyphenDate(created_at)}`}
+            {`가입일 ${formatToHyphenDate(created_at.toISOString())}`}
           </span>
           <h1 className="text-2xl font-bold text-gray-900">{nickname}</h1>
         </div>
