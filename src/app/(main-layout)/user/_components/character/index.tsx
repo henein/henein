@@ -1,6 +1,6 @@
 import CharacterSortSelector from './CharacterSortSelector';
 import TokenForm from './TokenForm';
-import { createClient } from '@/utils/supabase/server';
+import { PrismaClient } from '@prisma/client';
 import React, { use } from 'react';
 
 interface Props {
@@ -9,27 +9,27 @@ interface Props {
 const CharacterContents = ({ uid }: Props) => {
   const data = use(fetchCharacter(uid));
 
-  if (data.length) {
+  if (data?.length === 0) {
     return (
-      <div className="mt-6 flex w-full flex-col gap-3">
-        <div>
-          <h3 className="text-black-900 dark:text-white-900 text-xl font-bold">
-            인증 캐릭터
-          </h3>
-          <CharacterSortSelector />
-        </div>
+      <div className="mt-6 flex h-full w-full flex-col justify-between">
+        <h3 className="text-black-900 dark:text-white-900 flex h-full w-full items-center justify-center text-center text-xl font-bold">
+          인증된 캐릭터가 없습니다.
+          <br />
+          하단의 캐릭터 동기화 버튼을 이용하여 캐릭터를 불러와주세요.
+        </h3>
         <TokenForm uid={uid} />
       </div>
     );
   }
 
   return (
-    <div className="mt-6 flex h-full w-full flex-col justify-between">
-      <h3 className="text-black-900 dark:text-white-900 flex h-full w-full items-center justify-center text-center text-xl font-bold">
-        인증된 캐릭터가 없습니다.
-        <br />
-        하단의 캐릭터 동기화 버튼을 이용하여 캐릭터를 불러와주세요.
-      </h3>
+    <div className="mt-6 flex w-full flex-col gap-3">
+      <div>
+        <h3 className="text-black-900 dark:text-white-900 text-xl font-bold">
+          인증 캐릭터
+        </h3>
+        <CharacterSortSelector />
+      </div>
       <TokenForm uid={uid} />
     </div>
   );
@@ -38,11 +38,12 @@ const CharacterContents = ({ uid }: Props) => {
 export default CharacterContents;
 
 const fetchCharacter = async (uid: string) => {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('characters')
-    .select('*')
-    .eq('user_id', uid);
-  if (error) throw new Error(error.message);
-  return data;
+  try {
+    const prisma = new PrismaClient();
+    const data = await prisma.characters.findMany({ where: { user_id: uid } });
+    return data;
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error('데이터를 불러오는 중 오류가 발생하였습니다.');
+  }
 };
