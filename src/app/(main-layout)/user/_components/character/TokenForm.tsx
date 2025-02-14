@@ -10,10 +10,10 @@ interface Props {
 const TokenForm = ({ uid }: Props) => {
   const [apiKey, setApiKey] = useState('');
 
-  const { query, mutation } = useCharacterSignatureList(uid);
+  const { mutation } = useCharacterSignatureList(uid);
 
   return (
-    <div className="mt-6 flex items-center justify-end gap-2">
+    <div className="flex items-center justify-end gap-2">
       <button className="hover:bg-grey-600 flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-gray-200 text-gray-700 hover:cursor-pointer">
         ?
       </button>

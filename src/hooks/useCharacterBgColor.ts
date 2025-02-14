@@ -1,5 +1,5 @@
-import { getColor } from 'color-thief-node';
-import { useEffect, useState } from 'react';
+import ColorThief from 'colorthief';
+import { useCallback, useEffect, useState } from 'react';
 
 const convertRGBToHSL = (r: number, g: number, b: number) => {
   r /= 255;
@@ -21,23 +21,34 @@ const convertRGBToHSL = (r: number, g: number, b: number) => {
   ];
 };
 
-export const useCharacterBgColor = (image: string) => {
+export const useCharacterBgColor = (image: string | null) => {
   const [imageRandomColor, setImageRandomColor] = useState({
     light: '',
     dark: '',
   });
 
-  useEffect(() => {
+  const colorSetter = useCallback(() => {
+    if (!image)
+      return setImageRandomColor({
+        light: `bg-grey-400`,
+        dark: `bg-grey-400`,
+      });
+
     const img = document.createElement('img');
+
     img.src = image;
 
-    const colorRGB = getColor(img);
+    const colorRGB = ColorThief.getColor(img);
     const color = convertRGBToHSL(colorRGB[0], colorRGB[1], colorRGB[2]);
     setImageRandomColor({
       light: `bg-[color:hsl(${color[0]}, 15%, 25%)]`,
       dark: `bg-[color:hsl(${color[0]}, 100%, 95%)]`,
     });
   }, [image]);
+
+  useEffect(() => {
+    colorSetter();
+  }, [colorSetter]);
 
   return { imageRandomColor };
 };

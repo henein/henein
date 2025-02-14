@@ -1,3 +1,4 @@
+import CharacterBox from './CharacterBox';
 import CharacterSortSelector from './CharacterSortSelector';
 import TokenForm from './TokenForm';
 import { PrismaClient } from '@prisma/client';
@@ -7,11 +8,13 @@ interface Props {
   uid: string;
 }
 const CharacterContents = ({ uid }: Props) => {
-  const data = use(fetchCharacter(uid));
+  const characters = use(fetchCharacter(uid));
 
-  if (data?.length === 0) {
+  if (!characters) return;
+
+  if (characters.length === 0) {
     return (
-      <div className="mt-6 flex h-full w-full flex-col justify-between">
+      <div className="my-6 flex h-full w-full flex-col justify-between">
         <h3 className="text-black-900 dark:text-white-900 flex h-full w-full items-center justify-center text-center text-xl font-bold">
           인증된 캐릭터가 없습니다.
           <br />
@@ -23,15 +26,25 @@ const CharacterContents = ({ uid }: Props) => {
   }
 
   return (
-    <div className="mt-6 flex w-full flex-col gap-3">
-      <div>
+    <>
+      <div className="my-6 flex w-full flex-col gap-5">
+        {/* 제목 */}
         <h3 className="text-black-900 dark:text-white-900 text-xl font-bold">
           인증 캐릭터
         </h3>
+
+        {/* 캐릭터 정렬 버튼 */}
         <CharacterSortSelector />
+
+        {/* 캐릭터 */}
+        <div className="gap-x-13 mx-auto flex w-[928px] flex-wrap justify-start gap-y-6">
+          {characters.map((character) => (
+            <CharacterBox key={character.id} {...character} />
+          ))}
+        </div>
       </div>
       <TokenForm uid={uid} />
-    </div>
+    </>
   );
 };
 

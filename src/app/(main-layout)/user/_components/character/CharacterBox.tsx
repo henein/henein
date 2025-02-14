@@ -1,11 +1,9 @@
 'use client';
 
 import { useCharacterBgColor } from '@/hooks/useCharacterBgColor';
-import { Database } from '@/utils/supabase/database.types';
+import { characters as Character } from '@prisma/client';
 import Image from 'next/image';
 import React from 'react';
-
-type Character = Database['public']['Tables']['characters']['Row'];
 
 const CharacterBox = (props: Character) => {
   const {
@@ -26,27 +24,25 @@ const CharacterBox = (props: Character) => {
   const { imageRandomColor } = useCharacterBgColor(image);
 
   return (
-    <div
-      className={`flex h-44 w-36 flex-col rounded-xl ${imageRandomColor.light} dark:${imageRandomColor.dark}`}
-    >
+    <div className={`relative flex h-[168px] w-[144px] flex-col rounded-xl`}>
+      {/* 캐릭터 이미지 */}
       <div
-        className={`flex flex-col items-center justify-center rounded-lg border p-5`}
+        className={`h-30 relative flex w-full items-center justify-center rounded-2xl border border-b-0 ${imageRandomColor.light} dark:${imageRandomColor.dark}`}
       >
-        <div className="flex gap-1">
-          <span className="text-sm text-gray-700">{name}</span>
-        </div>
-        <div className="text-xs text-gray-500">
-          {`${characterClass} / Lv.${level}`}
-        </div>
-      </div>
-      <div className="h-30 relative flex w-full items-center justify-center rounded-xl border">
         <Image
-          src={image}
-          className="absolute left-[-15px] top-[-47px]"
-          width={180}
-          height={180}
+          src={image || '/images/default-character-img.png'}
+          className="relative top-1 h-[130px] opacity-60"
+          width={142}
+          height={130}
           alt="character-image"
         />
+      </div>
+      {/* 캐릭터 정보 */}
+      <div className="bg-white-900 dark:bg-grey-900 relative -top-[27px] flex flex-col items-center justify-center gap-1 rounded-2xl border p-5">
+        <span className="text-sm text-gray-700">{name}</span>
+        <span className="text-[10px] text-gray-500">
+          {`${characterClass} / Lv.${level}`}
+        </span>
       </div>
     </div>
   );
