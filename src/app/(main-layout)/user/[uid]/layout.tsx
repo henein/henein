@@ -1,5 +1,4 @@
 import Profile from '../_components/Profile';
-import { PrismaClient } from '@prisma/client';
 import { notFound } from 'next/navigation';
 import React, { ReactNode, use } from 'react';
 
@@ -11,16 +10,16 @@ interface Props {
 
 const UserLayout = ({ params, children }: Props) => {
   const { uid } = use(params);
-  const data = use(fetchUser(uid));
+  const { profile } = use(fetchUser(uid));
 
-  if (!data) {
+  if (!profile) {
     notFound();
   }
 
   return (
     <div className="m-[0_auto] flex w-full max-w-[1024px] flex-col">
       <h2 className="mb-6 mt-6 text-left text-3xl font-bold">유저 프로필</h2>
-      <Profile {...data} />
+      <Profile {...profile} />
       {children}
     </div>
   );
@@ -29,18 +28,10 @@ const UserLayout = ({ params, children }: Props) => {
 export default UserLayout;
 
 const fetchUser = async (uid: string) => {
-  const prisma = new PrismaClient();
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/${uid}`,
+    { cache: 'no-store' },
+  );
 
-  try {
-    const user = await prisma.profiles.findFirst({
-      where: {
-        id: uid,
-      },
-    });
-    return user;
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log('Error: ', error.stack);
-    }
-  }
+  return res.json();
 };
