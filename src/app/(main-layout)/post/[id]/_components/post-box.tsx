@@ -1,10 +1,12 @@
 import { PostHeader } from './post-header';
-import { editorStyles } from '@/utils/tiptap';
+import { Card } from '@/components/card';
+import { editorStyles, proseStyles } from '@/utils/tiptap';
 import classNames from 'classnames';
 import React from 'react';
 
 export interface PostBoxProps {
   title: string;
+  category: string;
   author: string;
   views: number;
   createdAt: string;
@@ -13,16 +15,17 @@ export interface PostBoxProps {
 
 export const PostBox = (props: PostBoxProps) => {
   return (
-    <div className="flex flex-col rounded-2xl">
-      <div className="min-h-[calc(100% + 21px)] flex flex-col">
+    <Card className="flex flex-col">
+      <div className="flex flex-col">
         <PostHeader
           title={props.title}
+          category={props.category}
           author={props.author}
           views={props.views}
           createdAt={props.createdAt}
         />
         <div
-          className={classNames('mt-5 px-6', editorStyles)}
+          className={classNames('min-h-96 px-6 py-5', proseStyles)}
           dangerouslySetInnerHTML={{ __html: props.content }}
         />
         <div className="mx-auto my-5 flex w-full flex-col items-center">
@@ -30,7 +33,7 @@ export const PostBox = (props: PostBoxProps) => {
           {/* <RecommendNum>{recommend}</RecommendNum> */}
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 

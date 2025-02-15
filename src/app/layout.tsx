@@ -1,6 +1,5 @@
 import './globals.css';
 import { Analytics } from '@vercel/analytics/next';
-import 'material-symbols';
 import type { Metadata } from 'next';
 
 // const geistSans = Geist({

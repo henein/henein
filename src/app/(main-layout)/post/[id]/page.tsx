@@ -1,4 +1,6 @@
+import { CommentBox } from './_components/comment-box';
 import { PostBox } from './_components/post-box';
+import { Button } from '@/components';
 import { editorExtensions } from '@/utils/tiptap';
 import { PrismaClient } from '@prisma/client';
 import { generateHTML } from '@tiptap/html';
@@ -30,25 +32,41 @@ export const PostPage = async ({
 
   const post = await prisma.posts.findUnique({
     where: { id: Number(id) },
+    include: {
+      categories: true,
+    },
   });
 
   if (!post) {
     return notFound();
   }
 
+  const authorProfile = await prisma.profiles.findUnique({
+    where: { id: post.author_id },
+  });
+
   const content = generateHTML(post.content as object, editorExtensions);
 
   return (
-    <div className="mx-auto w-full max-w-5xl">
+    <div className="mx-auto mt-6 flex w-full max-w-5xl flex-col gap-4">
       <PostBox
         title={post.title}
-        author={post.author_id}
+        category={post.categories.name}
+        author={authorProfile?.nickname ?? 'Unknown'}
         views={0}
         createdAt={post.created_at.toISOString()}
         content={content}
       />
-      {/* <OptionBox data={data} boardId={boardId} />
-      <CommentBox data={data} boardId={boardId} /> */}
+      <div className="flex justify-between">
+        <Button sort="secondary">목록</Button>
+        <div className="flex gap-2">
+          <Button sort="secondary">수정하기</Button>
+          <Button sort="danger" disabled>
+            신고하기
+          </Button>
+        </div>
+      </div>
+      <CommentBox />
     </div>
   );
 };

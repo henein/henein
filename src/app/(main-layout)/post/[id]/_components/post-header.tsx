@@ -1,8 +1,10 @@
 import { Typography } from '@/components';
+import { CardHeader } from '@/components/card-header';
 import { getTimeDifference } from '@/utils/time';
 
 export interface PostHeaderProps {
   title: string;
+  category: string;
   author: string;
   views: number;
   createdAt: string;
@@ -10,32 +12,27 @@ export interface PostHeaderProps {
 
 export const PostHeader = (props: PostHeaderProps) => {
   return (
-    <div className="flex flex-col">
-      <div className="mb-2 text-xl font-bold">{props.title}</div>
+    <CardHeader className="flex flex-col px-6 py-5">
+      <p className="mb-2 text-xs">{props.category}</p>
+      <p className="mb-4 font-bold">{props.title}</p>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <Typography className="mr-1 text-xs" type="secondary">
-            {props.author}
-          </Typography>
+          <p className="text-secondary mr-1 text-xs">{props.author}</p>
+          <p
+            className="text-secondary text-xs"
+            suppressHydrationWarning
+          >{` · ${getTimeDifference(props.createdAt)}`}</p>
         </div>
         <div className="flex items-center">
-          <Typography
-            className="mr-3 flex items-center text-xs"
-            type="secondary"
-            suppressHydrationWarning={true}
-          >
-            <span className="material-symbols-outlined icon-16">schedule</span>
-            {getTimeDifference(props.createdAt)}
-          </Typography>
-          <Typography className="flex items-center text-xs" type="secondary">
-            <span className="material-symbols-outlined icon-16">
+          <p className="text-secondary flex items-center text-xs">
+            <span className="material-symbols-outlined icon-16 mr-1 text-xl">
               visibility
             </span>
             {props.views}
-          </Typography>
+          </p>
         </div>
       </div>
-    </div>
+    </CardHeader>
   );
 };
 

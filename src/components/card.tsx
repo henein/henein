@@ -9,7 +9,7 @@ export const Card: React.FC<CardProps> = (props) => {
   return (
     <div
       className={classNames(
-        'bg-white-900 dark:bg-grey-800 rounded-2xl',
+        'bg-card inset-ring inset-ring-default rounded-2xl',
         props.className,
       )}
     >

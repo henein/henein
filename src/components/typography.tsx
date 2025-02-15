@@ -7,9 +7,9 @@ export interface TypographyProps
 
 export function Typography({ type, className, ...props }: TypographyProps) {
   const typeStyles = {
-    default: 'text-black-800 dark:text-white-900',
-    secondary: 'text-black-500 dark:text-white-600',
-    link: 'text-brand dark:text-dark-brand hover:text-brand-hover hover:dark:dark-brand-hover active:text-brand-active active:dark:text-dark-brand-active transition-colors',
+    default: 'text-primary',
+    secondary: 'text-secondary',
+    link: 'text-link',
   }[type ?? 'default'];
 
   return (
