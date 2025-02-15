@@ -4,7 +4,7 @@ import Link from 'next/link';
 export const MamudaeHeader = () => {
   return (
     <header>
-      <div className="mx-auto mt-6 flex max-w-5xl items-center">
+      <div className="max-[66rem]:px-4 mx-auto mt-6 flex max-w-5xl items-center">
         <div className="mx-auto flex w-full items-center justify-between">
           <div className="flex items-end gap-3">
             <Link href="/">
@@ -20,7 +20,7 @@ export const MamudaeHeader = () => {
             </Link>
             <div className="flex items-center">
               {/* <Link href="/mamudae/prize"> */}
-                <NavigationItem isWIP>상금</NavigationItem>
+              <NavigationItem isWIP>상금</NavigationItem>
               {/* </Link> */}
               <Link href="/mamudae/boss">
                 <NavigationItem>보스</NavigationItem>
@@ -28,11 +28,8 @@ export const MamudaeHeader = () => {
               {/* <Link href="/mamudae/record"> */}
               <NavigationItem isWIP>기록</NavigationItem>
               {/* </Link> */}
-              {/* <Link href="/mamudae/daily"> */}
-              <NavigationItem isWIP>일일미션</NavigationItem>
-              {/* </Link> */}
-              {/* <Link href="/"> */}
-              <NavigationItem isWIP>커뮤니티</NavigationItem>
+              {/* <Link href="/community"> */}
+                <NavigationItem isWIP>커뮤니티</NavigationItem>
               {/* </Link> */}
             </div>
           </div>

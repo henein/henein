@@ -25,8 +25,8 @@ export const TextField: React.FC<TextFieldProps> = ({
     <div className="relative flex flex-col">
       {/* Label */}
       <label
-        className={`absolute left-4 px-1 text-sm transition-all ${
-          isEmpty ? 'text-grey-400 top-3' : 'text-grey-600 -top-2 bg-white'
+        className={`text-secondary pointer-events-none absolute left-3 px-1 text-sm transition-all ${
+          isEmpty ? 'top-3' : 'bg-white-900 dark:bg-grey-900 -top-2 rounded-sm'
         }`}
       >
         {placeholder}
@@ -36,7 +36,7 @@ export const TextField: React.FC<TextFieldProps> = ({
       <input
         {...props}
         {...register}
-        className={`border-grey-300 enabled:hover:ring-grey-200 focus:border-grey-500 disabled:bg-grey-200 w-full rounded-lg border bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none transition-all hover:ring-2 focus:ring-2 focus:ring-blue-300 disabled:cursor-not-allowed`}
+        className={`inset-ring-default hover:inset-ring-brand dark:hover:inset-ring-dark-brand disabled:bg-grey-200 hover:inset-ring-2 focus:inset-ring-2 inset-ring dark:bg-grey-900 w-full rounded-lg px-4 py-3 text-sm outline-none transition-all disabled:cursor-not-allowed`}
         style={{ textAlign: props.align || 'left' }}
         onChange={(event) => {
           setIsEmpty(event.target.value === '');

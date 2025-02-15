@@ -109,12 +109,12 @@ const MamudaeBossPage = () => {
             key={index}
             className="flex min-h-40 items-center justify-between"
           >
-            <div className="mx-auto my-auto flex gap-3">
+            <div className="mx-auto my-auto flex gap-3 max-md:hidden">
               {bosses.map((boss) => (
                 <BossImage key={boss.bossId + boss.difficulty} {...boss} />
               ))}
             </div>
-            <div className="border-dark-border bg-grey-900 h-fit w-[463px] rounded-2xl border">
+            <div className="border-dark-border bg-grey-900 h-fit max-md:w-full md:w-[400px] rounded-2xl border">
               {bosses.map((boss) => (
                 <div
                   key={boss.bossId + boss.difficulty}

@@ -1,13 +1,11 @@
 'use client';
 
 import { useCharacterBgColor } from '@/hooks/useCharacterBgColor';
-import { Database } from '@/utils/supabase/database.types';
+import { characters } from '@prisma/client';
 import Image from 'next/image';
 import React from 'react';
 
-type Character = Database['public']['Tables']['characters']['Row'];
-
-const CharacterBox = (props: Character) => {
+const CharacterBox = (props: characters) => {
   const {
     id,
     created_at,
@@ -23,7 +21,7 @@ const CharacterBox = (props: Character) => {
     class: characterClass,
   } = props;
 
-  const { imageRandomColor } = useCharacterBgColor(image);
+  const { imageRandomColor } = useCharacterBgColor(image ?? '');
 
   return (
     <div
@@ -41,7 +39,7 @@ const CharacterBox = (props: Character) => {
       </div>
       <div className="h-30 relative flex w-full items-center justify-center rounded-xl border">
         <Image
-          src={image}
+          src={image ?? ''}
           className="absolute left-[-15px] top-[-47px]"
           width={180}
           height={180}

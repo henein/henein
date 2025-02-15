@@ -340,6 +340,7 @@ model categories {
 }
 
 model characters {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @default(now()) @db.Timestamptz(6)
   name       String   @unique @default("")
@@ -352,7 +353,6 @@ model characters {
   stat       Json?    @db.Json
   user_id    String?  @default(dbgenerated("auth.uid()")) @db.Uuid
   ocid       String
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   users      users?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@schema("henein")
