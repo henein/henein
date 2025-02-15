@@ -1,4 +1,5 @@
 export enum StreamerId {
+  NULL = '',
   NACHO = 'nacho',
   TERO = 'tero',
   BAEKDOA = 'baekdoa',
@@ -11,6 +12,7 @@ export enum StreamerId {
   NAMJIO = 'namjio',
   NUSEUNYANG = 'nuseunyang',
   UDEONG = 'udeong',
+  JIMYEONG = 'jimyeong'
 }
 
 export type StreamerPlatform = 'soop' | 'youtube' | 'chzzk';
@@ -27,6 +29,11 @@ export type Streamer = {
 };
 
 export const Streamers: Streamer[] = [
+  {
+    id: StreamerId.NULL,
+    nickname: '미정',
+    links: [],
+  },
   {
     id: StreamerId.NACHO,
     nickname: '나초',
@@ -196,6 +203,20 @@ export const Streamers: Streamer[] = [
       {
         platform: 'chzzk',
         link: 'https://chzzk.naver.com/4cc2031a4597b6dd2d75c13fd375e433'
+      }
+    ],
+  },
+  {
+    id: StreamerId.JIMYEONG,
+    nickname: '지명',
+    links: [
+      {
+        platform: 'youtube',
+        link: 'https://www.youtube.com/@Ji-Myeong1214'
+      },
+      {
+        platform: 'chzzk',
+        link: 'https://chzzk.naver.com/7790fbff6c378aea5096be800307cfcb'
       }
     ],
   },

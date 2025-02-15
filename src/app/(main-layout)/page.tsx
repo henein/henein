@@ -23,19 +23,19 @@ export default function Home() {
       <h2 className="mb-6 mt-6 text-3xl font-bold">참여자</h2>
       <div className="flex justify-between gap-1">
         <StreamerProfile streamerId={StreamerId.NACHO} />
-        <StreamerProfile streamerId={StreamerId.TERO} />
         <StreamerProfile streamerId={StreamerId.BAEKDOA} />
         <StreamerProfile streamerId={StreamerId.JJANGJJUNG} />
         <StreamerProfile streamerId={StreamerId.ISEUTEO} />
         <StreamerProfile streamerId={StreamerId.KONGJU} />
+        <StreamerProfile streamerId={StreamerId.YUHIHI} />
       </div>
       <div className="mt-4 flex justify-between gap-1">
-        <StreamerProfile streamerId={StreamerId.YUHIHI} />
         <StreamerProfile streamerId={StreamerId.GYEOMJI} />
         <StreamerProfile streamerId={StreamerId.NAENGIKIM} />
         <StreamerProfile streamerId={StreamerId.NAMJIO} />
         <StreamerProfile streamerId={StreamerId.NUSEUNYANG} />
         <StreamerProfile streamerId={StreamerId.UDEONG} />
+        <StreamerProfile />
       </div>
       <h2 className="mb-6 mt-32 text-3xl font-bold">규정</h2>
       <div className="border-dark-border bg-grey-800 rounded-2xl border px-6 py-5">

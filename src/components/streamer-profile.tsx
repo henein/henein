@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 
 export interface StreamerProfileProps {
-  streamerId: StreamerId;
+  streamerId?: StreamerId;
   className?: string;
   size?: number;
 }
