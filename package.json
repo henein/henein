@@ -7,12 +7,18 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma-generate": "npx prisma generate"
+    "prisma-generate": "npx prisma generate",
+    "prisma-pull": "dotenv -e .env.development -- npx prisma db pull && npx prisma generate",
+    "prisma-push": "dotenv -e .env.development -- npx prisma db push && npx prisma generate",
+    "prisma-pull-prod": "dotenv -e .env.production -- npx prisma db pull && npx prisma generate",
+    "prisma-push-prod": "dotenv -e .env.production -- npx prisma db push && npx prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.3.1",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.48.1",
+    "@tanstack/react-query": "^5.66.0",
+    "@types/color-thief-node": "^1.0.4",
     "@tiptap/extension-image": "^2.11.5",
     "@tiptap/extension-placeholder": "^2.11.5",
     "@tiptap/extension-text-align": "^2.11.5",

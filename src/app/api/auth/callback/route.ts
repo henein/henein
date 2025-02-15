@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
+import { PrismaClient } from '@prisma/client';
 import { notFound } from 'next/navigation';
 import { NextResponse } from 'next/server';
 
@@ -8,18 +9,41 @@ export async function GET(request: Request) {
   const code = searchParams.get('code'); // OAuth 인증 코드
 
   if (code) {
-    // Supabase 클라이언트 생성
+    // Supabase, db 클라이언트 생성
     const supabase = await createClient();
+    const prisma = new PrismaClient();
 
     // 인증 코드로 세션 교환
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.exchangeCodeForSession(code);
 
     // 오류가 없다면
-    // 1. public.users 테이블에 유저 정보 저장
-    // => (데이터베이스 트리거 이용하여 auth.users에 데이터가 들어오면 public.users에 insert)
-    // 2. next로 redirect
+    // 1. profiles 테이블에 유저 정보 저장
 
-    if (!error) {
+    if (error)
+      return NextResponse.json({ message: error.message }, { status: 500 });
+
+    if (user) {
+      try {
+        const updateUser = await prisma.profiles.upsert({
+          where: {
+            id: user.id,
+          },
+          create: {
+            id: user.id,
+            created_at: user.created_at,
+          },
+          update: {},
+        });
+        console.log(updateUser);
+      } catch (error) {
+        if (error instanceof Error) {
+          console.log('Error: ', error.stack);
+        }
+      }
+
       return NextResponse.redirect(`${origin}/`);
     }
   }

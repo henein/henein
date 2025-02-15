@@ -4,9 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = "postgresql://postgres:postgres@127.0.0.1:54322/postgres"
-  schemas   = ["auth", "henein", "mamudae"]
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["auth", "henein", "mamudae"]
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -118,10 +118,10 @@ model mfa_factors {
   created_at           DateTime         @db.Timestamptz(6)
   updated_at           DateTime         @db.Timestamptz(6)
   secret               String?
-  phone                String?
   last_challenged_at   DateTime?        @unique @db.Timestamptz(6)
-  web_authn_credential Json?
+  phone                String?
   web_authn_aaguid     String?          @db.Uuid
+  web_authn_credential Json?
   mfa_challenges       mfa_challenges[]
   users                users            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
@@ -376,12 +376,12 @@ model comments {
 model posts {
   id          BigInt     @id(map: "post_pkey") @default(autoincrement())
   created_at  DateTime   @default(now()) @db.Timestamptz(6)
+  title       String
+  author_id   String     @db.Uuid
   updated_at  DateTime   @default(now()) @db.Timestamptz(6)
   deleted_at  DateTime?  @db.Timestamptz(6)
-  title       String
-  content     Json
-  author_id   String     @db.Uuid
   category_id String
+  content     Json
   comments    comments[]
   users       users      @relation(fields: [author_id], references: [id], onDelete: Cascade)
   categories  categories @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
