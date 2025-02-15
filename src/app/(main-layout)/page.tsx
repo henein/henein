@@ -38,7 +38,7 @@ export default function Home() {
         <StreamerProfile streamerId={StreamerId.JIMYEONG} />
       </div>
       <h2 className="mb-6 mt-32 text-3xl font-bold">규정</h2>
-      <div className="border-dark-border bg-grey-800 rounded-2xl border px-6 py-5">
+      <div className="border-default bg-grey-50 dark:bg-grey-800 rounded-2xl border px-6 py-5">
         <h3 className="font-bold">시청자 지원 가능</h3>
         <ul className="list-inside list-disc">
           <li>
