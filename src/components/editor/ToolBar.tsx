@@ -41,7 +41,10 @@ export interface ToolBarProps {
 
 export const ToolBar: React.FC<ToolBarProps> = ({ editor }) => {
   return (
-    <CardHeader className="text-black-800 dark:text-white-900 sticky top-0 z-10 flex items-center gap-1 px-5 py-2">
+    <CardHeader
+      className="sticky top-0 z-10 flex items-center gap-1 px-5 py-2"
+      isBlur
+    >
       <ToolBarButton
         isChecked={editor?.isActive('heading', { level: 1 })}
         onClick={() =>

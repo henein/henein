@@ -1,5 +1,6 @@
 import { Streamer, StreamerId } from '@/constants';
 import classNames from 'classnames';
+import Image from 'next/image';
 
 export interface StreamerImageProps {
   streamer: Streamer;
@@ -9,7 +10,7 @@ export interface StreamerImageProps {
 
 export const StreamerImage = (props: StreamerImageProps) => {
   return (
-    <img
+    <Image
       className={classNames('rounded-full', props.className)}
       src={
         props.streamer?.id != StreamerId.NULL

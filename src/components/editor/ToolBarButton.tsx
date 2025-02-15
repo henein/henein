@@ -15,6 +15,7 @@ export const ToolBarButton: React.FC<ToolBarButtonProps> = (props) => {
           'bg-grey-100 dark:bg-grey-800': props.isChecked,
         },
       )}
+      type="button"
       onClick={props.onClick}
     >
       {props.children}
