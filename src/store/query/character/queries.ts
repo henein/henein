@@ -13,10 +13,9 @@ export const setCharactersSignatureList = async (token: string) => {
 };
 
 export const fetchCharactersFromUid = async (uid: string) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/nexon/character/list`, {
-    body: JSON.stringify({ uid }),
-    // next: { revalidate: 900 }, // cache time 15 min
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/nexon/character/list/${uid}`,
+  );
 
   return res.json();
 };

@@ -8,45 +8,6 @@ import { createClient } from '@/utils/supabase/server';
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
-  try {
-    const { uid } = await request.json();
-    const supabase = await createClient();
-    const prisma = new PrismaClient();
-
-    // user auth check
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user)
-      return NextResponse.json(
-        { message: '로그인 해주세요.' },
-        { status: 401 },
-      );
-
-    if (user.id !== uid)
-      return NextResponse.json(
-        { message: '접근할 수 없는 데이터입니다.' },
-        { status: 403 },
-      );
-
-    // DB 작업 요청
-    const characters = await prisma.characters.findMany({
-      where: { user_id: user.id },
-    });
-
-    return NextResponse.json({ characters }, { status: 200 });
-  } catch (error) {
-    if (error instanceof Error) console.log('Error: ', error.stack);
-
-    return NextResponse.json(
-      { message: '서버 오류가 발생했습니다.' },
-      { status: 500 },
-    );
-  }
-}
-
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
@@ -65,13 +26,14 @@ export async function POST(request: NextRequest) {
     const res = await getCharacterSignatureList(token);
     const response = await res.json();
 
-    if (!res.ok) {
-      return handleNexonApiError(response);
-    }
+    if (!res.ok) return handleNexonApiError(response);
 
     const {
       data: { user },
     } = await supabase.auth.getUser();
+
+    if (!user)
+      return NextResponse.json({ message: 'unauthorized' }, { status: 401 });
 
     const characters = response.account_list
       .map((item: NexonAccountListType) => item.character_list)
@@ -82,10 +44,25 @@ export async function POST(request: NextRequest) {
         world: info.world_name,
         class: info.character_class,
         level: info.character_level,
-        user_id: user?.id,
+        user_id: user.id,
       }));
 
     // DB 작업 요청
+
+    // 아래 조건이 만족한다면 유저의 nexon_key update
+    // 1. 데이터를 제대로 받아올 수 있는 nexon_key 인가?
+    // 2. 다른 유저에게 등록되지않은 nexon_key 인가? === UNIQUE?
+    // 3. 유저의 nexon_key 값이 NULL 인가?
+    await prisma.profiles.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        nexon_key: token,
+      },
+    });
+
+    // 처음 조회할땐 괜찮은데 다시 조회했을때 중복되는 친구들은 어떻게 업데이트 할건지 생각해야함
     await prisma.characters.createManyAndReturn({
       data: characters,
     });

@@ -1,5 +1,10 @@
 import { characterQueries, setCharactersSignatureList } from './queries';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 export const useCharacterSignatureList = (uid: string) => {
   const queryClient = useQueryClient();
@@ -20,4 +25,13 @@ export const useCharacterSignatureList = (uid: string) => {
   });
 
   return { query, mutation };
+};
+
+export const prefetchUserCharacterList = async (uid: string) => {
+  const queryClient = new QueryClient();
+  const queryOptions = characterQueries.userList(uid);
+
+  await queryClient.prefetchQuery(queryOptions);
+
+  return { queryClient };
 };
