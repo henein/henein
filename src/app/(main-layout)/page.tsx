@@ -35,7 +35,7 @@ export default function Home() {
         <StreamerProfile streamerId={StreamerId.NAMJIO} />
         <StreamerProfile streamerId={StreamerId.NUSEUNYANG} />
         <StreamerProfile streamerId={StreamerId.UDEONG} />
-        <StreamerProfile />
+        <StreamerProfile streamerId={StreamerId.JIMYEONG} />
       </div>
       <h2 className="mb-6 mt-32 text-3xl font-bold">규정</h2>
       <div className="border-dark-border bg-grey-800 rounded-2xl border px-6 py-5">
