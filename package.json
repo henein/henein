@@ -60,5 +60,5 @@
   },
   "optionalDependencies": {
     "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1"
-  },
+  }
 }
