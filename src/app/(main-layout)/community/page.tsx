@@ -4,14 +4,14 @@ import { PrismaClient } from '@prisma/client';
 import Link from 'next/link';
 import React from 'react';
 
-export const CommunityPage = async ({
+const CommunityPage = async ({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
   const prisma = new PrismaClient();
 
-  const page = Number(searchParams.page ?? 1);
+  const page = Number((await searchParams).page ?? 1);
 
   const posts = await prisma.posts.findMany({
     take: 20,

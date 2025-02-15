@@ -17,7 +17,7 @@ import { notFound } from 'next/navigation';
 //   replies?: any;
 // };
 
-export const PostPage = async ({
+const PostPage = async ({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -66,7 +66,7 @@ export const PostPage = async ({
           </Button>
         </div>
       </div>
-      <CommentBox />
+      <CommentBox data />
     </div>
   );
 };

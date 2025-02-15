@@ -4,7 +4,9 @@ import { CardHeader } from '@/components/card-header';
 import classNames from 'classnames';
 import { useState } from 'react';
 
-export interface CommentBoxProps {}
+export interface CommentBoxProps {
+  data: any;
+}
 
 export const CommentBox = (props: CommentBoxProps) => {
   const [showAction, setShowAction] = useState(false);
