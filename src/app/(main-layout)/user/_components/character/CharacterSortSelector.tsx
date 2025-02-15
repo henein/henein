@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import useCharacterSort from '@/store/zustand/useCharacterSort';
+import clsx from 'clsx';
 
 type SortType = 'highLevel' | 'lowLevel' | 'name';
 type Button = {
@@ -14,30 +15,7 @@ const buttons: Button[] = [
 ];
 
 const CharacterSortSelector = () => {
-  const [sortType, setSortType] = useState<SortType>('highLevel');
-
-  // const newCharList = (type: SortType) => {
-  //   if (charList) {
-  //     const sortedList = [...charList];
-  //     const moveNullToEnd = (array: CharInfo[]) => {
-  //       const withoutNull = array.filter((item) => item.world !== null);
-  //       const nulls = array.filter((item) => item.world === null);
-  //       return [...withoutNull, ...nulls];
-  //     };
-
-  //     switch (type) {
-  //       case 'highLevel':
-  //         sortedList.sort((a, b) => (b.level ?? 0) - (a.level ?? 0));
-  //         break;
-  //       case 'lowLevel':
-  //         sortedList.sort((a, b) => (a.level ?? 0) - (b.level ?? 0));
-  //         break;
-  //       case 'name':
-  //         sortedList.sort((a, b) => a.charName.localeCompare(b.charName));
-  //         break;
-  //     }
-  //   }
-  // };
+  const { sortType, sortChange } = useCharacterSort();
 
   return (
     <div className="flex flex-col gap-3">
@@ -46,8 +24,8 @@ const CharacterSortSelector = () => {
           {buttons.map((item) => (
             <button
               key={item.value}
-              className={`rounded-2xl border bg-gray-200 p-[8px_16px] text-xs`}
-              onClick={() => setSortType(item.value)}
+              className={`hover:bg-grey-800a rounded-2xl border p-[8px_16px] text-xs hover:cursor-pointer ${clsx(sortType === item.value ? 'bg-grey-600' : 'bg-grey-900')}`}
+              onClick={() => sortChange(item.value)}
             >
               {item.label}
             </button>

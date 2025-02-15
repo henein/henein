@@ -2,13 +2,21 @@
 
 import CharacterBox from './CharacterBox';
 import { useCharacterSignatureList } from '@/store/query/character';
+import useCharacterSort from '@/store/zustand/useCharacterSort';
 import { characters as Characters } from '@prisma/client';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 const CharacterList = ({ uid }: { uid: string }) => {
   const { query } = useCharacterSignatureList(uid);
+  const { sortType } = useCharacterSort();
 
-  console.log(query.data);
+  const sortCallbackFn = useMemo(() => {
+    return (a: Characters, b: Characters) => {
+      if (sortType === 'lowLevel') return a.level - b.level;
+      if (sortType === 'name') return a.name.localeCompare(b.name);
+      return b.level - a.level; // 기본적으로 높은 레벨 우선 정렬
+    };
+  }, [sortType]);
 
   if (query.data.characters.length === 0) {
     return (
@@ -24,9 +32,11 @@ const CharacterList = ({ uid }: { uid: string }) => {
 
   return (
     <div className="gap-x-13 mx-auto flex w-[928px] flex-wrap justify-start gap-y-6">
-      {query.data.characters.map((character: Characters) => (
-        <CharacterBox key={character.id} {...character} />
-      ))}
+      {query.data.characters
+        .sort(sortCallbackFn)
+        .map((character: Characters) => (
+          <CharacterBox key={character.id} {...character} />
+        ))}
     </div>
   );
 };

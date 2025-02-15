@@ -38,12 +38,15 @@ const CharacterBox = (props: Character) => {
         />
       </div>
       {/* 캐릭터 정보 */}
-      <div className="bg-white-900 dark:bg-grey-900 relative -top-[27px] flex flex-col items-center justify-center gap-1 rounded-2xl border p-5">
+      <button
+        className="bg-white-900 dark:bg-grey-900 relative -top-[27px] flex flex-col items-center justify-center gap-1 rounded-2xl border py-5"
+        disabled
+      >
         <span className="text-sm text-gray-700">{name}</span>
         <span className="text-[10px] text-gray-500">
           {`${characterClass} / Lv.${level}`}
         </span>
-      </div>
+      </button>
     </div>
   );
 };
