@@ -1,22 +1,15 @@
 'use client';
 
 import CharacterBox from './CharacterBox';
+import useCharacterFilterSort from '@/hooks/useCharacterFilterSort';
 import { useCharacterSignatureList } from '@/store/query/character';
-import useCharacterSort from '@/store/zustand/useCharacterSort';
 import { characters as Characters } from '@prisma/client';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 const CharacterList = ({ uid }: { uid: string }) => {
   const { query } = useCharacterSignatureList(uid);
-  const { sortType } = useCharacterSort();
-
-  const sortCallbackFn = useMemo(() => {
-    return (a: Characters, b: Characters) => {
-      if (sortType === 'lowLevel') return a.level - b.level;
-      if (sortType === 'name') return a.name.localeCompare(b.name);
-      return b.level - a.level; // 기본적으로 높은 레벨 우선 정렬
-    };
-  }, [sortType]);
+  const { sortCallbackFn, filterCallbackFn, stateWorldName } =
+    useCharacterFilterSort();
 
   if (query.data.characters.length === 0) {
     return (
@@ -30,14 +23,24 @@ const CharacterList = ({ uid }: { uid: string }) => {
     );
   }
 
+  const characters = query.data.characters
+    .sort(sortCallbackFn)
+    .filter(filterCallbackFn);
+
   return (
-    <div className="gap-x-13 mx-auto flex w-[928px] flex-wrap justify-start gap-y-6">
-      {query.data.characters
-        .sort(sortCallbackFn)
-        .map((character: Characters) => (
-          <CharacterBox key={character.id} {...character} />
-        ))}
-    </div>
+    <>
+      {characters.length ? (
+        <div className="gap-x-13 mx-auto flex w-[928px] flex-wrap justify-start gap-y-6">
+          {characters.map((character: Characters) => (
+            <CharacterBox key={character.id} {...character} />
+          ))}
+        </div>
+      ) : (
+        <div className="my-6 flex h-full w-full flex-col justify-between">
+          <h3 className="text-black-900 dark:text-white-900 flex h-full w-full items-center justify-center text-center text-xl font-bold">{`"${stateWorldName}" 월드에 생성된 캐릭터가 없습니다.`}</h3>
+        </div>
+      )}
+    </>
   );
 };
 
