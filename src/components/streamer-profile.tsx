@@ -4,45 +4,18 @@ import { PlatformIcon } from './platform-icon';
 import { StreamerImage } from './streamer-image';
 import { StreamerId, Streamers } from '@/constants';
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
 
 export interface StreamerProfileProps {
   streamerId?: StreamerId;
   className?: string;
   size?: number;
+  isLive?: boolean;
 }
 
 export const StreamerProfile = (props: StreamerProfileProps) => {
-  const [isOnAir, setIsOnAir] = useState(false);
-
   const streamer =
     Streamers.find((streamer) => streamer.id === props.streamerId) ??
     Streamers[0];
-
-  useEffect(() => {
-    (async () => {
-      const chzzkLink = streamer.links.find(
-        (link) => link.platform === 'chzzk',
-      )?.link;
-      const soopLink = streamer.links.find(
-        (link) => link.platform === 'soop',
-      )?.link;
-
-      if (chzzkLink) {
-        const chzzkId = chzzkLink.replace('https://chzzk.naver.com/', '');
-
-        const res = await fetch(`/api/mamudae?chzzkId=${chzzkId}`);
-
-        setIsOnAir((await res.json()).isOnAir);
-      } else if (soopLink) {
-        const soopId = soopLink.replace('https://ch.sooplive.co.kr/', '');
-
-        const res = await fetch(`/api/mamudae?soopId=${soopId}`);
-
-        setIsOnAir((await res.json()).isOnAir);
-      }
-    })();
-  });
 
   return (
     <div className={classNames('flex flex-col items-center', props.className)}>
@@ -59,7 +32,7 @@ export const StreamerProfile = (props: StreamerProfileProps) => {
             </a>
           ))}
         </div>
-        {isOnAir && (
+        {props.isLive && (
           <div className="bg-danger-600 text-white-900 absolute left-2 top-2 z-20 rounded-full px-1.5 text-[0.6rem]">
             LIVE
           </div>
