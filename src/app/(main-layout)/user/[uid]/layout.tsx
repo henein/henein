@@ -3,15 +3,26 @@ import { PrismaClient } from '@prisma/client';
 import { notFound } from 'next/navigation';
 import React, { ReactNode, use } from 'react';
 
+// https://github.com/vercel/next.js/discussions/58275#discussioncomment-7603648
+
 interface Props {
-  params: Promise<{ uid: string; type: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
-const UserLayout = async ({ params, children }: Props) => {
-  const { uid } = await params;
-  const data = await fetchUser(uid);
+interface PropsExtended {
+  children?: ReactNode;
+  params?: Promise<{ uid: string; type: string }>;
+}
+
+const UserLayout = (props: Props | PropsExtended) => {
+  const { children, params } = props as PropsExtended;
+
+  if (!params) {
+    notFound();
+  }
+
+  const { uid } = use(params);
+  const data = use(fetchUser(uid));
 
   if (!data) {
     notFound();
