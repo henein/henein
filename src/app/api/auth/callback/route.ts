@@ -7,6 +7,7 @@ export async function GET(request: Request) {
   // URL에서 쿼리 파라미터 가져오기
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code'); // OAuth 인증 코드
+  const next = searchParams.get('next') ?? '/';
 
   if (code) {
     // Supabase, db 클라이언트 생성
@@ -44,7 +45,15 @@ export async function GET(request: Request) {
         }
       }
 
-      return NextResponse.redirect(`${origin}/`);
+      const forwardedHost = request.headers.get('x-forwarded-host');
+      const isLocalEnv = process.env.NODE_ENV === 'development';
+      if (isLocalEnv) {
+        return NextResponse.redirect(`${origin}${next}`);
+      } else if (forwardedHost) {
+        return NextResponse.redirect(`https://${forwardedHost}${next}`);
+      } else {
+        return NextResponse.redirect(`${origin}${next}`);
+      }
     }
   }
 

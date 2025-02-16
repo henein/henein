@@ -1,3 +1,4 @@
+import { AccountButton } from './account-button';
 import { NavigationItem } from './navigation-item';
 import Link from 'next/link';
 
@@ -9,7 +10,7 @@ export const MamudaeHeader = () => {
           <div className="flex items-end gap-3">
             <Link href="/">
               <svg
-                className="fill-black-800 dark:fill-white-900"
+                className="fill-brand dark:fill-white-900"
                 xmlns="http://www.w3.org/2000/svg"
                 width="40"
                 height="40"
@@ -33,15 +34,7 @@ export const MamudaeHeader = () => {
               {/* </Link> */}
             </div>
           </div>
-          <div className="flex gap-4">
-            <Link href="/login">
-              <NavigationItem isIcon>
-                <span className="material-symbols-outlined">
-                  account_circle
-                </span>
-              </NavigationItem>
-            </Link>
-          </div>
+          <AccountButton />
         </div>
       </div>
     </header>

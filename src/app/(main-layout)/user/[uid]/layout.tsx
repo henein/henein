@@ -9,9 +9,9 @@ interface Props {
   children: ReactNode;
 }
 
-const UserLayout = ({ params, children }: Props) => {
-  const { uid } = use(params);
-  const data = use(fetchUser(uid));
+const UserLayout = async ({ params, children }: Props) => {
+  const { uid } = await params;
+  const data = await fetchUser(uid);
 
   if (!data) {
     notFound();
