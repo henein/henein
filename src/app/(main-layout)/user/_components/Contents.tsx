@@ -1,5 +1,5 @@
+import PostItem from '@/components/post-item';
 import Pagenate from './Pagenate';
-import PostItem from './PostItem';
 import CharacterContents from './character';
 import React from 'react';
 

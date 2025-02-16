@@ -14,6 +14,7 @@ interface Props {
   commentNum: number;
   recommendNum: number;
 }
+
 const PostItem = (props: Props) => {
   const {
     boardType,

@@ -17,11 +17,7 @@ import { notFound } from 'next/navigation';
 //   replies?: any;
 // };
 
-const PostPage = async ({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) => {
+const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const id = (await params).id;
 
   if (!id) {
@@ -48,7 +44,7 @@ const PostPage = async ({
   const content = generateHTML(post.content as object, editorExtensions);
 
   return (
-    <div className="mx-auto mt-6 flex w-full max-w-5xl flex-col gap-4">
+    <div className="flex-col gap-4">
       <PostBox
         title={post.title}
         category={post.categories.name}
