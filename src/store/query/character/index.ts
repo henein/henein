@@ -39,7 +39,8 @@ export const useCharacterSignatureList = (uid: string) => {
   // 데이터 mutate
   const mutation = useMutation({
     mutationFn: (token: string) => setCharactersSignatureList(token),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      alert(data.message);
       queryClient.invalidateQueries(queryOptions);
     },
     onError: (error) => {

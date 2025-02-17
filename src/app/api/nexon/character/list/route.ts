@@ -16,18 +16,7 @@ export async function POST(request: NextRequest) {
 
     console.log(token);
 
-    if (!token || !/^[a-zA-Z0-9._-]+$/.test(token)) {
-      return NextResponse.json(
-        { message: '유효한 API 키를 입력해주세요.' },
-        { status: 400 },
-      );
-    }
-
-    const res = await getCharacterSignatureList(token);
-    const response = await res.json();
-
-    if (!res.ok) return handleNexonApiError(response);
-
+    // 유저 로그인 확인
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -35,7 +24,42 @@ export async function POST(request: NextRequest) {
     if (!user)
       return NextResponse.json({ message: 'unauthorized' }, { status: 401 });
 
-    const characters = response.account_list
+    // input으로 받아온 토큰 검사
+    if (!token || !/^[a-zA-Z0-9._-]+$/.test(token)) {
+      return NextResponse.json(
+        { message: '유효한 API 키를 입력해주세요.' },
+        { status: 400 },
+      );
+    }
+
+    // 받아온 토큰을 통한 nexon api 요청
+    const signatureList = await getCharacterSignatureList(token);
+
+    if ('error' in signatureList) {
+      const { message, description, status } =
+        handleNexonApiError(signatureList);
+      return NextResponse.json({ message, description }, { status });
+    }
+
+    // nexon api 요청 성공시 key update 요청
+    const patchKey = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/nexon-key`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({ token, uid: user.id, isValidNexonKey: true }),
+      },
+    );
+
+    const patchKeyJson = await patchKey.json();
+    if (!patchKey.ok) {
+      console.log(patchKeyJson);
+      return NextResponse.json(
+        { message: 'forbidden', description: patchKeyJson.message },
+        { status: 400 },
+      );
+    }
+
+    const characters = signatureList.account_list
       .map((item: NexonAccountListType) => item.character_list)
       .flat()
       .map((info: CharacterSignatureType) => ({
@@ -48,27 +72,46 @@ export async function POST(request: NextRequest) {
       }));
 
     // DB 작업 요청
-
-    // 아래 조건이 만족한다면 유저의 nexon_key update
-    // 1. 데이터를 제대로 받아올 수 있는 nexon_key 인가?
-    // 2. 다른 유저에게 등록되지않은 nexon_key 인가? === UNIQUE?
-    // 3. 유저의 nexon_key 값이 NULL 인가?
-    await prisma.profiles.update({
+    // 1. 기존 DB에 있는 캐릭터 ocid 리스트 가져오기
+    const existingCharacters = await prisma.characters.findMany({
       where: {
-        id: user.id,
+        ocid: { in: characters.map((c) => c.ocid) },
       },
-      data: {
-        nexon_key: token,
-      },
+      select: { ocid: true },
     });
+    const existingOcidSet = new Set(existingCharacters.map((c) => c.ocid));
 
-    // 처음 조회할땐 괜찮은데 다시 조회했을때 중복되는 친구들은 어떻게 업데이트 할건지 생각해야함
-    await prisma.characters.createManyAndReturn({
-      data: characters,
-    });
+    // 2. 새롭게 추가해야 하는 캐릭터 필터링
+    const newCharacters = characters.filter(
+      (c) => !existingOcidSet.has(c.ocid),
+    );
+
+    if (newCharacters.length > 0) {
+      await prisma.characters.createMany({
+        data: newCharacters,
+      });
+    }
+
+    // 3. 기존 캐릭터들은 한 번에 업데이트
+    const updatePromises = characters
+      .filter((c) => existingOcidSet.has(c.ocid))
+      .map((c) =>
+        prisma.characters.update({
+          where: { ocid: c.ocid },
+          data: {
+            name: c.name,
+            world: c.world,
+            class: c.class,
+            level: c.level,
+            user_id: c.user_id,
+          },
+        }),
+      );
+
+    await Promise.all(updatePromises);
 
     return NextResponse.json(
-      { message: 'success insert characters' },
+      { message: '캐릭터 동기화에 성공하였습니다.' },
       { status: 200 },
     );
   } catch (error) {

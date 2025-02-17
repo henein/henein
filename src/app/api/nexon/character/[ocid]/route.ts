@@ -1,33 +1,9 @@
 import { getCharacterDetail } from '@/utils/nexon/getCharacterDetail';
 import { getCharacterStat } from '@/utils/nexon/getCharacterStat';
 import { handleNexonApiError } from '@/utils/nexon/handleNexonApiError';
-import {
-  NexonCharacterBasicType,
-  NexonCharacterStatType,
-} from '@/utils/nexon/returnType';
-import { NexonErrorRes } from '@/utils/nexon/returnType';
 import { PrismaClient } from '@prisma/client';
 import dayjs from 'dayjs';
 import { NextRequest, NextResponse } from 'next/server';
-
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ ocid: string }> },
-) {
-  try {
-    const { ocid } = await params;
-    // console.log(detail, stat);
-    // DB upsert 작업 요청
-
-    return NextResponse.json({ message: 'null' }, { status: 200 });
-  } catch (error) {
-    console.error('Server Error:', error);
-    return NextResponse.json(
-      { message: '서버 오류가 발생했습니다.' },
-      { status: 500 },
-    );
-  }
-}
 
 export async function POST(
   request: NextRequest,

@@ -21,6 +21,10 @@ export interface NexonAccountListType {
   character_list: CharacterSignatureType[];
 }
 
+export interface NexonCharacterListType {
+  account_list: NexonAccountListType[];
+}
+
 export interface NexonCharacterBasicType {
   date: Date | null;
   character_name: string;
