@@ -32,7 +32,7 @@ const CharacterList = ({ uid }: { uid: string }) => {
       {characters.length ? (
         <div className="gap-x-13 mx-auto flex w-[928px] flex-wrap justify-start gap-y-6">
           {characters.map((character: Characters) => (
-            <CharacterBox key={character.id} {...character} />
+            <CharacterBox key={character.id} {...character} uid={uid} />
           ))}
         </div>
       ) : (
