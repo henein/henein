@@ -8,6 +8,18 @@ export const fetchProfile = async (uid: string) => {
   return res.json();
 };
 
+export const patchRepresentCharacter = async (uid: string, char_id: string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/represent`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify({ uid, char_id }),
+    },
+  );
+
+  return res.json();
+};
+
 export const profileQueries = {
   all: () => ['user'],
   user: (uid: string) =>
