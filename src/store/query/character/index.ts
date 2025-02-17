@@ -1,10 +1,33 @@
-import { characterQueries, setCharactersSignatureList } from './queries';
+import {
+  characterQueries,
+  setCharactersDetail,
+  setCharactersSignatureList,
+} from './queries';
 import {
   QueryClient,
   useMutation,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+
+export const useCharacterDetail = (uid: string, ocid: string) => {
+  const queryClient = useQueryClient();
+  const queryOptions = characterQueries.userList(uid);
+
+  // 데이터 mutate
+  const mutation = useMutation({
+    mutationFn: () => setCharactersDetail(ocid),
+    onSuccess: (data) => {
+      alert(data.message);
+      queryClient.invalidateQueries(queryOptions);
+    },
+    onError: (error) => {
+      alert(`${error.message}`);
+    },
+  });
+
+  return { mutation };
+};
 
 export const useCharacterSignatureList = (uid: string) => {
   const queryClient = useQueryClient();

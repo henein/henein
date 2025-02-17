@@ -1,47 +1,81 @@
 import { getCharacterDetail } from '@/utils/nexon/getCharacterDetail';
-import { getCharacterSignatureList } from '@/utils/nexon/getCharacterList';
+import { getCharacterStat } from '@/utils/nexon/getCharacterStat';
 import { handleNexonApiError } from '@/utils/nexon/handleNexonApiError';
-import { createClient } from '@/utils/supabase/server';
+import {
+  NexonCharacterBasicType,
+  NexonCharacterStatType,
+} from '@/utils/nexon/returnType';
+import { NexonErrorRes } from '@/utils/nexon/returnType';
+import { PrismaClient } from '@prisma/client';
+import dayjs from 'dayjs';
 import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ ocid: string }> },
+) {
+  try {
+    const { ocid } = await params;
+    // console.log(detail, stat);
+    // DB upsert 작업 요청
+
+    return NextResponse.json({ message: 'null' }, { status: 200 });
+  } catch (error) {
+    console.error('Server Error:', error);
+    return NextResponse.json(
+      { message: '서버 오류가 발생했습니다.' },
+      { status: 500 },
+    );
+  }
+}
 
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ ocid: string }> },
 ) {
   try {
+    const prisma = new PrismaClient();
     const { ocid } = await params;
-    const { token } = await request.json();
+    const token =
+      'live_90e0e77331447dc67f54c2227ec4f32262e1f345af744072fc812196a0c16a750ab3917af616f62a42e3f9f2e57e4e7e';
 
-    if (!token || !/^[a-zA-Z0-9._-]+$/.test(token)) {
-      return NextResponse.json(
-        { message: '유효한 API 키를 입력해주세요.' },
-        { status: 400 },
-      );
+    // 1. ocid로 조회
+    const [detail, stat] = await Promise.all([
+      getCharacterDetail(ocid, token),
+      getCharacterStat(ocid, token),
+    ]);
+
+    // NEXON API 에러처리
+    if ('error' in detail) {
+      console.log(detail);
+      const { message, description, status } = handleNexonApiError(detail);
+      return NextResponse.json({ message, description }, { status });
     }
 
-    const res = await getCharacterDetail(ocid, token);
-    const response = await res.json();
-
-    if (!res.ok) {
-      return handleNexonApiError(response);
+    if ('error' in stat) {
+      console.log(stat);
+      const { message, description, status } = handleNexonApiError(stat);
+      return NextResponse.json({ message, description }, { status });
     }
 
-    console.log(response);
     // DB upsert 작업 요청
-    // const supabase = await createClient();
-    // characters.forEach((character) => {
-    //   supabase.from('characters').upsert({
-    //     id: character.ocid,
-    //     name: character.character_name,
-    //     world: character.world_name,
-    //     class: character.character_class,
-    //     level: character.character_level,
-    //   });
-    // });
+    const character = await prisma.characters.update({
+      where: { ocid },
+      data: {
+        updated_at: dayjs(Date.now()).toISOString(),
+        exp: detail.character_exp.toString(),
+        exp_rate: detail.character_exp_rate,
+        image: detail.character_image,
+        stat: JSON.stringify(stat.final_stat),
+      },
+    });
 
-    return NextResponse.json({ response }, { status: 200 });
+    return NextResponse.json(
+      { message: `${character.name} 업데이트 성공` },
+      { status: 200 },
+    );
   } catch (error) {
-    console.error('Server Error:', error);
+    console.log(error);
     return NextResponse.json(
       { message: '서버 오류가 발생했습니다.' },
       { status: 500 },
