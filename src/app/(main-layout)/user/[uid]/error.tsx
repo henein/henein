@@ -15,7 +15,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex min-h-full w-full flex-col items-center justify-center gap-4">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-4">
       <h2 className="text-xl font-bold">
         에러가 발생했습니다. 아래 Try again 버튼을 눌러 재시도 해보세요.
       </h2>

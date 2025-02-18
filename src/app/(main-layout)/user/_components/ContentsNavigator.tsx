@@ -1,6 +1,7 @@
+import { PrismaClient } from '@prisma/client';
 import clsx from 'clsx';
 import Link from 'next/link';
-import React from 'react';
+import React, { use } from 'react';
 
 interface Props {
   uid: string;
@@ -9,10 +10,14 @@ interface Props {
 }
 
 const ContentsNavigator = ({ uid, type, isMyProfile }: Props) => {
+  const counts = use(fetchCount(uid));
+
+  if (counts instanceof Error) return;
+
   const buttons = [
-    { label: '게시글', value: 'post', count: 1 },
-    { label: '댓글', value: 'comment', count: 2 },
-    { label: '캐릭터', value: 'character', count: 0 },
+    { label: '게시글', value: 'post', count: counts.postsCount },
+    { label: '댓글', value: 'comment', count: counts.commentsPostsCount },
+    { label: '캐릭터', value: 'character', count: counts.charactersCount },
   ];
 
   return (
@@ -49,3 +54,27 @@ const ContentsNavigator = ({ uid, type, isMyProfile }: Props) => {
 };
 
 export default ContentsNavigator;
+
+const fetchCount = async (uid: string) => {
+  const prisma = new PrismaClient();
+
+  try {
+    const postsCount = await prisma.posts.count({ where: { author_id: uid } });
+    const commentsPostsCount = await prisma.comments.groupBy({
+      by: ['post_id'],
+      where: { author: uid },
+    });
+    const charactersCount = await prisma.characters.count({
+      where: { user_id: uid },
+    });
+
+    return {
+      postsCount,
+      commentsPostsCount: commentsPostsCount.length,
+      charactersCount,
+    };
+  } catch (error) {
+    console.log(error);
+    return new Error('데이터를 불러오지 못했습니다.');
+  }
+};

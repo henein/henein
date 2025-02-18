@@ -82,6 +82,115 @@
   --color-dark-brand-hover: var(--color-primary-300);
   --color-brand-active: var(--color-primary-700);
   --color-dark-brand-active: var(--color-primary-600);
+  --shadow-char: 0px 4px 8px 0px rgba(0, 0, 0, 0.05);
+}
+
+@theme inline {
+}
+
+.shadow-char {
+  box-shadow: var(--shadow-char);
+}
+
+@utility bg-card {
+  background-color: var(--color-white-900);
+
+  @variant dark {
+    background-color: var(--color-grey-800);
+  }
+}
+
+@utility border-default {
+  border-color: var(--color-border);
+
+  @variant dark {
+    border-color: var(--color-dark-border);
+  }
+}
+
+@utility divide-default {
+  @apply divide-border dark:divide-dark-border;
+}
+
+@utility ring-default {
+  --tw-ring-color: var(--color-border);
+
+  @variant dark {
+    --tw-ring-color: var(--color-dark-border);
+  }
+}
+
+@utility inset-ring-default {
+  --tw-inset-ring-color: var(--color-border);
+
+  @variant dark {
+    --tw-inset-ring-color: var(--color-dark-border);
+  }
+}
+
+@utility text-primary {
+  color: var(--color-black-800);
+
+  @variant dark {
+    color: var(--color-white-900);
+  }
+}
+
+@utility text-secondary {
+  color: var(--color-black-500);
+
+  @variant dark {
+    color: var(--color-white-600);
+  }
+}
+
+@utility text-secondary-hover {
+  color: var(--color-black-700);
+
+  @variant dark {
+    color: var(--color-white-800);
+  }
+}
+
+@utility text-secondary-active {
+  color: var(--color-black-400);
+
+  @variant dark {
+    color: var(--color-white-500);
+  }
+}
+
+@utility text-link {
+  color: var(--color-brand);
+  transition-duration: var(--tw-duration, var(--default-transition-duration));
+
+  transition-property:
+    color, background-color, border-color, outline-color, text-decoration-color,
+    fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+  transition-timing-function: var(
+    --tw-ease,
+    var(--default-transition-timing-function)
+  );
+
+  @variant dark {
+    color: var(--color-dark-brand);
+  }
+
+  @variant hover {
+    color: var(--color-brand-hover);
+
+    @variant dark {
+      color: var(--color-dark-brand-hover);
+    }
+  }
+
+  @variant active {
+    color: var(--color-brand-active);
+
+    @variant dark {
+      color: var(--color-dark-brand-active);
+    }
+  }
 }
 
 @utility bg-card {
@@ -190,6 +299,22 @@ body {
 }
 
 body {
+  font-family:
+    'Pretendard Variable',
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    'Helvetica Neue',
+    'Segoe UI',
+    'Apple SD Gothic Neo',
+    'Noto Sans KR',
+    'Malgun Gothic',
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    sans-serif;
   font-family:
     'Pretendard Variable',
     Pretendard,
