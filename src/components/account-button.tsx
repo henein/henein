@@ -116,7 +116,7 @@ export const AccountButton = () => {
       ) : (
         <Link href="/login">
           <NavigationItem isIcon>
-            <span className="material-symbols-outlined">account_circle</span>
+            <span className="icon">account_circle</span>
           </NavigationItem>
         </Link>
       )}

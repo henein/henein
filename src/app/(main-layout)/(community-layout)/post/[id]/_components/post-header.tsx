@@ -1,4 +1,3 @@
-import { Typography } from '@/components';
 import { CardHeader } from '@/components/card-header';
 import { PostIcons } from '@/components/post-icons';
 import { getTimeDifference } from '@/utils/time';

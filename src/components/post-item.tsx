@@ -30,13 +30,14 @@ const PostItem = (props: Props) => {
   } = props;
 
   return (
-    <div className="flex w-full flex-col gap-6 bg-gray-100 px-6 py-5 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+    <Link
+      className="flex w-full flex-col gap-6 bg-gray-100 px-6 py-5 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+      href={`/post/${id}`}
+    >
       {/* 게시판 정보 */}
       <div className="flex h-16 justify-between">
         <div className="flex flex-col justify-between">
-          {/* <Link href={`/community?category=${categoryId}`}> */}
           <span className="text-xs font-normal text-gray-500">{category}</span>
-          {/* </Link> */}
           <h2 className="truncate text-lg font-bold text-gray-900 dark:text-white">
             {title}
           </h2>
@@ -52,7 +53,7 @@ const PostItem = (props: Props) => {
         </div>
         <PostIcons views={views} />
       </div>
-    </div>
+    </Link>
   );
 };
 

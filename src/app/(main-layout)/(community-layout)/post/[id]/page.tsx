@@ -18,7 +18,7 @@ import { notFound } from 'next/navigation';
 //   replies?: any;
 // };
 
-const getPost = async (id: string) => {
+const fetchPost = async (id: string) => {
   if (!id) {
     return null;
   }
@@ -49,7 +49,7 @@ const getPost = async (id: string) => {
   };
 };
 
-const getUserId = async () => {
+const fetchUserId = async () => {
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.getUser();
@@ -62,13 +62,13 @@ const getUserId = async () => {
 };
 
 const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const post = await getPost((await params).id);
+  const post = await fetchPost((await params).id);
 
   if (!post) {
     return notFound();
   }
 
-  const userId = await getUserId();
+  const userId = await fetchUserId();
   const hasOwn = userId !== null && userId === post.author_id;
 
   return (

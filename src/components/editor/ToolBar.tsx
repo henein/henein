@@ -51,7 +51,7 @@ export const ToolBar: React.FC<ToolBarProps> = ({ editor }) => {
           editor?.chain().focus().toggleHeading({ level: 1 }).run()
         }
       >
-        <span className="material-symbols-outlined">format_h1</span>
+        <span className="icon">format_h1</span>
       </ToolBarButton>
       <ToolBarButton
         isChecked={editor?.isActive('heading', { level: 2 })}
@@ -59,7 +59,7 @@ export const ToolBar: React.FC<ToolBarProps> = ({ editor }) => {
           editor?.chain().focus().toggleHeading({ level: 2 }).run()
         }
       >
-        <span className="material-symbols-outlined">format_h2</span>
+        <span className="icon">format_h2</span>
       </ToolBarButton>
       <ToolBarButton
         isChecked={editor?.isActive('heading', { level: 3 })}
@@ -67,57 +67,57 @@ export const ToolBar: React.FC<ToolBarProps> = ({ editor }) => {
           editor?.chain().focus().toggleHeading({ level: 3 }).run()
         }
       >
-        <span className="material-symbols-outlined">format_h3</span>
+        <span className="icon">format_h3</span>
       </ToolBarButton>
       <ToolBarDivider />
       <ToolBarButton
         isChecked={editor?.isActive('bold')}
         onClick={() => editor?.chain().focus().toggleBold().run()}
       >
-        <span className="material-symbols-outlined">format_bold</span>
+        <span className="icon">format_bold</span>
       </ToolBarButton>
       <ToolBarButton
         isChecked={editor?.isActive('italic')}
         onClick={() => editor?.chain().focus().toggleItalic().run()}
       >
-        <span className="material-symbols-outlined">format_italic</span>
+        <span className="icon">format_italic</span>
       </ToolBarButton>
       <ToolBarButton
         isChecked={editor?.isActive('underline')}
         onClick={() => editor?.chain().focus().toggleUnderline().run()}
       >
-        <span className="material-symbols-outlined">format_underlined</span>
+        <span className="icon">format_underlined</span>
       </ToolBarButton>
       <ToolBarButton
         isChecked={editor?.isActive('strike')}
         onClick={() => editor?.chain().focus().toggleStrike().run()}
       >
-        <span className="material-symbols-outlined">format_strikethrough</span>
+        <span className="icon">format_strikethrough</span>
       </ToolBarButton>
       <ToolBarDivider />
       <ToolBarButton
         isChecked={editor?.isActive({ textAlign: 'left' })}
         onClick={() => editor?.chain().focus().setTextAlign('left').run()}
       >
-        <span className="material-symbols-outlined">format_align_left</span>
+        <span className="icon">format_align_left</span>
       </ToolBarButton>
       <ToolBarButton
         isChecked={editor?.isActive({ textAlign: 'center' })}
         onClick={() => editor?.chain().focus().setTextAlign('center').run()}
       >
-        <span className="material-symbols-outlined">format_align_center</span>
+        <span className="icon">format_align_center</span>
       </ToolBarButton>
       <ToolBarButton
         isChecked={editor?.isActive({ textAlign: 'right' })}
         onClick={() => editor?.chain().focus().setTextAlign('right').run()}
       >
-        <span className="material-symbols-outlined">format_align_right</span>
+        <span className="icon">format_align_right</span>
       </ToolBarButton>
       <ToolBarButton
         isChecked={editor?.isActive({ textAlign: 'justify' })}
         onClick={() => editor?.chain().focus().setTextAlign('justify').run()}
       >
-        <span className="material-symbols-outlined">format_align_justify</span>
+        <span className="icon">format_align_justify</span>
       </ToolBarButton>
       <ToolBarDivider />
       <ToolBarButton
@@ -146,10 +146,10 @@ export const ToolBar: React.FC<ToolBarProps> = ({ editor }) => {
           input.click();
         }}
       >
-        <span className="material-symbols-outlined">image</span>
+        <span className="icon">image</span>
       </ToolBarButton>
       <ToolBarButton onClick={() => editor?.chain().focus().run()}>
-        <span className="material-symbols-outlined">attachment</span>
+        <span className="icon">attachment</span>
       </ToolBarButton>
     </CardHeader>
   );

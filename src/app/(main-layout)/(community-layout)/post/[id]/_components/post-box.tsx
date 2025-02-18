@@ -1,6 +1,6 @@
 import { PostHeader } from './post-header';
 import { Card } from '@/components/card';
-import { editorStyles, proseStyles } from '@/utils/tiptap';
+import { proseStyles } from '@/utils/tiptap';
 import classNames from 'classnames';
 import React from 'react';
 
