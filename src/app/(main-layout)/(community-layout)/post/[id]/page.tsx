@@ -1,6 +1,7 @@
 import { CommentBox } from './_components/comment-box';
 import { PostBox } from './_components/post-box';
 import { Button } from '@/components';
+import { createClient } from '@/utils/supabase/server';
 import { editorExtensions } from '@/utils/tiptap';
 import { PrismaClient } from '@prisma/client';
 import { generateHTML } from '@tiptap/html';
@@ -17,9 +18,7 @@ import { notFound } from 'next/navigation';
 //   replies?: any;
 // };
 
-const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const id = (await params).id;
-
+const getPost = async (id: string) => {
   if (!id) {
     return null;
   }
@@ -34,7 +33,7 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   });
 
   if (!post) {
-    return notFound();
+    return;
   }
 
   const authorProfile = await prisma.profiles.findUnique({
@@ -43,24 +42,57 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   const content = generateHTML(post.content as object, editorExtensions);
 
+  return {
+    ...post,
+    authorProfile,
+    content,
+  };
+};
+
+const getUserId = async () => {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error) {
+    return null;
+  }
+
+  return data.user.id;
+};
+
+const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const post = await getPost((await params).id);
+
+  if (!post) {
+    return notFound();
+  }
+
+  const userId = await getUserId();
+  const hasOwn = userId !== null && userId === post.author_id;
+
   return (
-    <div className="flex-col gap-4">
+    <div className="flex-auto flex-col gap-4">
       <PostBox
         title={post.title}
         category={post.categories.name}
-        author={authorProfile?.nickname ?? 'Unknown'}
+        author={post.authorProfile?.nickname ?? 'Unknown'}
         views={0}
         createdAt={post.created_at.toISOString()}
-        content={content}
+        content={post.content}
       />
-      <div className="flex justify-between">
+      <div className="mb-8 mt-4 flex justify-between" suppressHydrationWarning>
         <Button sort="secondary">목록</Button>
-        <div className="flex gap-2">
-          <Button sort="secondary">수정하기</Button>
+        {hasOwn ? (
+          <div className="flex gap-2">
+            <Button sort="secondary">수정하기</Button>
+            <Button sort="danger">삭제하기</Button>
+          </div>
+        ) : (
           <Button sort="danger" disabled>
             신고하기
           </Button>
-        </div>
+        )}
       </div>
       <CommentBox data />
     </div>

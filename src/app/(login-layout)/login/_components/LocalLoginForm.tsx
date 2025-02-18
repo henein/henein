@@ -2,6 +2,8 @@
 
 import { TextField } from './TextField';
 import { Button } from '@/components';
+import { createClient } from '@/utils/supabase/client';
+import { redirect } from 'next/navigation';
 import React, { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 
@@ -10,16 +12,22 @@ interface LoginState {
   password: string;
 }
 const LocalLoginForm = () => {
-  const [localLoginForm, setLocalLoginForm] = useState<LoginState>({
-    email: '',
-    password: '',
-  });
   const { register, handleSubmit } = useForm();
+
   const submit = async (data: FieldValues) => {
-    setLocalLoginForm({
+    const supabase = await createClient();
+
+    const { error } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
     });
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    redirect('/');
   };
 
   return (
@@ -36,12 +44,7 @@ const LocalLoginForm = () => {
         type="password"
         placeholder="비밀번호"
       />
-      <Button
-        type="submit"
-        sort="primary"
-        width="100%"
-        fontWeight="700"
-      >
+      <Button type="submit" sort="primary" width="100%" fontWeight="700">
         이메일로 로그인하기
       </Button>
     </form>

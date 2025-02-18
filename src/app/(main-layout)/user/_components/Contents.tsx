@@ -12,8 +12,8 @@ interface Props {
 
 const Contents = ({ uid, type, isMyProfile }: Props) => {
   const dummy = {
-    boardType: '자유',
-    id: 1,
+    category: '자유',
+    id: BigInt(1),
     title: '제목',
     text: '본문',
     fileUrl: '/images/mamudae/logo.png',

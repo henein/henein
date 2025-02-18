@@ -35,12 +35,13 @@ export const Button = ({
       'bg-button text-black ' +
       'enabled:hover:bg-buttonHover enabled:active:bg-buttonActive',
     danger:
-      'bg-danger text-white ' +
-      'enabled:hover:bg-dangerHover enabled:active:bg-dangerActive',
+      'bg-danger-300 dark:bg-danger-400 text-white-900 ' +
+      'enabled:hover:bg-danger-200 enabled:dark:hover:bg-danger-300 ' +
+      'enabled:active:bg-danger-400 enabled:dark:active:bg-danger-500',
   }[sort];
 
   const disabledStyles =
-    'disabled:bg-buttonDisableBackground disabled:text-buttonDisableText disabled:cursor-not-allowed disabled:bg-grey-200 disabled:text-grey-400';
+    'disabled:bg-buttonDisableBackground disabled:text-buttonDisableText disabled:cursor-not-allowed disabled:bg-grey-200 dark:disabled:bg-grey-800 disabled:text-grey-400';
 
   return (
     <button
