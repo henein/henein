@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "prisma generate",
     "prisma-generate": "npx prisma generate",
     "prisma-pull": "dotenv -e .env.development -- npx prisma db pull && npx prisma generate",
     "prisma-push": "dotenv -e .env.development -- npx prisma db push && npx prisma generate",
@@ -22,6 +23,7 @@
     "@tiptap/extension-placeholder": "^2.11.5",
     "@tiptap/extension-text-align": "^2.11.5",
     "@tiptap/extension-underline": "^2.11.5",
+    "@tiptap/html": "^2.11.5",
     "@tiptap/pm": "^2.11.5",
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
@@ -32,11 +34,12 @@
     "clsx": "^2.1.1",
     "colorthief": "^2.6.0",
     "dayjs": "^1.11.13",
-    "material-symbols": "^0.28.1",
+    "luxon": "^3.5.0",
     "next": "15.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
+    "zod": "^3.24.2",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
@@ -45,6 +48,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/color-thief-node": "^1.0.4",
+    "@types/luxon": "^3.4.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -58,5 +62,9 @@
     "supabase": "^2.12.0",
     "tailwindcss": "^4.0.3",
     "typescript": "^5"
+  },
+  "optionalDependencies": {
+    "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
+    "lightningcss-linux-x64-gnu": "^1.29.1"
   }
 }

@@ -20,6 +20,7 @@ const KakaoLoginButton = () => {
 
   return (
     <button
+      type="button"
       className="text-black-800 border-border relative flex w-full items-center justify-center gap-2 rounded-[8px] bg-[#FEE500] p-[12px_25px] text-[14px] font-medium hover:cursor-pointer hover:bg-[#F9D547] active:scale-[98%]"
       onClick={signInWithKakao}
     >

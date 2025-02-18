@@ -14,7 +14,15 @@ export const Logo = ({ size = 'large' }: LogoProps) => {
         width={size === 'small' ? 144 : 260}
         height={size === 'small' ? 40 : 49}
         priority
-        className="brand text-brand dark:text-dark-brand fill-current"
+        className="dark:hidden"
+      />
+      <Image
+        src={'/images/logo-dark.svg'}
+        alt="logo"
+        width={size === 'small' ? 144 : 260}
+        height={size === 'small' ? 40 : 49}
+        priority
+        className="hidden dark:block"
       />
     </div>
   );
