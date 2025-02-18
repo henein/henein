@@ -24,7 +24,7 @@ const Profile = async (props: Profiles) => {
         />
         <div className="flex flex-col gap-1.5">
           <span className="text-sm font-bold text-gray-500">
-            {`가입일 ${formatToHyphenDate(created_at.toISOString())}`}
+            {`가입일 ${formatToHyphenDate(new Date(created_at).toISOString())}`}
           </span>
           <h1 className="text-2xl font-bold text-gray-900">{nickname}</h1>
         </div>

@@ -1,4 +1,9 @@
-export const getCharacterDetail = async (ocid: string, token: string) => {
+import { NexonCharacterBasicType, NexonErrorRes } from './returnType';
+
+export const getCharacterDetail = async (
+  ocid: string,
+  token: string,
+): Promise<NexonCharacterBasicType | NexonErrorRes> => {
   const res = await fetch(
     `https://open.api.nexon.com/maplestory/v1/character/basic?ocid=${ocid}`,
     {
@@ -8,5 +13,6 @@ export const getCharacterDetail = async (ocid: string, token: string) => {
     },
   );
 
-  return res;
+  const data = await res.json();
+  return data;
 };

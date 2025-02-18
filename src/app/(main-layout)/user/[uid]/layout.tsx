@@ -1,5 +1,7 @@
 import Profile from '../_components/Profile';
-import { PrismaClient } from '@prisma/client';
+import { prefetchUserProfile } from '@/store/query/user';
+import { fetchProfile } from '@/store/query/user/queries';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 import React, { ReactNode, use } from 'react';
 
@@ -9,38 +11,24 @@ interface Props {
   children: ReactNode;
 }
 
-const UserLayout = async ({ params, children }: Props) => {
-  const { uid } = await params;
-  const data = await fetchUser(uid);
+const UserLayout = ({ params, children }: Props) => {
+  const { uid } = use(params);
+  const { profile } = use(fetchProfile(uid));
+  const { queryClient } = use(prefetchUserProfile(uid));
 
-  if (!data) {
+  if (!profile) {
     notFound();
   }
 
   return (
     <div className="m-[0_auto] flex w-full max-w-[1024px] flex-col">
       <h2 className="mb-6 mt-6 text-left text-3xl font-bold">유저 프로필</h2>
-      <Profile {...data} />
-      {children}
+      <Profile {...profile} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        {children}
+      </HydrationBoundary>
     </div>
   );
 };
 
 export default UserLayout;
-
-const fetchUser = async (uid: string) => {
-  const prisma = new PrismaClient();
-
-  try {
-    const user = await prisma.profiles.findFirst({
-      where: {
-        id: uid,
-      },
-    });
-    return user;
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log('Error: ', error.stack);
-    }
-  }
-};

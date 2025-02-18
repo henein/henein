@@ -2,18 +2,19 @@
 
 import { Button } from '@/components';
 import { useCharacterSignatureList } from '@/store/query/character';
+import { useProfile } from '@/store/query/user';
 import React, { useState } from 'react';
 
 interface Props {
   uid: string;
 }
 const TokenForm = ({ uid }: Props) => {
-  const [apiKey, setApiKey] = useState('');
-
-  const { query, mutation } = useCharacterSignatureList(uid);
+  const { query } = useProfile(uid);
+  const { mutation } = useCharacterSignatureList(uid);
+  const [apiKey, setApiKey] = useState(query.data.profile.nexon_key || '');
 
   return (
-    <div className="mt-6 flex items-center justify-end gap-2">
+    <div className="flex items-center justify-end gap-2">
       <button className="hover:bg-grey-600 flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-gray-200 text-gray-700 hover:cursor-pointer">
         ?
       </button>
@@ -22,8 +23,11 @@ const TokenForm = ({ uid }: Props) => {
           type="text"
           placeholder="토큰"
           className="rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 text-sm text-gray-700 placeholder-gray-400"
-          onChange={(e) => setApiKey(e.target.value)}
+          onChange={(e) => {
+            setApiKey(e.target.value);
+          }}
           name="token"
+          defaultValue={query.data.profile.nexon_key || ''}
         />
         <Button
           sort="primary"

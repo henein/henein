@@ -1,8 +1,7 @@
 import { NEXON_API_ERRORS } from '@/constants/error';
-import { NextResponse } from 'next/server';
 
 type NexonErrorCode = keyof typeof NEXON_API_ERRORS;
-type NexonErrorRes = {
+export type NexonErrorRes = {
   error: {
     name: NexonErrorCode;
     message: string;
@@ -11,17 +10,15 @@ type NexonErrorRes = {
 
 export const handleNexonApiError = (data: NexonErrorRes) => {
   const errorCode = data?.error?.name;
-  const errorInfo = NEXON_API_ERRORS[errorCode];
+  const { status, message, description } = NEXON_API_ERRORS[errorCode];
 
-  if (errorInfo) {
-    return NextResponse.json(
-      { message: errorInfo.description },
-      { status: errorInfo.status },
-    );
+  if (status) {
+    return { message, description, status };
   }
 
-  return NextResponse.json(
-    { message: '알 수 없는 오류가 발생했습니다.' },
-    { status: 500 },
-  );
+  return {
+    message: 'server error',
+    description: '알 수 없는 오류가 발생했습니다.',
+    status: 500,
+  };
 };
