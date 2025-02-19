@@ -7,10 +7,9 @@ type BtnType = 'reset' | 'submit' | 'button';
 interface ButtonProps {
   sort: BtnStyle;
   type?: BtnType;
-  width?: string;
-  fontWeight?: string;
   onClick?: any;
   disabled?: boolean;
+  className?: string;
 }
 
 export const Button = ({
@@ -19,8 +18,7 @@ export const Button = ({
   type,
   onClick,
   disabled,
-  width,
-  fontWeight,
+  className,
   ...props
 }: React.PropsWithChildren<ButtonProps>) => {
   const baseStyles =
@@ -48,7 +46,7 @@ export const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={clsx(baseStyles, sortStyles, disabledStyles)}
+      className={clsx(baseStyles, sortStyles, disabledStyles, className)}
       {...props}
     >
       {children}

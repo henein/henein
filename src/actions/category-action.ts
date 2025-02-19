@@ -2,7 +2,7 @@
 
 import { PrismaClient } from '@prisma/client';
 
-export const getCategories = async () => {
+export const fetchCategories = async () => {
   const prisma = new PrismaClient();
 
   const categories = await prisma.categories.findMany();

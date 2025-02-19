@@ -71,14 +71,14 @@ export const AccountButton = () => {
               isOpen ? 'opacity-100' : 'pointer-events-none opacity-0',
             )}
           >
-            {/* <div>
+            <div>
               <Link
                 href="/user"
                 className="text-grey-700 hover:bg-grey-100 dark:text-grey-200 dark:hover:bg-grey-600 block px-4 py-3 text-sm transition-colors dark:hover:text-white"
               >
                 프로필
               </Link>
-            </div> */}
+            </div>
             {/* <ul
               className="text-grey-700 dark:text-grey-200 text-sm"
               aria-labelledby="avatarButton"

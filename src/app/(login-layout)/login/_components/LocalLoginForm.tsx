@@ -44,7 +44,7 @@ const LocalLoginForm = () => {
         type="password"
         placeholder="비밀번호"
       />
-      <Button type="submit" sort="primary" width="100%" fontWeight="700">
+      <Button type="submit" sort="primary">
         이메일로 로그인하기
       </Button>
     </form>

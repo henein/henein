@@ -10,6 +10,7 @@ export interface PostBoxProps {
   author: string;
   views: number;
   createdAt: string;
+  updatedAt: string;
   content: string;
 }
 
@@ -23,9 +24,10 @@ export const PostBox = (props: PostBoxProps) => {
           author={props.author}
           views={props.views}
           createdAt={props.createdAt}
+          updatedAt={props.updatedAt}
         />
         <div
-          className={classNames('min-h-96 px-6 py-5', proseStyles)}
+          className={classNames('min-h-96 break-all px-6 py-5', proseStyles)}
           dangerouslySetInnerHTML={{ __html: props.content }}
         />
         <div className="mx-auto my-5 flex w-full flex-col items-center">

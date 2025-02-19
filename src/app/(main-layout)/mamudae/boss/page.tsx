@@ -102,7 +102,7 @@ export const metadata: Metadata = {
 const MamudaeBossPage = () => {
   return (
     <div className="mx-auto w-full max-w-5xl">
-      <h2 className="mb-6 mt-6 text-3xl font-bold">보스 현황</h2>
+      <h2 className="my-6 pl-1 text-3xl font-bold">보스 현황</h2>
       <div className="border-dark-border bg-black-900 flex flex-col gap-4 rounded-2xl border px-6 py-5">
         {BossList.map((bosses, index) => (
           <div
@@ -114,7 +114,7 @@ const MamudaeBossPage = () => {
                 <BossImage key={boss.bossId + boss.difficulty} {...boss} />
               ))}
             </div>
-            <div className="border-dark-border bg-grey-900 h-fit max-md:w-full md:w-[400px] rounded-2xl border">
+            <div className="border-dark-border bg-grey-900 h-fit rounded-2xl border max-md:w-full md:w-[400px]">
               {bosses.map((boss) => (
                 <div
                   key={boss.bossId + boss.difficulty}

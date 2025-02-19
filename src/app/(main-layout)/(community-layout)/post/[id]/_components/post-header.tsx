@@ -8,6 +8,7 @@ export interface PostHeaderProps {
   author: string;
   views: number;
   createdAt: string;
+  updatedAt: string;
 }
 
 export const PostHeader = (props: PostHeaderProps) => {
@@ -21,7 +22,7 @@ export const PostHeader = (props: PostHeaderProps) => {
           <p
             className="text-secondary text-xs"
             suppressHydrationWarning
-          >{` · ${getTimeDifference(props.createdAt)}`}</p>
+          >{` · ${getTimeDifference(props.createdAt)} ${props.createdAt !== props.updatedAt ? '(수정됨)' : ''}`}</p>
         </div>
         <PostIcons views={0} />
       </div>

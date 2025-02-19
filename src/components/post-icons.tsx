@@ -9,7 +9,7 @@ export const PostIcons = (props: PostIconsProps) => {
     <div suppressHydrationWarning className="flex items-center">
       <p className="text-secondary flex items-center text-xs">
         <span className="icon icon-16 mr-1">
-          visibility
+          comment
         </span>
         {props.views}
       </p>

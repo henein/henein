@@ -1,10 +1,13 @@
 import { CommentBox } from './_components/comment-box';
 import { PostBox } from './_components/post-box';
+import { PostDeleteButton } from './_components/post-delete-button';
+import { deletePost } from '@/actions/post-action';
 import { Button } from '@/components';
 import { createClient } from '@/utils/supabase/server';
 import { editorExtensions } from '@/utils/tiptap';
 import { PrismaClient } from '@prisma/client';
 import { generateHTML } from '@tiptap/html';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 // export type CommentType = {
@@ -79,14 +82,19 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
         author={post.authorProfile?.nickname ?? 'Unknown'}
         views={0}
         createdAt={post.created_at.toISOString()}
+        updatedAt={post.updated_at.toISOString()}
         content={post.content}
       />
       <div className="mb-8 mt-4 flex justify-between" suppressHydrationWarning>
-        <Button sort="secondary">목록</Button>
+        <Link href={`/community?category=${post.category_id}`}>
+          <Button sort="secondary">목록</Button>
+        </Link>
         {hasOwn ? (
           <div className="flex gap-2">
-            <Button sort="secondary">수정하기</Button>
-            <Button sort="danger">삭제하기</Button>
+            <Link href={`/modify/${post.id}`}>
+              <Button sort="secondary">수정하기</Button>
+            </Link>
+            <PostDeleteButton id={post.id} />
           </div>
         ) : (
           <Button sort="danger" disabled>

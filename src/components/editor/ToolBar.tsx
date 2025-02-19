@@ -121,6 +121,7 @@ export const ToolBar: React.FC<ToolBarProps> = ({ editor }) => {
       </ToolBarButton>
       <ToolBarDivider />
       <ToolBarButton
+        disabled
         onClick={() => {
           editor?.commands.focus();
 
@@ -148,9 +149,9 @@ export const ToolBar: React.FC<ToolBarProps> = ({ editor }) => {
       >
         <span className="icon">image</span>
       </ToolBarButton>
-      <ToolBarButton onClick={() => editor?.chain().focus().run()}>
+      {/* <ToolBarButton onClick={() => editor?.chain().focus().run()}>
         <span className="icon">attachment</span>
-      </ToolBarButton>
+      </ToolBarButton> */}
     </CardHeader>
   );
 };

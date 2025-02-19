@@ -23,12 +23,16 @@ export const StreamerProfile = (props: StreamerProfileProps) => {
         <div className="bg-black-700 dark:bg-black-800 text-white-900 absolute z-10 flex h-full w-full items-center justify-center gap-2 rounded-full opacity-0 transition-opacity hover:opacity-100">
           {streamer.links.map((platformLink) => (
             <a
+              className="h-[20%] min-h-5 w-[20%] min-w-5"
               key={platformLink.platform}
               href={platformLink.link}
               target="_blank"
               rel="noreferrer"
             >
-              <PlatformIcon platform={platformLink.platform} />
+              <PlatformIcon
+                className="h-full w-full"
+                platform={platformLink.platform}
+              />
             </a>
           ))}
         </div>

@@ -1,6 +1,7 @@
-import PostItem from '@/components/post-item';
-import Pagenate from './Pagenate';
 import CharacterContents from './character';
+import PostItem from '@/components/post-item';
+import { getTimeDifference } from '@/utils/time';
+import { PrismaClient } from '@prisma/client';
 import React from 'react';
 
 interface Props {
@@ -10,35 +11,66 @@ interface Props {
   isMyProfile: boolean;
 }
 
-const Contents = ({ uid, type, isMyProfile }: Props) => {
-  const dummy = {
-    category: '자유',
-    id: BigInt(1),
-    title: '제목',
-    text: '본문',
-    fileUrl: '/images/mamudae/logo.png',
-    userName: '동균',
-    createTime: Date.now().toString(),
-    views: 123,
-    commentNum: 10,
-    recommendNum: 33,
-  };
+const MAX_POST_COUNT = 20;
 
-  if (type === 'post' || type === 'comment')
+const Contents = async ({ uid, type, isMyProfile }: Props) => {
+  const prisma = new PrismaClient();
+
+  const posts = await prisma.posts.findMany({
+    include: {
+      categories: true,
+      users: { include: { profiles: true } },
+    },
+    where: {
+      author_id: uid,
+      deleted_at: null,
+    },
+    orderBy: {
+      created_at: 'desc',
+    },
+    // take: MAX_POST_COUNT,
+    // skip: (page - 1) * MAX_POST_COUNT,
+  });
+
+  if (type === 'post')
     return (
       <>
         <div className="flex h-full w-full flex-col justify-between">
-          <PostItem {...dummy} />
-          <hr className="text-grey-600" />
-          <PostItem {...dummy} />
-          <hr className="text-grey-600" />
-          <PostItem {...dummy} />
-          <hr className="text-grey-600" />
-          <PostItem {...dummy} />
-          <hr className="text-grey-600" />
-          <PostItem {...dummy} />
+          <div className="divide-default flex w-full flex-auto flex-col divide-y">
+            {posts.map((post) => (
+              <PostItem
+                key={post.id}
+                category={post.categories.name}
+                categoryId={post.categories.id}
+                id={post.id}
+                title={post.title}
+                text={''}
+                userName={post.users.profiles?.nickname ?? ''}
+                createTime={getTimeDifference(post.created_at.toISOString())}
+                views={0}
+                commentNum={0}
+                recommendNum={0}
+              />
+            ))}
+          </div>
+          {/* <div className="flex w-full justify-center gap-0.5">
+            <PaginationLink href={getHref(category, 1)}>
+              <span className="icon icon-20">keyboard_arrow_left</span>
+            </PaginationLink>
+            {getShowPages(page, pageCount).map((showPage) => (
+              <PaginationLink
+                key={showPage}
+                href={getHref(category, showPage)}
+                isSelected={showPage === page}
+              >
+                {showPage}
+              </PaginationLink>
+            ))}
+            <PaginationLink href={getHref(category, 11)}>
+              <span className="icon icon-20">keyboard_arrow_right</span>
+            </PaginationLink>
+          </div> */}
         </div>
-        <Pagenate />
       </>
     );
 

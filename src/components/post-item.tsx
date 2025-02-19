@@ -36,12 +36,14 @@ const PostItem = (props: Props) => {
     >
       {/* 게시판 정보 */}
       <div className="flex h-16 justify-between">
-        <div className="flex flex-col justify-between">
+        <div className="flex w-full flex-col justify-between">
           <span className="text-xs font-normal text-gray-500">{category}</span>
-          <h2 className="truncate text-lg font-bold text-gray-900 dark:text-white">
+          <h2 className="truncate text-ellipsis text-lg font-bold text-gray-900 dark:text-white">
             {title}
           </h2>
-          <p className="truncate text-sm font-normal">{text || '...'}</p>
+          <p className="truncate text-ellipsis text-sm font-normal">
+            {text || '...'}
+          </p>
         </div>
       </div>
 

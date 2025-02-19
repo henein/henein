@@ -1,13 +1,15 @@
-import { StreamerPlatform } from "@/constants";
+import { StreamerPlatform } from '@/constants';
 
 export interface PlatformIconProps {
   platform: StreamerPlatform;
+  className?: string;
 }
 
 export const PlatformIcon = (props: PlatformIconProps) => {
   if (props.platform === 'soop') {
     return (
       <svg
+        className={props.className}
         width="32"
         height="32"
         viewBox="0 0 32 32"
@@ -20,6 +22,7 @@ export const PlatformIcon = (props: PlatformIconProps) => {
   } else if (props.platform === 'youtube') {
     return (
       <svg
+        className={props.className}
         width="32"
         height="32"
         viewBox="0 0 32 32"
@@ -32,6 +35,7 @@ export const PlatformIcon = (props: PlatformIconProps) => {
   } else {
     return (
       <svg
+        className={props.className}
         width="32"
         height="32"
         viewBox="0 0 32 32"
