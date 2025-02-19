@@ -1,5 +1,8 @@
+export const revalidate = 60;
+
 import { StreamerProfile } from '@/components';
-import { StreamerId } from '@/constants';
+import { Streamer, StreamerId, Streamers } from '@/constants';
+import { ChzzkClient } from 'chzzk';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 
@@ -7,7 +10,51 @@ export const metadata: Metadata = {
   title: '메무대 시즌2',
 };
 
-export default function Home() {
+const client = new ChzzkClient();
+
+async function fetchLive(streamer: Streamer) {
+  const chzzkLink = streamer.links.find(
+    (link) => link.platform === 'chzzk',
+  )?.link;
+  const soopLink = streamer.links.find(
+    (link) => link.platform === 'soop',
+  )?.link;
+
+  if (chzzkLink) {
+    const chzzkId = chzzkLink.replace('https://chzzk.naver.com/', '');
+
+    const live = await client.live.detail(chzzkId);
+
+    return live.livePlayback?.media.length !== 0;
+  } else if (soopLink) {
+    const soopId = soopLink.replace('https://ch.sooplive.co.kr/', '');
+
+    const soopRes = await fetch(
+      `https://chapi.sooplive.co.kr/api/${soopId}/station`,
+      {
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36',
+        },
+      },
+    );
+    
+    const station = await soopRes.json();
+
+    return station.broad ? true : false;
+  }
+
+  return false;
+}
+
+export default async function Home() {
+  const liveStatus = await Promise.all(
+    Streamers.map(async (streamer) => ({
+      [streamer.id]: await fetchLive(streamer),
+    })),
+  ).then((results) => Object.assign({}, ...results));
+
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col items-center leading-6">
       <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center pb-16">
@@ -22,20 +69,56 @@ export default function Home() {
       </div>
       <h2 className="mb-6 mt-6 text-3xl font-bold">참여자</h2>
       <div className="flex justify-between gap-1">
-        <StreamerProfile streamerId={StreamerId.NACHO} />
-        <StreamerProfile streamerId={StreamerId.BAEKDOA} />
-        <StreamerProfile streamerId={StreamerId.JJANGJJUNG} />
-        <StreamerProfile streamerId={StreamerId.ISEUTEO} />
-        <StreamerProfile streamerId={StreamerId.KONGJU} />
-        <StreamerProfile streamerId={StreamerId.YUHIHI} />
+        <StreamerProfile
+          streamerId={StreamerId.NACHO}
+          isLive={liveStatus[StreamerId.NACHO]}
+        />
+        <StreamerProfile
+          streamerId={StreamerId.BAEKDOA}
+          isLive={liveStatus[StreamerId.BAEKDOA]}
+        />
+        <StreamerProfile
+          streamerId={StreamerId.JJANGJJUNG}
+          isLive={liveStatus[StreamerId.JJANGJJUNG]}
+        />
+        <StreamerProfile
+          streamerId={StreamerId.ISEUTEO}
+          isLive={liveStatus[StreamerId.ISEUTEO]}
+        />
+        <StreamerProfile
+          streamerId={StreamerId.KONGJU}
+          isLive={liveStatus[StreamerId.KONGJU]}
+        />
+        <StreamerProfile
+          streamerId={StreamerId.YUHIHI}
+          isLive={liveStatus[StreamerId.YUHIHI]}
+        />
       </div>
       <div className="mt-4 flex justify-between gap-1">
-        <StreamerProfile streamerId={StreamerId.GYEOMJI} />
-        <StreamerProfile streamerId={StreamerId.NAENGIKIM} />
-        <StreamerProfile streamerId={StreamerId.NAMJIO} />
-        <StreamerProfile streamerId={StreamerId.NUSEUNYANG} />
-        <StreamerProfile streamerId={StreamerId.UDEONG} />
-        <StreamerProfile streamerId={StreamerId.JIMYEONG} />
+        <StreamerProfile
+          streamerId={StreamerId.GYEOMJI}
+          isLive={liveStatus[StreamerId.GYEOMJI]}
+        />
+        <StreamerProfile
+          streamerId={StreamerId.NAENGIKIM}
+          isLive={liveStatus[StreamerId.NAENGIKIM]}
+        />
+        <StreamerProfile
+          streamerId={StreamerId.NAMJIO}
+          isLive={liveStatus[StreamerId.NAMJIO]}
+        />
+        <StreamerProfile
+          streamerId={StreamerId.NUSEUNYANG}
+          isLive={liveStatus[StreamerId.NUSEUNYANG]}
+        />
+        <StreamerProfile
+          streamerId={StreamerId.UDEONG}
+          isLive={liveStatus[StreamerId.UDEONG]}
+        />
+        <StreamerProfile
+          streamerId={StreamerId.JIMYEONG}
+          isLive={liveStatus[StreamerId.JIMYEONG]}
+        />
       </div>
       <h2 className="mb-6 mt-32 text-3xl font-bold">규정</h2>
       <div className="border-default bg-grey-50 dark:bg-grey-800 rounded-2xl border px-6 py-5">
