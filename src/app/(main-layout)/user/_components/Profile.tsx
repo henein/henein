@@ -7,9 +7,15 @@ import { profiles as ProfileType } from '@prisma/client';
 import Image from 'next/image';
 import React from 'react';
 
-const Profile = ({ uid }: { uid: string }) => {
+const Profile = ({
+  uid,
+  isMyProfile,
+}: {
+  uid: string;
+  isMyProfile: boolean;
+}) => {
   const { query } = useProfile(uid);
-  const { profile_img, created_at, nickname, id } = query.data
+  const { profile_img, created_at, nickname } = query.data
     .profile as ProfileType;
 
   return (
@@ -29,8 +35,8 @@ const Profile = ({ uid }: { uid: string }) => {
           <h1 className="text-2xl font-bold text-gray-900">{nickname}</h1>
         </div>
       </div>
-      {uid === id && (
-        <ModifyBtn image={profile_img} nickname={nickname} uid={id} />
+      {isMyProfile && (
+        <ModifyBtn image={profile_img} nickname={nickname} uid={uid} />
       )}
     </div>
   );
