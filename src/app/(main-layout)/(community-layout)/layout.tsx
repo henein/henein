@@ -7,7 +7,7 @@ const CommunityLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="mx-auto mt-6 grid w-full max-w-5xl grid-cols-12 gap-8">
-      <div className="col-span-3 flex flex-col max-md:hidden">
+      <div className="col-span-12 flex flex-col md:col-span-3">
         <h2 className="pb-6 pl-1 text-3xl font-bold">커뮤니티</h2>
         <div className="bg-grey-800 divide-default flex flex-col divide-y overflow-hidden rounded-2xl">
           <Link className="hover:bg-white-50 px-6 py-5" href={'/community'}>
@@ -25,7 +25,7 @@ const CommunityLayout = async ({ children }: { children: React.ReactNode }) => {
         </div>
         <Link className="mt-4" href="/write">
           <Button className="w-full" sort="primary">
-            작성하기
+            새로운 글 작성하기
           </Button>
         </Link>
       </div>
