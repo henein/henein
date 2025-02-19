@@ -23,8 +23,8 @@ const UserLayout = ({ params, children }: Props) => {
   return (
     <div className="m-[0_auto] flex w-full max-w-[1024px] flex-col">
       <h2 className="mb-6 mt-6 text-left text-3xl font-bold">유저 프로필</h2>
-      <Profile {...profile} />
       <HydrationBoundary state={dehydrate(queryClient)}>
+        <Profile uid={uid} />
         {children}
       </HydrationBoundary>
     </div>

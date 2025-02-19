@@ -8,6 +8,7 @@ export default function MainLayout({
 }>) {
   return (
     <QueryProvider>
+      <div id="portal" />
       <MamudaeLayout>{children}</MamudaeLayout>
     </QueryProvider>
   );
