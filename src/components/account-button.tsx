@@ -8,7 +8,6 @@ import { User } from '@supabase/supabase-js';
 import classNames from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const applyMode = (mode?: 'light' | 'dark' | 'system') => {
@@ -29,25 +28,43 @@ const applyMode = (mode?: 'light' | 'dark' | 'system') => {
   );
 };
 
-export interface AccountButtonProps {
-  user: User | null;
-  profile: profiles | null;
-}
-
-export const AccountButton = (props: AccountButtonProps) => {
+export const AccountButton = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<profiles | null>(null);
+
+  useEffect(() => {
+    // applyMode();
+
+    (async () => {
+      const supabase = createClient();
+      const prisma = new PrismaClient();
+
+      const { data } = await supabase.auth.getUser();
+
+      setUser(data.user);
+
+      if (data.user) {
+        const profile = await prisma.profiles.findUnique({
+          where: { id: data.user.id },
+        });
+
+        setProfile(profile);
+      }
+    })();
+  }, []);
 
   const logout = async () => {
     const supabase = createClient();
 
     await supabase.auth.signOut({ scope: 'local' });
 
-    redirect('/');
+    setUser(null);
   };
 
   return (
     <div className="flex gap-4">
-      {props.user ? (
+      {user ? (
         <div className="relative h-10 w-10">
           <button
             className="ring-default m-1 cursor-pointer overflow-hidden rounded-full ring"
@@ -55,7 +72,7 @@ export const AccountButton = (props: AccountButtonProps) => {
             onClick={() => setIsOpen(!isOpen)}
           >
             <Image
-              src={props.profile?.profile_img ?? '/images/dark-defaultImg.svg'}
+              src={profile?.profile_img ?? '/images/dark-defaultImg.svg'}
               alt={''}
               width={32}
               height={32}

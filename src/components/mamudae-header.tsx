@@ -1,25 +1,8 @@
 import { AccountButton } from './account-button';
 import { NavigationItem } from './navigation-item';
-import { createClient } from '@/utils/supabase/server';
-import { PrismaClient, profiles } from '@prisma/client';
 import Link from 'next/link';
 
-export const MamudaeHeader = async () => {
-  const supabase = await createClient();
-  const prisma = new PrismaClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  let profile: profiles | null = null;
-  
-  if (user) {
-    profile = await prisma.profiles.findUnique({
-      where: { id: user.id },
-    });
-  }
-
+export const MamudaeHeader = () => {
   return (
     <header>
       <div className="max-[66rem]:px-4 mx-auto mt-6 flex max-w-5xl items-center">
@@ -48,10 +31,10 @@ export const MamudaeHeader = async () => {
               {/* </Link> */}
               <Link href="/community">
                 <NavigationItem>커뮤니티</NavigationItem>
-              </Link>
+              </Link> 
             </div>
           </div>
-          <AccountButton user={user} profile={profile} />
+          <AccountButton />
         </div>
       </div>
     </header>
