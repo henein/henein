@@ -29,7 +29,7 @@ const fetchPost = async (id: string) => {
   const prisma = new PrismaClient();
 
   const post = await prisma.posts.findUnique({
-    where: { id: Number(id) },
+    where: { id: Number(id), deleted_at: null },
     include: {
       categories: true,
     },
