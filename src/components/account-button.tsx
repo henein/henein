@@ -38,19 +38,10 @@ export const AccountButton = () => {
 
     (async () => {
       const supabase = createClient();
-      const prisma = new PrismaClient();
-
+      
       const { data } = await supabase.auth.getUser();
 
       setUser(data.user);
-
-      if (data.user) {
-        const profile = await prisma.profiles.findUnique({
-          where: { id: data.user.id },
-        });
-
-        setProfile(profile);
-      }
     })();
   }, []);
 
@@ -86,7 +77,7 @@ export const AccountButton = () => {
           >
             <div>
               <Link
-                href="/user"
+                href={`/user/${user.id}`}
                 className="text-grey-700 hover:bg-grey-100 dark:text-grey-200 dark:hover:bg-grey-600 block px-4 py-3 text-sm transition-colors dark:hover:text-white"
               >
                 프로필
