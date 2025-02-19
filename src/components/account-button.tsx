@@ -2,6 +2,7 @@
 
 import { Card } from './card';
 import { NavigationItem } from './navigation-item';
+import { fetchProfile } from '@/actions/profile-action';
 import { createClient } from '@/utils/supabase/client';
 import { PrismaClient, profiles } from '@prisma/client';
 import { User } from '@supabase/supabase-js';
@@ -38,10 +39,14 @@ export const AccountButton = () => {
 
     (async () => {
       const supabase = createClient();
-      
+
       const { data } = await supabase.auth.getUser();
 
       setUser(data.user);
+
+      if (data.user) {
+        setProfile(await fetchProfile({ id: data.user.id }));
+      }
     })();
   }, []);
 
