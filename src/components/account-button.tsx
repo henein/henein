@@ -2,7 +2,9 @@
 
 import { Card } from './card';
 import { NavigationItem } from './navigation-item';
+import { fetchProfile } from '@/actions/profile-action';
 import { createClient } from '@/utils/supabase/client';
+import { PrismaClient, profiles } from '@prisma/client';
 import { User } from '@supabase/supabase-js';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -30,6 +32,7 @@ const applyMode = (mode?: 'light' | 'dark' | 'system') => {
 export const AccountButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<profiles | null>(null);
 
   useEffect(() => {
     // applyMode();
@@ -37,7 +40,13 @@ export const AccountButton = () => {
     (async () => {
       const supabase = createClient();
 
-      setUser((await supabase.auth.getUser()).data.user);
+      const { data } = await supabase.auth.getUser();
+
+      setUser(data.user);
+
+      if (data.user) {
+        setProfile(await fetchProfile({ id: data.user.id }));
+      }
     })();
   }, []);
 
@@ -59,7 +68,7 @@ export const AccountButton = () => {
             onClick={() => setIsOpen(!isOpen)}
           >
             <Image
-              src="/images/dark-defaultImg.svg"
+              src={profile?.profile_img ?? '/images/dark-defaultImg.svg'}
               alt={''}
               width={32}
               height={32}
@@ -73,7 +82,7 @@ export const AccountButton = () => {
           >
             <div>
               <Link
-                href="/user"
+                href={`/user/${user.id}`}
                 className="text-grey-700 hover:bg-grey-100 dark:text-grey-200 dark:hover:bg-grey-600 block px-4 py-3 text-sm transition-colors dark:hover:text-white"
               >
                 프로필

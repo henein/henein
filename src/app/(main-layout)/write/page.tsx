@@ -32,11 +32,12 @@ const WritePage = () => {
     setIsSubmitting(true);
 
     try {
-      await writePost({
+      const error = await writePost({
         title: data.title,
         content: JSON.stringify(editor?.getJSON()), // NOTE: editor?.getJSON() 그냥 넘기면 전달이 안 되네요.
         category_id: data.category,
       });
+      alert(error);
     } catch (error) {
       alert(error);
     } finally {
