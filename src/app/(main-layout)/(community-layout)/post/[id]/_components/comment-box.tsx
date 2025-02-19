@@ -13,8 +13,10 @@ export const CommentBox = (props: CommentBoxProps) => {
 
   return (
     <CardHeader className="flex flex-col gap-4 rounded-2xl px-6 py-5">
-      <div className="font-bold">댓글 10개</div>
-      <form className="inset-ring inset-ring-default dark:bg-grey-900 flex flex-col rounded-lg px-4 pb-2 pt-3">
+      <div className="font-bold">
+        댓글 0개 <span className="text-secondary">(250220 업데이트 예정)</span>
+      </div>
+      <form className="inset-ring inset-ring-default dark:bg-grey-900 flex hidden flex-col rounded-lg px-4 pb-2 pt-3">
         <input
           className="placeholder-black-500 dark:placeholder-white-600 text-sm font-normal outline-none"
           placeholder="댓글 쓰기"

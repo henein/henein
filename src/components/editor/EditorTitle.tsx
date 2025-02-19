@@ -1,16 +1,27 @@
 import { ToolBarDivider } from './ToolBarDivider';
+import { fetchCategories } from '@/actions/category-action';
+import { categories } from '@prisma/client';
 import classNames from 'classnames';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 export interface EditorTitleProps {
-  board?: string;
   className?: string;
+  categories?: categories[];
 }
 
-export const EditorTitle = (
-  props: EditorTitleProps,
-) => {
+export const EditorTitle = (props: EditorTitleProps) => {
+  const [categories, setCategories] = useState<categories[]>(
+    props.categories ?? [],
+  );
+
+  // TODO: WritePage를 수정하고 이를 제거해야 함.
+  useEffect(() => {
+    if (categories.length === 0) {
+      fetchCategories().then((categories) => setCategories(categories));
+    }
+  });
+
   const { register } = useFormContext();
 
   return (
@@ -20,14 +31,16 @@ export const EditorTitle = (
         props.className,
       )}
     >
-      {/* <SelectBoard {...props.register('selectBoard', { required: true })}>
-        {boardList &&
-          boardList.data.map((boardType: string) => (
-            <option key={boardType} value={boardType}>
-              {boardType}
-            </option>
-          ))}
-      </SelectBoard> */}
+      <select
+        className="outline-none"
+        {...register('category', { required: true })}
+      >
+        {categories?.map((category) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
 
       <ToolBarDivider />
 
