@@ -71,7 +71,18 @@ export async function PUT(
       );
     }
 
-    const profile = await prisma.profiles.update({
+    const existNickname = await prisma.profiles.findUnique({
+      where: { nickname: nickname?.toString() },
+    });
+
+    if (existNickname) {
+      return NextResponse.json(
+        { message: '이미 사용 중인 이름입니다.' },
+        { status: 400 },
+      );
+    }
+
+    await prisma.profiles.update({
       where: { id: uid },
       data: {
         nickname: nickname?.toString() || prevProfile.nickname,
@@ -79,10 +90,8 @@ export async function PUT(
       },
     });
 
-    console.log(profile);
-
     return NextResponse.json(
-      { message: '유저 정보가 업데이트 되었습니다.' },
+      { message: '유저 정보가 업데이트되었습니다.' },
       { status: 200 },
     );
   } catch (error) {

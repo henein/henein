@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-export const useProfileHandler = () => {
+export const useProfileHandler = (prevName: string) => {
   const userFormRef = useRef<{ image: File | null; nickname: string | null }>({
     image: null,
     nickname: null,
@@ -17,8 +17,8 @@ export const useProfileHandler = () => {
   };
 
   useEffect(() => {
-    setIsDisabled(!(previewUrl || nickname));
-  }, [previewUrl, nickname]);
+    setIsDisabled(!(previewUrl || nickname) || nickname === prevName);
+  }, [previewUrl, nickname, prevName]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImage = event.target.files?.[0];

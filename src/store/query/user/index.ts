@@ -10,7 +10,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-export const useProfile = (uid: string) => {
+export const useProfile = (uid: string, successFn?: () => void) => {
   const queryClient = useQueryClient();
   const queryOptions = profileQueries.user(uid);
 
@@ -33,9 +33,12 @@ export const useProfile = (uid: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries(queryOptions);
       alert('유저 정보가 업데이트 되었습니다.');
+      if (successFn) {
+        successFn();
+      }
     },
     onError: (error) => {
-      console.log(error);
+      alert(error.message);
     },
   });
 

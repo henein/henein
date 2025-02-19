@@ -33,9 +33,9 @@ export default ModifyBtn;
 const ProfileModifyModal = (props: Props & { onClose: () => void }) => {
   const { image, nickname, onClose, uid } = props;
   const { userForm, previewUrl, isDisabled, setNickname, handleImageUpload } =
-    useProfileHandler();
+    useProfileHandler(nickname);
 
-  const { updateProfileMutation } = useProfile(uid);
+  const { updateProfileMutation } = useProfile(uid, onClose);
 
   return (
     <div className="dark:bg-grey-800 bg-white-900 flex w-[380px] flex-col rounded-lg shadow-lg">
@@ -75,10 +75,7 @@ const ProfileModifyModal = (props: Props & { onClose: () => void }) => {
         </Button>
         <Button
           sort="primary"
-          onClick={() => {
-            updateProfileMutation.mutate(userForm);
-            onClose();
-          }}
+          onClick={() => updateProfileMutation.mutate(userForm)}
           disabled={isDisabled}
         >
           저장하기
