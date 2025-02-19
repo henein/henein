@@ -3,6 +3,7 @@
 import { Card } from './card';
 import { NavigationItem } from './navigation-item';
 import { createClient } from '@/utils/supabase/client';
+import { PrismaClient, profiles } from '@prisma/client';
 import { User } from '@supabase/supabase-js';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -30,14 +31,26 @@ const applyMode = (mode?: 'light' | 'dark' | 'system') => {
 export const AccountButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<profiles | null>(null);
 
   useEffect(() => {
     // applyMode();
 
     (async () => {
       const supabase = createClient();
+      const prisma = new PrismaClient();
 
-      setUser((await supabase.auth.getUser()).data.user);
+      const { data } = await supabase.auth.getUser();
+
+      setUser(data.user);
+
+      if (data.user) {
+        const profile = await prisma.profiles.findUnique({
+          where: { id: data.user.id },
+        });
+
+        setProfile(profile);
+      }
     })();
   }, []);
 
@@ -59,7 +72,7 @@ export const AccountButton = () => {
             onClick={() => setIsOpen(!isOpen)}
           >
             <Image
-              src="/images/dark-defaultImg.svg"
+              src={profile?.profile_img ?? '/images/dark-defaultImg.svg'}
               alt={''}
               width={32}
               height={32}
