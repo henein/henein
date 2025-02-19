@@ -45,61 +45,65 @@ const WritePostOption = z.object({
     .max(100, '제목이 너무 길어요!'),
   content: z.string().refine((val) => {
     const plainText = generateText(JSON.parse(val), editorExtensions);
-    return plainText.length > 10;
-  }, '내용이 너무 짧아요!'),
+    return plainText.length > 0;
+  }, '내용이 없어요!'),
   category_id: z.string(),
 });
 
 export async function writePost(option: z.infer<typeof WritePostOption>) {
-  const validOption = WritePostOption.parse(option);
+  try {
+    const validOption = WritePostOption.parse(option);
 
-  const supabase = await createClient();
-  const prisma = new PrismaClient();
+    const supabase = await createClient();
+    const prisma = new PrismaClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user) {
-    throw new Error('로그인이 필요합니다.');
-  }
+    if (!user) {
+      throw new Error('로그인이 필요합니다.');
+    }
 
-  const category = await prisma.categories.findUnique({
-    where: { id: validOption.category_id },
-  });
+    const category = await prisma.categories.findUnique({
+      where: { id: validOption.category_id },
+    });
 
-  if (!category) {
-    throw new Error('카테고리를 찾을 수 없습니다.');
-  }
+    if (!category) {
+      throw new Error('카테고리를 찾을 수 없습니다.');
+    }
 
-  const todayPostCount = await prisma.posts.count({
-    where: {
-      author_id: user.id,
-      created_at: {
-        gte: new Date(new Date().setHours(0, 0, 0, 0)),
-        lt: new Date(new Date().setHours(23, 59, 59, 999)),
+    const todayPostCount = await prisma.posts.count({
+      where: {
+        author_id: user.id,
+        created_at: {
+          gte: new Date(new Date().setHours(0, 0, 0, 0)),
+          lt: new Date(new Date().setHours(23, 59, 59, 999)),
+        },
       },
-    },
-  });
+    });
 
-  if (todayPostCount >= 3) {
-    throw new Error('하루에 작성할 수 있는 게시글은 3개까지입니다.');
+    if (todayPostCount >= 10) {
+      throw new Error('하루에 작성할 수 있는 게시글은 10개까지입니다.');
+    }
+
+    const post = await prisma.posts.create({
+      data: {
+        title: validOption.title,
+        author_id: user.id,
+        category_id: validOption.category_id,
+        content: JSON.parse(validOption.content),
+      },
+    });
+
+    if (!post) {
+      throw new Error('게시글 작성에 실패했습니다.');
+    }
+
+    redirect(`/post/${post.id}`);
+  } catch (error: any) {
+    return error.message as string;
   }
-
-  const post = await prisma.posts.create({
-    data: {
-      title: validOption.title,
-      author_id: user.id,
-      category_id: validOption.category_id,
-      content: JSON.parse(validOption.content),
-    },
-  });
-
-  if (!post) {
-    throw new Error('게시글 작성에 실패했습니다.');
-  }
-
-  redirect(`/post/${post.id}`);
 }
 
 const ModifyPostOption = z.object({
@@ -111,49 +115,53 @@ const ModifyPostOption = z.object({
     .max(100, '제목이 너무 길어요!'),
   content: z.string().refine((val) => {
     const plainText = generateText(JSON.parse(val), editorExtensions);
-    return plainText.length > 10;
-  }, '내용이 너무 짧아요!'),
+    return plainText.length > 0;
+  }, '내용이 없어요!'),
   category_id: z.string(),
 });
 
 export async function modifyPost(option: z.infer<typeof ModifyPostOption>) {
-  const validOption = ModifyPostOption.parse(option);
+  try {
+    const validOption = ModifyPostOption.parse(option);
 
-  const supabase = await createClient();
-  const prisma = new PrismaClient();
+    const supabase = await createClient();
+    const prisma = new PrismaClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user) {
-    throw new Error('로그인이 필요합니다.');
+    if (!user) {
+      throw new Error('로그인이 필요합니다.');
+    }
+
+    const category = await prisma.categories.findUnique({
+      where: { id: validOption.category_id },
+    });
+
+    if (!category) {
+      throw new Error('카테고리를 찾을 수 없습니다.');
+    }
+
+    const post = await prisma.posts.update({
+      where: { id: validOption.id, author_id: user.id },
+      data: {
+        title: validOption.title,
+        author_id: user.id,
+        category_id: validOption.category_id,
+        content: JSON.parse(validOption.content),
+        updated_at: new Date(),
+      },
+    });
+
+    if (!post) {
+      throw new Error('게시글 수정에 실패했습니다.');
+    }
+
+    redirect(`/post/${post.id}`);
+  } catch (error: any) {
+    return error.message as string;
   }
-
-  const category = await prisma.categories.findUnique({
-    where: { id: validOption.category_id },
-  });
-
-  if (!category) {
-    throw new Error('카테고리를 찾을 수 없습니다.');
-  }
-
-  const post = await prisma.posts.update({
-    where: { id: validOption.id, author_id: user.id },
-    data: {
-      title: validOption.title,
-      author_id: user.id,
-      category_id: validOption.category_id,
-      content: JSON.parse(validOption.content),
-      updated_at: new Date(),
-    },
-  });
-
-  if (!post) {
-    throw new Error('게시글 수정에 실패했습니다.');
-  }
-
-  redirect(`/post/${post.id}`);
 }
 
 const DeletePostOption = z.object({

@@ -1,9 +1,14 @@
 import { fetchCategories } from '@/actions/category-action';
 import { Button } from '@/components';
+import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 
 const CommunityLayout = async ({ children }: { children: React.ReactNode }) => {
   const categories = await fetchCategories();
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.getUser();
 
   return (
     <div className="mx-auto mt-6 grid w-full max-w-5xl grid-cols-12 gap-8">
@@ -23,11 +28,13 @@ const CommunityLayout = async ({ children }: { children: React.ReactNode }) => {
             </Link>
           ))}
         </div>
-        <Link className="mt-4" href="/write">
-          <Button className="w-full" sort="primary">
-            새로운 글 작성하기
-          </Button>
-        </Link>
+        {data?.user && (
+          <Link className="mt-4" href="/write">
+            <Button className="w-full" sort="primary">
+              새로운 글 작성하기
+            </Button>
+          </Link>
+        )}
       </div>
       <div className="col-span-12 md:col-span-9">{children}</div>
     </div>

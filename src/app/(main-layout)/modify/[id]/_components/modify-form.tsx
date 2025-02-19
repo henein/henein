@@ -39,16 +39,17 @@ export const ModifyForm = (props: {
     defaultValues: { title: data?.title, category: data?.category_id },
   });
 
-  const onSubmit = (data: ModifyFormData) => {
+  const onSubmit = async (data: ModifyFormData) => {
     setIsSubmitting(true);
 
     try {
-      modifyPost({
+      const error = await modifyPost({
         id: props.id,
         title: data.title,
         content: JSON.stringify(editor?.getJSON()), // NOTE: editor?.getJSON() 그냥 넘기면 전달이 안 되네요.
         category_id: data.category,
       });
+      alert(error);
     } catch (error) {
       alert(error);
     } finally {

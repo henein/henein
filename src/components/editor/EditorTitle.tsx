@@ -36,7 +36,11 @@ export const EditorTitle = (props: EditorTitleProps) => {
         {...register('category', { required: true })}
       >
         {categories?.map((category) => (
-          <option key={category.id} value={category.id}>
+          <option
+            key={category.id}
+            className="text-black-900"
+            value={category.id}
+          >
             {category.name}
           </option>
         ))}
