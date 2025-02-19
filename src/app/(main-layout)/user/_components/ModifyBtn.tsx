@@ -5,7 +5,7 @@ import React from 'react';
 
 const ModifyBtn = () => {
   return (
-    <Button sort={'primary'} onClick={() => {}}>
+    <Button sort={'primary'} onClick={() => {}} disabled>
       수정하기
     </Button>
   );

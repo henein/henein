@@ -1,5 +1,5 @@
-import { Typography } from '@/components';
 import { CardHeader } from '@/components/card-header';
+import { PostIcons } from '@/components/post-icons';
 import { getTimeDifference } from '@/utils/time';
 
 export interface PostHeaderProps {
@@ -8,6 +8,7 @@ export interface PostHeaderProps {
   author: string;
   views: number;
   createdAt: string;
+  updatedAt: string;
 }
 
 export const PostHeader = (props: PostHeaderProps) => {
@@ -21,16 +22,9 @@ export const PostHeader = (props: PostHeaderProps) => {
           <p
             className="text-secondary text-xs"
             suppressHydrationWarning
-          >{` · ${getTimeDifference(props.createdAt)}`}</p>
+          >{` · ${getTimeDifference(props.createdAt)} ${props.createdAt !== props.updatedAt ? '(수정됨)' : ''}`}</p>
         </div>
-        <div className="flex items-center">
-          <p className="text-secondary flex items-center text-xs">
-            <span className="material-symbols-outlined icon-16 mr-1 text-xl">
-              visibility
-            </span>
-            {props.views}
-          </p>
-        </div>
+        <PostIcons views={0} />
       </div>
     </CardHeader>
   );
