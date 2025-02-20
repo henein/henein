@@ -7,19 +7,9 @@ import { createClient } from '@/utils/supabase/server';
 import { editorExtensions } from '@/utils/tiptap';
 import { PrismaClient } from '@prisma/client';
 import { generateHTML } from '@tiptap/html';
+import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-
-// export type CommentType = {
-//   comment: string;
-//   id: number;
-//   modifiedDate: string;
-//   tag: string;
-//   writerId: number;
-//   replyId: number;
-//   uid: string;
-//   replies?: any;
-// };
 
 const fetchPost = async (id: string) => {
   if (!id) {
@@ -32,6 +22,7 @@ const fetchPost = async (id: string) => {
     where: { id: Number(id), deleted_at: null },
     include: {
       categories: true,
+      _count: { select: { comments: true } },
     },
   });
 
@@ -64,7 +55,24 @@ const fetchUserId = async () => {
   return data.user.id;
 };
 
-const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const post = await fetchPost((await params).id);
+
+  return {
+    title: `${post?.title} | ${post?.categories.name}`,
+    description: post?.content.slice(0, 100) ?? '',
+  };
+}
+
+const PostPage = async ({ params }: Props) => {
   const post = await fetchPost((await params).id);
 
   if (!post) {
@@ -80,7 +88,8 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
         title={post.title}
         category={post.categories.name}
         author={post.authorProfile?.nickname ?? 'Unknown'}
-        views={0}
+        authorImageUrl={post.authorProfile?.profile_img ?? undefined}
+        commentCount={post._count.comments}
         createdAt={post.created_at.toISOString()}
         updatedAt={post.updated_at.toISOString()}
         content={post.content}
@@ -102,7 +111,7 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
           </Button>
         )}
       </div>
-      <CommentBox data />
+      <CommentBox postId={post.id} />
     </div>
   );
 };

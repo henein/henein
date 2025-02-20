@@ -5,10 +5,41 @@ import { getTimeDifference } from '@/utils/time';
 import { editorExtensions } from '@/utils/tiptap';
 import { PrismaClient } from '@prisma/client';
 import { generateText } from '@tiptap/react';
+import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
 
 const MAX_POST_COUNT = 20;
+
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const categoryId = (await searchParams).category as string | undefined;
+
+  if (categoryId === undefined) {
+    return {
+      title: '전체',
+    };
+  }
+
+  const prisma = new PrismaClient();
+
+  const category = await prisma.categories.findUnique({
+    where: {
+      id: categoryId,
+    },
+  });
+
+  return {
+    title: category?.name ?? '전체',
+  };
+}
 
 const getShowPages = (currentPage: number, pageCount: number) => {
   if (pageCount <= 1) {
@@ -46,6 +77,7 @@ const CommunityCategoryPage = async (props: {
     include: {
       categories: true,
       users: { include: { profiles: true } },
+      _count: { select: { comments: true } },
     },
     where: {
       category_id: category,
@@ -83,10 +115,11 @@ const CommunityCategoryPage = async (props: {
               JSON.parse(JSON.stringify(post.content)),
               editorExtensions,
             ).slice(0, 100)}
-            userName={post.users.profiles?.nickname ?? ''}
+            author={post.users.profiles?.nickname ?? ''}
+            authorImageUrl={post.users.profiles?.profile_img ?? undefined}
             createTime={getTimeDifference(post.created_at.toISOString())}
             views={0}
-            commentNum={0}
+            commentNum={post._count.comments}
             recommendNum={0}
           />
         ))}

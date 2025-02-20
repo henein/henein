@@ -14,10 +14,11 @@ const PostList = ({ posts, type }: { posts: any[]; type: string }) => {
             id={post.id}
             title={post.title}
             text={''}
-            userName={post.users.profiles?.nickname ?? ''}
+            author={post.users.profiles?.nickname ?? ''}
+            authorImageUrl={post.users.profiles?.image_url ?? undefined}
             createTime={getTimeDifference(post.created_at.toISOString())}
             views={0}
-            commentNum={0}
+            commentNum={post._count.comments}
             recommendNum={0}
           />
         ))

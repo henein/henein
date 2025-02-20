@@ -1,46 +1,55 @@
-'use client';
-
+import { CommentForm } from './comment-form';
+import { Card } from '@/components/card';
 import { CardHeader } from '@/components/card-header';
-import classNames from 'classnames';
-import { useState } from 'react';
+import { getTimeDifference } from '@/utils/time';
+import { PrismaClient } from '@prisma/client';
 
 export interface CommentBoxProps {
-  data: any;
+  postId: bigint;
 }
 
-export const CommentBox = (props: CommentBoxProps) => {
-  const [showAction, setShowAction] = useState(false);
+export const CommentBox = async (props: CommentBoxProps) => {
+  const prisma = new PrismaClient();
+
+  const comments = await prisma.comments.findMany({
+    where: {
+      post_id: props.postId,
+      parent_id: null,
+      deleted_at: null,
+    },
+    include: {
+      users: { include: { profiles: true } },
+      replies: true,
+    },
+    orderBy: { created_at: 'asc' },
+  });
 
   return (
-    <CardHeader className="flex flex-col gap-4 rounded-2xl px-6 py-5">
-      <div className="font-bold">
-        댓글 0개 <span className="text-secondary">(250220 업데이트 예정)</span>
+    <Card>
+      <CardHeader className="flex flex-col gap-4 rounded-2xl px-6 py-5">
+        <div className="font-bold">댓글 {comments.length}개</div>
+      </CardHeader>
+      <div className="divide-default flex flex-col divide-y px-6 pb-5 pt-2">
+        {comments.length > 0 ? (
+          comments.map((comment) => (
+            <div key={comment.id} className="flex flex-col gap-1 py-3">
+              <div className="flex h-5 items-center">
+                <p className="text-secondary mr-1 text-xs">
+                  {comment.users.profiles?.nickname ?? 'Unknown'}
+                </p>
+                <p
+                  className="text-secondary text-xs"
+                  suppressHydrationWarning
+                >{` · ${getTimeDifference(comment.created_at.toISOString())}`}</p>
+              </div>
+              <p className="text-sm">{comment.content}</p>
+            </div>
+          ))
+        ) : (
+          <p className="text-secondary py-3">댓글이 없습니다.</p>
+        )}
+        <CommentForm className="mt-3" postId={props.postId} />
       </div>
-      <form className="inset-ring inset-ring-default dark:bg-grey-900 flex hidden flex-col rounded-lg px-4 pb-2 pt-3">
-        <input
-          className="placeholder-black-500 dark:placeholder-white-600 text-sm font-normal outline-none"
-          placeholder="댓글 쓰기"
-          onChange={(event) => setShowAction(event.target.value.length > 0)}
-        />
-        <div
-          className={classNames(
-            'flex items-end justify-end transition-all',
-            showAction
-              ? 'h-[1.875rem] opacity-100'
-              : 'pointer-events-none h-1 opacity-0',
-          )}
-        >
-          <button
-            type="button"
-            className="text-secondary hover:text-secondary-hover active:text-secondary-active h-fit cursor-pointer px-2 py-1 text-xs font-medium transition-colors"
-          >
-            취소
-          </button>
-          <button className="text-link h-fit cursor-pointer px-2 py-1 text-xs font-medium">
-            작성하기
-          </button>
-        </div>
-      </form>
-    </CardHeader>
+    </Card>
   );
 };

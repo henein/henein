@@ -8,7 +8,8 @@ export interface PostBoxProps {
   title: string;
   category: string;
   author: string;
-  views: number;
+  authorImageUrl?: string;
+  commentCount: number;
   createdAt: string;
   updatedAt: string;
   content: string;
@@ -22,7 +23,8 @@ export const PostBox = (props: PostBoxProps) => {
           title={props.title}
           category={props.category}
           author={props.author}
-          views={props.views}
+          authorImageUrl={props.authorImageUrl}
+          commentCount={props.commentCount}
           createdAt={props.createdAt}
           updatedAt={props.updatedAt}
         />

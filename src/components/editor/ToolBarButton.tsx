@@ -11,7 +11,7 @@ export const ToolBarButton: React.FC<ToolBarButtonProps> = (props) => {
   return (
     <button
       className={classNames(
-        'border-border dark:border-dark-border flex h-8 w-8 items-center justify-center rounded-lg',
+        'border-border dark:border-dark-border flex min-h-8 min-w-8 items-center justify-center rounded-lg',
         {
           'bg-grey-100 dark:bg-grey-800': props.isChecked,
           'cursor-pointer hover:border': !props.disabled,
