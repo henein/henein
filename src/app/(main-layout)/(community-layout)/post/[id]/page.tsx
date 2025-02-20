@@ -80,6 +80,7 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
         title={post.title}
         category={post.categories.name}
         author={post.authorProfile?.nickname ?? 'Unknown'}
+        authorImageUrl={post.authorProfile?.profile_img ?? undefined}
         views={0}
         createdAt={post.created_at.toISOString()}
         updatedAt={post.updated_at.toISOString()}

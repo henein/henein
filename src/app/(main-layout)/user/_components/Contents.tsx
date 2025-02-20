@@ -45,7 +45,7 @@ const Contents = async ({ uid, type, isMyProfile }: Props) => {
                 id={post.id}
                 title={post.title}
                 text={''}
-                userName={post.users.profiles?.nickname ?? ''}
+                author={post.users.profiles?.nickname ?? ''}
                 createTime={getTimeDifference(post.created_at.toISOString())}
                 views={0}
                 commentNum={0}

@@ -62,7 +62,11 @@ export async function writePost(option: z.infer<typeof WritePostOption>) {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      throw new Error('로그인이 필요합니다.');
+      return {
+        error: {
+          message: '로그인이 필요합니다.',
+        },
+      };
     }
 
     const category = await prisma.categories.findUnique({
@@ -70,7 +74,11 @@ export async function writePost(option: z.infer<typeof WritePostOption>) {
     });
 
     if (!category) {
-      throw new Error('카테고리를 찾을 수 없습니다.');
+      return {
+        error: {
+          message: '카테고리를 찾을 수 없습니다.',
+        },
+      };
     }
 
     const todayPostCount = await prisma.posts.count({
@@ -80,11 +88,16 @@ export async function writePost(option: z.infer<typeof WritePostOption>) {
           gte: new Date(new Date().setHours(0, 0, 0, 0)),
           lt: new Date(new Date().setHours(23, 59, 59, 999)),
         },
+        deleted_at: null,
       },
     });
 
     if (todayPostCount >= 10) {
-      throw new Error('하루에 작성할 수 있는 게시글은 10개까지입니다.');
+      return {
+        error: {
+          message: '하루에 작성할 수 있는 게시글은 10개까지입니다.',
+        },
+      };
     }
 
     const post = await prisma.posts.create({
@@ -97,12 +110,32 @@ export async function writePost(option: z.infer<typeof WritePostOption>) {
     });
 
     if (!post) {
-      throw new Error('게시글 작성에 실패했습니다.');
+      return {
+        error: {
+          message: '게시글 작성에 실패했습니다.',
+        },
+      };
     }
 
-    redirect(`/post/${post.id}`);
+    return {
+      data: {
+        url: `/post/${post.id}`,
+      },
+    };
   } catch (error: any) {
-    return error.message as string;
+    if (error instanceof z.ZodError) {
+      return {
+        error: {
+          message: error.issues[0].message,
+        },
+      };
+    }
+
+    return {
+      error: {
+        message: error.message,
+      },
+    };
   }
 }
 
