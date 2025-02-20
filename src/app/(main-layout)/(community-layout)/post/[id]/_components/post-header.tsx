@@ -8,7 +8,7 @@ export interface PostHeaderProps {
   category: string;
   author: string;
   authorImageUrl?: string;
-  views: number;
+  commentCount: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -35,7 +35,7 @@ export const PostHeader = (props: PostHeaderProps) => {
             suppressHydrationWarning
           >{` · ${getTimeDifference(props.createdAt)} ${props.createdAt !== props.updatedAt ? '(수정됨)' : ''}`}</p>
         </div>
-        <PostIcons views={0} />
+        <PostIcons commentCount={props.commentCount} />
       </div>
     </CardHeader>
   );

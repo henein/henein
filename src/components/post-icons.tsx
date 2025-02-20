@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface PostIconsProps {
-  views: number;
+  commentCount: number;
 }
 
 export const PostIcons = (props: PostIconsProps) => {
@@ -11,7 +11,7 @@ export const PostIcons = (props: PostIconsProps) => {
         <span className="icon icon-16 mr-1">
           comment
         </span>
-        {props.views}
+        {props.commentCount}
       </p>
     </div>
   );

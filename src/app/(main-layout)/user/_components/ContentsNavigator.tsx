@@ -62,7 +62,7 @@ const fetchCount = async (uid: string) => {
     const postsCount = await prisma.posts.count({ where: { author_id: uid } });
     const commentsPostsCount = await prisma.comments.groupBy({
       by: ['post_id'],
-      where: { author: uid },
+      where: { author_id: uid },
     });
     const charactersCount = await prisma.characters.count({
       where: { user_id: uid },

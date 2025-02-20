@@ -32,6 +32,7 @@ const fetchPost = async (id: string) => {
     where: { id: Number(id), deleted_at: null },
     include: {
       categories: true,
+      _count: { select: { comments: true } },
     },
   });
 
@@ -81,7 +82,7 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
         category={post.categories.name}
         author={post.authorProfile?.nickname ?? 'Unknown'}
         authorImageUrl={post.authorProfile?.profile_img ?? undefined}
-        views={0}
+        commentCount={post._count.comments}
         createdAt={post.created_at.toISOString()}
         updatedAt={post.updated_at.toISOString()}
         content={post.content}

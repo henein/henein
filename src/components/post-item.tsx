@@ -53,7 +53,7 @@ const PostItem = (props: Props) => {
           <span>{author}</span>
           <span className="ml-1 text-gray-400">· {createTime}</span>
         </div>
-        <PostIcons views={views} />
+        <PostIcons commentCount={props.commentNum} />
       </div>
     </Link>
   );

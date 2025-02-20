@@ -46,6 +46,7 @@ const CommunityCategoryPage = async (props: {
     include: {
       categories: true,
       users: { include: { profiles: true } },
+      _count: { select: { comments: true } },
     },
     where: {
       category_id: category,
@@ -87,7 +88,7 @@ const CommunityCategoryPage = async (props: {
             authorImageUrl={post.users.profiles?.profile_img ?? undefined}
             createTime={getTimeDifference(post.created_at.toISOString())}
             views={0}
-            commentNum={0}
+            commentNum={post._count.comments}
             recommendNum={0}
           />
         ))}

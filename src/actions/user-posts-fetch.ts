@@ -10,6 +10,7 @@ export const fetchPostsFromType = async (uid: string, type: string) => {
       include: {
         categories: true,
         users: { include: { profiles: true } },
+        _count: { select: { comments: true } },
       },
       where: {
         author_id: uid,
@@ -26,7 +27,7 @@ export const fetchPostsFromType = async (uid: string, type: string) => {
     const distinctCommentedPostIds = await prisma.comments.groupBy({
       by: ['post_id'],
       where: {
-        author: uid,
+        author_id: uid,
       },
     });
 
