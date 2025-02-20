@@ -23,7 +23,7 @@ const Userpage = async ({ params, searchParams }: Props) => {
       <Contents
         uid={uid}
         type={type}
-        page={page}
+        page={Number(page ?? 1)}
         isMyProfile={user?.id === uid}
       />
     </>

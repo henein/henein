@@ -30,7 +30,7 @@ export const Button = ({
       'enabled:hover:bg-primary-400 enabled:dark:hover:bg-primary-300 ' +
       'enabled:active:bg-primary-700 enabled:dark:active:bg-primary-600',
     secondary:
-      'bg-button text-black ' +
+      'bg-grey-700 text-black border border-grey-700' +
       'enabled:hover:bg-buttonHover enabled:active:bg-buttonActive',
     danger:
       'bg-danger-300 dark:bg-danger-400 text-white-900 ' +

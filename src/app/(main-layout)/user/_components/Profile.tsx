@@ -1,16 +1,22 @@
+'use client';
+
 import ModifyBtn from './ModifyBtn';
+import { useProfile } from '@/store/query/user';
 import { formatToHyphenDate } from '@/utils/date/formattedDate';
-import { createClient } from '@/utils/supabase/server';
-import { profiles as Profiles } from '@prisma/client';
+import { profiles as ProfileType } from '@prisma/client';
 import Image from 'next/image';
 import React from 'react';
 
-const Profile = async (props: Profiles) => {
-  const { id, created_at, nickname, profile_img } = props;
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+const Profile = ({
+  uid,
+  isMyProfile,
+}: {
+  uid: string;
+  isMyProfile: boolean;
+}) => {
+  const { query } = useProfile(uid);
+  const { profile_img, created_at, nickname } = query.data
+    .profile as ProfileType;
 
   return (
     <div className="flex h-[148px] w-full items-center justify-between gap-8 p-5">
@@ -20,7 +26,7 @@ const Profile = async (props: Profiles) => {
           width={100}
           height={100}
           alt="profile"
-          className="border-grey-700 rounded-full border"
+          className="border-grey-700 h-[100px] w-[100px] rounded-full border"
         />
         <div className="flex flex-col gap-1.5">
           <span className="text-sm font-bold text-gray-500">
@@ -29,7 +35,9 @@ const Profile = async (props: Profiles) => {
           <h1 className="text-2xl font-bold text-gray-900">{nickname}</h1>
         </div>
       </div>
-      {id === user?.id && <ModifyBtn />}
+      {isMyProfile && (
+        <ModifyBtn image={profile_img} nickname={nickname} uid={uid} />
+      )}
     </div>
   );
 };
