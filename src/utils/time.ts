@@ -1,7 +1,6 @@
 import { DateTime } from "luxon";
 
 export const getTimeDifference = (createTime: string) => {
-  console.log(createTime);
   const userTimezone = DateTime.local().zoneName;
   const now = DateTime.now().setZone(userTimezone);
   const created = DateTime.fromISO(createTime, { zone: "utc" }).setZone(userTimezone);

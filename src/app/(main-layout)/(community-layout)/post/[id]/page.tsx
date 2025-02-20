@@ -7,19 +7,9 @@ import { createClient } from '@/utils/supabase/server';
 import { editorExtensions } from '@/utils/tiptap';
 import { PrismaClient } from '@prisma/client';
 import { generateHTML } from '@tiptap/html';
+import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-
-// export type CommentType = {
-//   comment: string;
-//   id: number;
-//   modifiedDate: string;
-//   tag: string;
-//   writerId: number;
-//   replyId: number;
-//   uid: string;
-//   replies?: any;
-// };
 
 const fetchPost = async (id: string) => {
   if (!id) {
@@ -65,7 +55,24 @@ const fetchUserId = async () => {
   return data.user.id;
 };
 
-const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const post = await fetchPost((await params).id);
+
+  return {
+    title: `${post?.title} | ${post?.categories.name}`,
+    description: post?.content.slice(0, 100) ?? '',
+  };
+}
+
+const PostPage = async ({ params }: Props) => {
   const post = await fetchPost((await params).id);
 
   if (!post) {
