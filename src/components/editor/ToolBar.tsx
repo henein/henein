@@ -42,7 +42,7 @@ export interface ToolBarProps {
 export const ToolBar: React.FC<ToolBarProps> = ({ editor }) => {
   return (
     <CardHeader
-      className="sticky top-0 z-10 flex items-center gap-1 px-5 py-2"
+      className="scrollbar-hide sticky top-0 z-10 flex items-center gap-1 overflow-x-scroll px-5 py-2"
       isBlur
     >
       <ToolBarButton
@@ -149,9 +149,21 @@ export const ToolBar: React.FC<ToolBarProps> = ({ editor }) => {
       >
         <span className="icon">image</span>
       </ToolBarButton>
-      {/* <ToolBarButton onClick={() => editor?.chain().focus().run()}>
-        <span className="icon">attachment</span>
-      </ToolBarButton> */}
+      <ToolBarButton
+        onClick={() => {
+          const url = prompt('YouTube URL을 입력해주세요.');
+
+          if (url) {
+            editor?.commands.setYoutubeVideo({
+              src: url,
+              width: 640,
+              height: 360,
+            });
+          }
+        }}
+      >
+        <span className="icon">youtube_activity</span>
+      </ToolBarButton>
     </CardHeader>
   );
 };

@@ -3,6 +3,7 @@ import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
+import Youtube from '@tiptap/extension-youtube';
 import StarterKit from '@tiptap/starter-kit';
 
 export const proseStyles =
@@ -16,6 +17,7 @@ export const editorExtensions = [
   Placeholder.configure({ placeholder: '내용을 입력해주세요...' }),
   Underline,
   Image,
+  Youtube,
   Link.configure({
     HTMLAttributes: {
       onclick: `
