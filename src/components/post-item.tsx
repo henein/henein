@@ -1,4 +1,5 @@
 import { PostIcons } from './post-icons';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -8,7 +9,8 @@ interface Props {
   id: bigint;
   title: string;
   text: string;
-  userName: string;
+  author: string;
+  authorImageUrl?: string;
   createTime: string;
   views: number;
   commentNum: number;
@@ -16,18 +18,7 @@ interface Props {
 }
 
 const PostItem = (props: Props) => {
-  const {
-    category,
-    categoryId,
-    id,
-    title,
-    text,
-    userName,
-    createTime,
-    views,
-    commentNum,
-    recommendNum,
-  } = props;
+  const { category, id, title, text, author, createTime, views } = props;
 
   return (
     <Link
@@ -38,7 +29,7 @@ const PostItem = (props: Props) => {
       <div className="flex h-16 justify-between">
         <div className="flex w-full flex-col justify-between">
           <span className="text-xs font-normal text-gray-500">{category}</span>
-          <h2 className="truncate text-ellipsis text-lg font-bold text-gray-900 dark:text-white">
+          <h2 className="truncate text-ellipsis font-bold text-gray-900 dark:text-white">
             {title}
           </h2>
           <p className="truncate text-ellipsis text-sm font-normal">
@@ -49,8 +40,17 @@ const PostItem = (props: Props) => {
 
       {/* 사용자 정보 */}
       <div className="flex items-center justify-between text-xs">
-        <div className="flex items-center">
-          <span>{userName}</span>
+        <div className="flex h-5 items-center">
+          {props.authorImageUrl && (
+            <Image
+              className="border-default relative -left-1 mr-0.5 rounded-full border"
+              src={props.authorImageUrl}
+              alt="프로필"
+              width={24}
+              height={24}
+            />
+          )}
+          <span>{author}</span>
           <span className="ml-1 text-gray-400">· {createTime}</span>
         </div>
         <PostIcons views={views} />

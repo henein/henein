@@ -102,7 +102,7 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
           </Button>
         )}
       </div>
-      <CommentBox data />
+      <CommentBox postId={post.id} />
     </div>
   );
 };
