@@ -46,7 +46,7 @@ export const CommentBox = async (props: CommentBoxProps) => {
             </div>
           ))
         ) : (
-          <p className="text-secondary">댓글이 없습니다.</p>
+          <p className="text-secondary py-3">댓글이 없습니다.</p>
         )}
         <CommentForm className="mt-3" postId={props.postId} />
       </div>
