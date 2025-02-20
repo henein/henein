@@ -83,7 +83,8 @@ const CommunityCategoryPage = async (props: {
               JSON.parse(JSON.stringify(post.content)),
               editorExtensions,
             ).slice(0, 100)}
-            userName={post.users.profiles?.nickname ?? ''}
+            author={post.users.profiles?.nickname ?? ''}
+            authorImageUrl={post.users.profiles?.profile_img ?? undefined}
             createTime={getTimeDifference(post.created_at.toISOString())}
             views={0}
             commentNum={0}

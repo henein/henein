@@ -6,6 +6,7 @@ import { Editor } from '@/components/editor/Editor';
 import { EditorTitle } from '@/components/editor/EditorTitle';
 import { editorExtensions, editorStyles } from '@/utils/tiptap';
 import { useEditor } from '@tiptap/react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -16,6 +17,7 @@ type WriteFormData = {
 
 const WritePage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const editor = useEditor({
     editorProps: {
@@ -31,18 +33,19 @@ const WritePage = () => {
   const onSubmit = async (data: WriteFormData) => {
     setIsSubmitting(true);
 
-    try {
-      const error = await writePost({
-        title: data.title,
-        content: JSON.stringify(editor?.getJSON()), // NOTE: editor?.getJSON() 그냥 넘기면 전달이 안 되네요.
-        category_id: data.category,
-      });
-      alert(error);
-    } catch (error) {
-      alert(error);
-    } finally {
-      setIsSubmitting(false);
+    const { data: postData, error } = await writePost({
+      title: data.title,
+      content: JSON.stringify(editor?.getJSON()), // NOTE: editor?.getJSON() 그냥 넘기면 전달이 안 되네요.
+      category_id: data.category,
+    });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      router.push(postData.url);
     }
+
+    setIsSubmitting(false);
   };
 
   return (
