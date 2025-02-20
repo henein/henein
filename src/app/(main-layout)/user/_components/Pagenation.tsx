@@ -15,32 +15,30 @@ const Pagenation = ({ uid, page, totalElement }: Props) => {
   const prevPage = Math.floor(page / MAX_POST_COUNT) - 1;
   const nextPage = Math.floor(page / MAX_POST_COUNT) + 11;
 
+  if (!totalElement) {
+    return null;
+  }
+
   return (
-    <>
-      {totalElement && (
-        <div className="flex w-full justify-center gap-0.5">
-          <PaginationLink
-            href={prevPage > 1 ? getHref(1, uid, 'post') : undefined}
-          >
-            <span className="icon icon-20">keyboard_arrow_left</span>
-          </PaginationLink>
-          {getShowPages(page, pageCount).map((showPage) => (
-            <PaginationLink
-              key={showPage}
-              href={getHref(1, uid, 'post')}
-              isSelected={showPage === page}
-            >
-              {showPage}
-            </PaginationLink>
-          ))}
-          <PaginationLink
-            href={nextPage <= pageCount ? getHref(1, uid, 'post') : undefined}
-          >
-            <span className="icon icon-20">keyboard_arrow_right</span>
-          </PaginationLink>
-        </div>
-      )}
-    </>
+    <div className="flex w-full justify-center gap-0.5">
+      <PaginationLink href={prevPage > 1 ? getHref(1, uid, 'post') : undefined}>
+        <span className="icon icon-20">keyboard_arrow_left</span>
+      </PaginationLink>
+      {getShowPages(page, pageCount).map((showPage) => (
+        <PaginationLink
+          key={showPage}
+          href={getHref(1, uid, 'post')}
+          isSelected={showPage === page}
+        >
+          {showPage}
+        </PaginationLink>
+      ))}
+      <PaginationLink
+        href={nextPage <= pageCount ? getHref(1, uid, 'post') : undefined}
+      >
+        <span className="icon icon-20">keyboard_arrow_right</span>
+      </PaginationLink>
+    </div>
   );
 };
 
