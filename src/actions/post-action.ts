@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { editorExtensions } from '@/utils/tiptap';
 import { PrismaClient } from '@prisma/client';
 import { generateText } from '@tiptap/react';
+import { Redis } from '@upstash/redis';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
@@ -228,3 +229,21 @@ export async function deletePost(option: z.infer<typeof DeletePostOption>) {
 
   redirect('/community');
 }
+
+export const fetchCounts = async (postId: string) => {
+  const redis = Redis.fromEnv();
+  const prisma = new PrismaClient();
+
+  const viewCount =
+    (await redis.get<number>(['pageviews', 'projects', postId].join(':'))) ?? 0;
+
+  const commentCount = await prisma.comments.count({
+    where: { post_id: Number(postId), deleted_at: null },
+  });
+
+  const likeCount = await prisma.likes.count({
+    where: { post_id: Number(postId), is_liked: true },
+  });
+
+  return { viewCount, commentCount, likeCount };
+};
