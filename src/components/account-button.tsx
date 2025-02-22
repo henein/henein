@@ -68,6 +68,7 @@ export const AccountButton = () => {
             onClick={() => setIsOpen(!isOpen)}
           >
             <Image
+              className='aspect-square'
               src={profile?.profile_img ?? '/images/dark-defaultImg.svg'}
               alt={''}
               width={32}
