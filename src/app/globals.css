@@ -295,22 +295,22 @@
 }
 
 @utility icon {
+  display: inline-block;
   font-family: 'Material Symbols Outlined';
-  font-weight: normal;
-  font-style: normal;
   font-size: 24px;
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+  font-weight: normal;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
   word-wrap: normal;
+  white-space: nowrap;
+  user-select: none;
   direction: ltr;
   -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased;
-  user-select: none;
   font-variation-settings:
-    'FILL' 1,
+    'FILL' 0,
     'wght' 400,
     'GRAD' 0,
     'opsz' 24;
@@ -319,7 +319,16 @@
 @utility icon-16 {
   font-size: 16px;
   font-variation-settings:
-    'FILL' 1,
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 16;
+}
+
+@utility icon-16 {
+  font-size: 16px;
+  font-variation-settings:
+    'FILL' 0,
     'wght' 400,
     'GRAD' 0,
     'opsz' 16;
@@ -328,15 +337,15 @@
 @utility icon-20 {
   font-size: 20px;
   font-variation-settings:
-    'FILL' 1,
+    'FILL' 0,
     'wght' 400,
     'GRAD' 0,
     'opsz' 20;
 }
 
 @utility scrollbar-hide {
-  scrollbar-width: none;
   -ms-overflow-style: none;
+  scrollbar-width: none;
   
   &::-webkit-scrollbar {
     display: none;
