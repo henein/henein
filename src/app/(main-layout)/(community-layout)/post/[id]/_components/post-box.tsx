@@ -13,30 +13,29 @@ export interface PostBoxProps {
   category: string;
   author: string;
   authorImageUrl?: string;
-  commentCount: number;
   createdAt: string;
   updatedAt: string;
   content: string;
+  counts: {
+    likeCount: number;
+    viewCount: number;
+    commentCount: number;
+  };
 }
 
 export const PostBox = async (props: PostBoxProps) => {
-  const prisma = new PrismaClient();
-
-  const likeCount = await prisma.likes.count({
-    where: { post_id: Number(props.id), is_liked: true },
-  });
-
   const recommended = await getRecommended(props.id);
 
   return (
     <Card className="flex flex-col">
       <div className="flex flex-col">
         <PostHeader
+          id={props.id}
           title={props.title}
           category={props.category}
           author={props.author}
           authorImageUrl={props.authorImageUrl}
-          commentCount={props.commentCount}
+          counts={props.counts}
           createdAt={props.createdAt}
           updatedAt={props.updatedAt}
         />
@@ -46,7 +45,7 @@ export const PostBox = async (props: PostBoxProps) => {
         />
         <div className="mx-auto my-5 flex w-full flex-col items-center gap-2">
           <Like postId={props.id} recommended={recommended} />
-          <span className="text-white">{likeCount}</span>
+          <span className="text-white">{props.counts.likeCount}</span>
         </div>
       </div>
     </Card>
