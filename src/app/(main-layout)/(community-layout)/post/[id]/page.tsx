@@ -1,7 +1,8 @@
 import { CommentBox } from './_components/comment-box';
 import { PostBox } from './_components/post-box';
 import { PostDeleteButton } from './_components/post-delete-button';
-import { deletePost } from '@/actions/post-action';
+import { ReportView } from './_components/report-view';
+import { deletePost, fetchCounts } from '@/actions/post-action';
 import { Button } from '@/components';
 import { createClient } from '@/utils/supabase/server';
 import { editorExtensions } from '@/utils/tiptap';
@@ -22,7 +23,6 @@ const fetchPost = async (id: string) => {
     where: { id: Number(id), deleted_at: null },
     include: {
       categories: true,
-      _count: { select: { comments: true } },
     },
   });
 
@@ -73,7 +73,8 @@ export async function generateMetadata(
 }
 
 const PostPage = async ({ params }: Props) => {
-  const post = await fetchPost((await params).id);
+  const { id: postId } = await params;
+  const post = await fetchPost(postId);
 
   if (!post) {
     return notFound();
@@ -82,38 +83,45 @@ const PostPage = async ({ params }: Props) => {
   const userId = await fetchUserId();
   const hasOwn = userId !== null && userId === post.author_id;
 
+  const counts = await fetchCounts(postId);
+
   return (
-    <div className="flex-auto flex-col gap-4">
-      <PostBox
-        id={Number(post.id)}
-        title={post.title}
-        category={post.categories.name}
-        author={post.authorProfile?.nickname ?? 'Unknown'}
-        authorImageUrl={post.authorProfile?.profile_img ?? undefined}
-        commentCount={post._count.comments}
-        createdAt={post.created_at.toISOString()}
-        updatedAt={post.updated_at.toISOString()}
-        content={post.content}
-      />
-      <div className="mb-8 mt-4 flex justify-between" suppressHydrationWarning>
-        <Link href={`/community?category=${post.category_id}`}>
-          <Button sort="secondary">목록</Button>
-        </Link>
-        {hasOwn ? (
-          <div className="flex gap-2">
-            <Link href={`/modify/${post.id}`}>
-              <Button sort="secondary">수정하기</Button>
-            </Link>
-            <PostDeleteButton id={post.id} />
-          </div>
-        ) : (
-          <Button sort="danger" disabled>
-            신고하기
-          </Button>
-        )}
+    <ReportView slug={postId}>
+      <div className="flex-auto flex-col gap-4">
+        <PostBox
+          id={Number(post.id)}
+          title={post.title}
+          category={post.categories.name}
+          author={post.authorProfile?.nickname ?? 'Unknown'}
+          authorImageUrl={post.authorProfile?.profile_img ?? undefined}
+          createdAt={post.created_at.toISOString()}
+          updatedAt={post.updated_at.toISOString()}
+          content={post.content}
+          counts={counts}
+        />
+        <div
+          className="mb-8 mt-4 flex justify-between"
+          suppressHydrationWarning
+        >
+          <Link href={`/community?category=${post.category_id}`}>
+            <Button sort="secondary">목록</Button>
+          </Link>
+          {hasOwn ? (
+            <div className="flex gap-2">
+              <Link href={`/modify/${post.id}`}>
+                <Button sort="secondary">수정하기</Button>
+              </Link>
+              <PostDeleteButton id={post.id} />
+            </div>
+          ) : (
+            <Button sort="danger" disabled>
+              신고하기
+            </Button>
+          )}
+        </div>
+        <CommentBox postId={post.id} />
       </div>
-      <CommentBox postId={post.id} />
-    </div>
+    </ReportView>
   );
 };
 

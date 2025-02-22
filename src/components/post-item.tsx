@@ -1,4 +1,5 @@
 import { PostIcons } from './post-icons';
+import { fetchCounts } from '@/actions/post-action';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -17,8 +18,9 @@ interface Props {
   recommendNum: number;
 }
 
-const PostItem = (props: Props) => {
-  const { category, id, title, text, author, createTime, views } = props;
+const PostItem = async (props: Props) => {
+  const { category, id, title, text, author, createTime } = props;
+  const counts = await fetchCounts(id.toString());
 
   return (
     <Link
@@ -53,7 +55,7 @@ const PostItem = (props: Props) => {
           <span>{author}</span>
           <span className="ml-1 text-gray-400">· {createTime}</span>
         </div>
-        <PostIcons commentCount={props.commentNum} />
+        <PostIcons counts={counts} />
       </div>
     </Link>
   );
