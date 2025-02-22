@@ -18,8 +18,8 @@ export interface PostBoxProps {
   content: string;
   counts: {
     likeCount: number;
-    viewCount: number;
-    commentCount: bigint;
+    viewCount: bigint;
+    commentCount: number;
   };
 }
 

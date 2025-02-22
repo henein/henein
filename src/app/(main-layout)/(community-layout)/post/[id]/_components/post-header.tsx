@@ -13,8 +13,8 @@ export interface PostHeaderProps {
   updatedAt: string;
   counts: {
     likeCount: number;
-    viewCount: number;
-    commentCount: bigint;
+    viewCount: bigint;
+    commentCount: number;
   };
 }
 
