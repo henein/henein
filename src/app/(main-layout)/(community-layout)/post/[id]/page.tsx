@@ -85,6 +85,7 @@ const PostPage = async ({ params }: Props) => {
   return (
     <div className="flex-auto flex-col gap-4">
       <PostBox
+        id={Number(post.id)}
         title={post.title}
         category={post.categories.name}
         author={post.authorProfile?.nickname ?? 'Unknown'}
