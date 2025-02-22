@@ -2,7 +2,10 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['open.api.nexon.com', '127.0.0.1'],
+    domains: [
+      `${process.env.NEXT_PUBLIC_NEXON_API_URL}`,
+      `${process.env.NEXT_PUBLIC_STORAGE_URL}`,
+    ],
   },
 };
 
