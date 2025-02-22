@@ -1,10 +1,13 @@
+import Like from './like';
 import { PostHeader } from './post-header';
 import { Card } from '@/components/card';
 import { proseStyles } from '@/utils/tiptap';
+import { PrismaClient } from '@prisma/client';
 import classNames from 'classnames';
 import React from 'react';
 
 export interface PostBoxProps {
+  id: number;
   title: string;
   category: string;
   author: string;
@@ -15,7 +18,13 @@ export interface PostBoxProps {
   content: string;
 }
 
-export const PostBox = (props: PostBoxProps) => {
+export const PostBox = async (props: PostBoxProps) => {
+  const prisma = new PrismaClient();
+
+  const likeCount = await prisma.likes.count({
+    where: { post_id: Number(props.id), is_liked: true },
+  });
+
   return (
     <Card className="flex flex-col">
       <div className="flex flex-col">
@@ -32,15 +41,11 @@ export const PostBox = (props: PostBoxProps) => {
           className={classNames('min-h-96 break-all px-6 py-5', proseStyles)}
           dangerouslySetInnerHTML={{ __html: props.content }}
         />
-        <div className="mx-auto my-5 flex w-full flex-col items-center">
-          {/* <LikeIcon boardId={boardId} recommended={recommended} /> */}
-          {/* <RecommendNum>{recommend}</RecommendNum> */}
+        <div className="mx-auto my-5 flex w-full flex-col items-center gap-2">
+          <Like postId={props.id} recommended={false} />
+          <span className="text-white">{likeCount}</span>
         </div>
       </div>
     </Card>
   );
 };
-
-// const RecommendNum = styled.span`
-//   color: #757575;
-// `;
