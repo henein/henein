@@ -69,7 +69,7 @@ export default async function Home() {
       </div>
       <h2 className="mb-6 mt-6 text-3xl font-bold">티저</h2>
       <iframe
-        className="aspect-video w-full max-w-3xl"
+        className="aspect-video w-full max-w-3xl rounded-2xl"
         src="https://www.youtube.com/embed/4PbzlV_Sdx0?si=CDaC7Vs3aLqbdlcC"
         title="YouTube video player"
         frameBorder="0"
