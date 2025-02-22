@@ -386,6 +386,7 @@ model posts {
   content     Json
   author_id   String     @db.Uuid
   category_id String
+  view_count  BigInt     @default(0)
   comments    comments[]
   likes       likes[]
   users       users      @relation(fields: [author_id], references: [id], onDelete: Cascade)

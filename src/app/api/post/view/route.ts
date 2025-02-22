@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { Redis } from '@upstash/redis';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -13,6 +14,8 @@ export async function POST(req: NextRequest) {
   if (req.headers.get('Content-Type') !== 'application/json') {
     return NextResponse.json({ message: 'must be json' }, { status: 400 });
   }
+
+  const prisma = new PrismaClient();
 
   const body = await req.json();
   let slug: string | undefined = undefined;
@@ -44,7 +47,16 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  await redis.incr(['pageviews', 'projects', slug].join(':'));
+  await prisma.posts.update({
+    where: {
+      id: Number(slug),
+    },
+    data: {
+      view_count: {
+        increment: 1,
+      },
+    },
+  });
 
   return NextResponse.json(null, { status: 202 });
 }

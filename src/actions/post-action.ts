@@ -231,11 +231,15 @@ export async function deletePost(option: z.infer<typeof DeletePostOption>) {
 }
 
 export const fetchCounts = async (postId: string) => {
-  const redis = Redis.fromEnv();
   const prisma = new PrismaClient();
 
-  const viewCount =
-    (await redis.get<number>(['pageviews', 'projects', postId].join(':'))) ?? 0;
+  const post = await prisma.posts.findUnique({
+    where: { id: Number(postId), deleted_at: null },
+  });
+
+  if (!post) {
+    throw new Error('존재하지 않는 게시글입니다.');
+  }
 
   const commentCount = await prisma.comments.count({
     where: { post_id: Number(postId), deleted_at: null },
@@ -245,5 +249,5 @@ export const fetchCounts = async (postId: string) => {
     where: { post_id: Number(postId), is_liked: true },
   });
 
-  return { viewCount, commentCount, likeCount };
+  return { viewCount: post.view_count, commentCount, likeCount };
 };
