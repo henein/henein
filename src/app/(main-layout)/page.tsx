@@ -77,12 +77,13 @@ export default async function Home() {
         referrerPolicy="strict-origin-when-cross-origin"
         allowFullScreen
       ></iframe>
-      <h2 className="mb-6 mt-40 text-3xl font-bold">참여자</h2>
-      <div className="grid w-full grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-        <StreamerProfile
-          streamerId={StreamerId.NACHO}
-          isLive={liveStatus[StreamerId.NACHO]}
-        />
+      <h2 className="mb-6 mt-40 text-3xl font-bold">주최자</h2>
+      <StreamerProfile
+        streamerId={StreamerId.NACHO}
+        isLive={liveStatus[StreamerId.NACHO]}
+      />
+      <h2 className="mb-6  mt-40 text-3xl font-bold">참여자</h2>
+      <div className="grid w-full grid-cols-2 gap-6 md:grid-cols-5">
         <StreamerProfile
           streamerId={StreamerId.BAEKDOA}
           isLive={liveStatus[StreamerId.BAEKDOA]}
@@ -102,10 +103,6 @@ export default async function Home() {
         <StreamerProfile
           streamerId={StreamerId.YUHIHI}
           isLive={liveStatus[StreamerId.YUHIHI]}
-        />
-        <StreamerProfile
-          streamerId={StreamerId.GYEOMJI}
-          isLive={liveStatus[StreamerId.GYEOMJI]}
         />
         <StreamerProfile
           streamerId={StreamerId.NAENGIKIM}
