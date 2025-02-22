@@ -3,7 +3,7 @@ import React from 'react';
 export interface PostIconsProps {
   counts: {
     commentCount: number;
-    viewCount: number;
+    viewCount: bigint;
     likeCount: number;
   };
 }

@@ -14,7 +14,7 @@ export interface PostHeaderProps {
   counts: {
     likeCount: number;
     viewCount: number;
-    commentCount: number;
+    commentCount: bigint;
   };
 }
 
