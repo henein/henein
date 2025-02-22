@@ -43,7 +43,7 @@ const PostItem = (props: Props) => {
         <div className="flex h-5 items-center">
           {props.authorImageUrl && (
             <Image
-              className="border-default relative -left-1 mr-0.5 rounded-full border"
+              className="border-default relative -left-1 mr-0.5 aspect-square rounded-full border"
               src={props.authorImageUrl}
               alt="프로필"
               width={24}
