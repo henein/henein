@@ -15,7 +15,10 @@ export enum WorldId {
   Eos = 'eos',
   Helios = 'helios',
   Burning = 'burning',
-  Challengers = 'challengers',
+  Challengers = 'challengers1',
+  ChallengersSecond = 'challengers2',
+  ChallengersThrid = 'challengers3',
+  ChallengersForth = 'challengers4',
   Reboot = 'reboot',
 }
 
@@ -42,5 +45,8 @@ export const worlds: World[] = [
   { id: WorldId.Helios, name: '헬리오스' },
   { id: WorldId.Burning, name: '버닝' },
   { id: WorldId.Challengers, name: '챌린저스' },
+  { id: WorldId.ChallengersSecond, name: '챌린저스2' },
+  { id: WorldId.ChallengersThrid, name: '챌린저스3' },
+  { id: WorldId.ChallengersForth, name: '챌린저스4' },
   { id: WorldId.Reboot, name: '리부트' },
 ];
