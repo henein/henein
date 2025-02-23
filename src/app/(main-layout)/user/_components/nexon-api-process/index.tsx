@@ -20,7 +20,7 @@ const NexonApiProcessModal = ({ onClose }: { onClose: () => void }) => {
         pagination={{ clickable: true }}
         navigation={true}
         modules={[Keyboard, Pagination, Navigation]}
-        className="border-grey-700a h-[480px] w-full rounded-t-2xl border border-b-0 bg-white"
+        className="border-grey-700a bg-grey-900 h-[480px] w-full rounded-t-2xl border border-b-0 bg-white"
         onSlideChange={handleSlideChange}
       >
         {Array.from({ length: 6 }, (_, index) => (
@@ -30,6 +30,7 @@ const NexonApiProcessModal = ({ onClose }: { onClose: () => void }) => {
               alt=""
               width={800}
               height={480}
+              loading="eager"
             />
           </SwiperSlide>
         ))}
