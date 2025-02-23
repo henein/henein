@@ -1,10 +1,10 @@
-export const revalidate = 60;
-
 import { StreamerProfile } from '@/components';
 import { Streamer, StreamerId, Streamers } from '@/constants';
 import { ChzzkClient } from 'chzzk';
 import type { Metadata } from 'next';
 import Image from 'next/image';
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: '메무대 시즌2',
@@ -39,7 +39,7 @@ async function fetchLive(streamer: Streamer) {
         },
       },
     );
-    
+
     const station = await soopRes.json();
 
     return station.broad ? true : false;
@@ -57,7 +57,7 @@ export default async function Home() {
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col items-center leading-6">
-      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center pb-16">
+      <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center pb-16">
         <Image
           className="rounded-2xl"
           src="/images/mamudae/poster.png"
@@ -67,12 +67,23 @@ export default async function Home() {
           quality={100}
         />
       </div>
-      <h2 className="mb-6 mt-6 text-3xl font-bold">참여자</h2>
-      <div className="flex justify-between gap-1">
-        <StreamerProfile
-          streamerId={StreamerId.NACHO}
-          isLive={liveStatus[StreamerId.NACHO]}
-        />
+      <h2 className="mb-6 mt-6 text-3xl font-bold">티저</h2>
+      <iframe
+        className="aspect-video w-full max-w-3xl rounded-2xl"
+        src="https://www.youtube.com/embed/4PbzlV_Sdx0?si=CDaC7Vs3aLqbdlcC"
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      ></iframe>
+      <h2 className="mb-6 mt-40 text-3xl font-bold">주최자</h2>
+      <StreamerProfile
+        streamerId={StreamerId.NACHO}
+        isLive={liveStatus[StreamerId.NACHO]}
+      />
+      <h2 className="mb-6  mt-40 text-3xl font-bold">참여자</h2>
+      <div className="grid w-full grid-cols-2 gap-6 md:grid-cols-5">
         <StreamerProfile
           streamerId={StreamerId.BAEKDOA}
           isLive={liveStatus[StreamerId.BAEKDOA]}
@@ -92,12 +103,6 @@ export default async function Home() {
         <StreamerProfile
           streamerId={StreamerId.YUHIHI}
           isLive={liveStatus[StreamerId.YUHIHI]}
-        />
-      </div>
-      <div className="mt-4 flex justify-between gap-1">
-        <StreamerProfile
-          streamerId={StreamerId.GYEOMJI}
-          isLive={liveStatus[StreamerId.GYEOMJI]}
         />
         <StreamerProfile
           streamerId={StreamerId.NAENGIKIM}
@@ -120,7 +125,7 @@ export default async function Home() {
           isLive={liveStatus[StreamerId.JIMYEONG]}
         />
       </div>
-      <h2 className="mb-6 mt-32 text-3xl font-bold">규정</h2>
+      <h2 className="mb-6 mt-40 text-3xl font-bold">규정</h2>
       <div className="border-default bg-grey-50 dark:bg-grey-800 rounded-2xl border px-6 py-5">
         <h3 className="font-bold">시청자 지원 가능</h3>
         <ul className="list-inside list-disc">

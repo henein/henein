@@ -172,6 +172,10 @@ export const Streamers: Streamer[] = [
         platform: 'soop',
         link: 'https://ch.sooplive.co.kr/tmfrl4597'
       },
+      {
+        platform: 'chzzk',
+        link: 'https://chzzk.naver.com/99c45f06474ec38ab41d0a8f1fed3fa0'
+      }
     ],
   },
   {

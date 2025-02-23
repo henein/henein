@@ -1,4 +1,5 @@
 import { PostIcons } from './post-icons';
+import { fetchCounts } from '@/actions/post-action';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -17,8 +18,9 @@ interface Props {
   recommendNum: number;
 }
 
-const PostItem = (props: Props) => {
-  const { category, id, title, text, author, createTime, views } = props;
+const PostItem = async (props: Props) => {
+  const { category, id, title, text, author, createTime } = props;
+  const counts = await fetchCounts(id.toString());
 
   return (
     <Link
@@ -41,7 +43,7 @@ const PostItem = (props: Props) => {
         <div className="flex h-5 items-center">
           {props.authorImageUrl && (
             <Image
-              className="border-default relative -left-1 mr-0.5 rounded-full border"
+              className="border-default relative -left-1 mr-0.5 aspect-square rounded-full border"
               src={props.authorImageUrl}
               alt="프로필"
               width={24}
@@ -51,7 +53,7 @@ const PostItem = (props: Props) => {
           <span>{author}</span>
           <span className="ml-1 text-gray-400">· {createTime}</span>
         </div>
-        <PostIcons commentCount={props.commentNum} />
+        <PostIcons counts={counts} />
       </div>
     </Link>
   );

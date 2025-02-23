@@ -12,8 +12,7 @@ export async function POST(
   try {
     const prisma = new PrismaClient();
     const { ocid } = await params;
-    const token =
-      'live_90e0e77331447dc67f54c2227ec4f32262e1f345af744072fc812196a0c16a750ab3917af616f62a42e3f9f2e57e4e7e';
+    const token = `${process.env.NEXON_LIVE_API_KEY}`;
 
     // 1. ocid로 조회
     const [detail, stat] = await Promise.all([
