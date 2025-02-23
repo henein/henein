@@ -22,17 +22,15 @@ const PostItem = (props: Props) => {
 
   return (
     <Link
-      className="flex w-full flex-col gap-6 bg-gray-100 px-6 py-5 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+      className="flex w-full flex-col gap-4 bg-gray-100 px-6 py-5 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
       href={`/post/${id}`}
     >
       {/* 게시판 정보 */}
       <div className="flex h-16 justify-between">
         <div className="flex w-full flex-col justify-between">
-          <span className="text-xs font-normal text-gray-500">{category}</span>
-          <h2 className="truncate text-ellipsis font-bold text-gray-900 dark:text-white">
-            {title}
-          </h2>
-          <p className="truncate text-ellipsis text-sm font-normal">
+          <span className="text-secondary text-xs">{category}</span>
+          <h2 className="truncate text-ellipsis font-bold">{title}</h2>
+          <p className="text-secondary truncate text-ellipsis text-sm">
             {text || '...'}
           </p>
         </div>

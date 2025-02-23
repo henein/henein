@@ -111,7 +111,7 @@ const PostPage = async ({ params }: Props) => {
           </Button>
         )}
       </div>
-      <CommentBox postId={post.id} />
+      <CommentBox postId={post.id} userId={userId ?? undefined} />
     </div>
   );
 };

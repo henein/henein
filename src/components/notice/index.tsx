@@ -7,7 +7,7 @@ const Notice = () => {
   const data = use(fetchNotices());
 
   return (
-    <div className="bg-grey-800 border-grey-700a m-[0_auto] mt-6 box-content flex w-full max-w-[1024px] items-center justify-center rounded-2xl border py-2">
+    <div className="bg-grey-800 border-grey-700a mx-auto mt-6 box-content flex w-full max-w-5xl items-center justify-center rounded-2xl border py-2">
       <div className="h-6 overflow-hidden">
         <SlideBox notices={data} />
       </div>

@@ -1,11 +1,13 @@
 import { CommentForm } from './comment-form';
 import { Card } from '@/components/card';
 import { CardHeader } from '@/components/card-header';
+import { IconButton } from '@/components/icon-button';
 import { getTimeDifference } from '@/utils/time';
 import { PrismaClient } from '@prisma/client';
 
 export interface CommentBoxProps {
   postId: bigint;
+  userId?: string;
 }
 
 export const CommentBox = async (props: CommentBoxProps) => {
@@ -41,6 +43,15 @@ export const CommentBox = async (props: CommentBoxProps) => {
                   className="text-secondary text-xs"
                   suppressHydrationWarning
                 >{` · ${getTimeDifference(comment.created_at.toISOString())}`}</p>
+                {props.userId && props.userId === comment.author_id && (
+                  <div className="ml-auto">
+                    <IconButton
+                      className="text-secondary p-1"
+                      icon="more_vert"
+                      size={20}
+                    />
+                  </div>
+                )}
               </div>
               <p className="text-sm">{comment.content}</p>
             </div>

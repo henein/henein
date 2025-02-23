@@ -334,6 +334,15 @@
     'opsz' 20;
 }
 
+@utility icon-24 {
+  font-size: 24px;
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
 @utility scrollbar-hide {
   scrollbar-width: none;
   -ms-overflow-style: none;
