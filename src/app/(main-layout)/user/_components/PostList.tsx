@@ -17,9 +17,6 @@ const PostList = ({ posts, type }: { posts: any[]; type: string }) => {
             author={post.users.profiles?.nickname ?? ''}
             authorImageUrl={post.users.profiles?.image_url ?? undefined}
             createTime={getTimeDifference(post.created_at.toISOString())}
-            views={0}
-            commentNum={post._count.comments}
-            recommendNum={0}
           />
         ))
       ) : (

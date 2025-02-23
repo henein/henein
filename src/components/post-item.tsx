@@ -13,9 +13,6 @@ interface Props {
   author: string;
   authorImageUrl?: string;
   createTime: string;
-  views: number;
-  commentNum: number;
-  recommendNum: number;
 }
 
 const PostItem = async (props: Props) => {
