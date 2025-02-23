@@ -6,7 +6,7 @@ const RecordPage = () => {
   return (
     <div className="mx-auto my-auto h-full w-full max-w-[1024px]">
       <Chart />
-      <div className="mt-4 flex flex-wrap justify-around">
+      <div className="mt-4 flex flex-wrap justify-around gap-y-4">
         <Team type="STAN" />
         <Team type="MAYA" />
       </div>

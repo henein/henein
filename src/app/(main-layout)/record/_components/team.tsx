@@ -8,18 +8,18 @@ interface Props {
 const Team = async (props: Props) => {
   const data = await fetchTeam(props.type);
 
-  console.log(data);
   return (
     <div className="flex flex-col items-center gap-3">
       <h2 className="text-2xl font-bold">
         팀 {props.type === 'STAN' ? '장로스탄' : '마야'}
       </h2>
-      <div className="flex gap-8">
+      <div className="flex flex-wrap justify-center gap-x-8">
         {data.map((streamer) => (
           <StreamerBtn
             key={streamer.id}
             id={streamer.id}
             profiles={streamer.profiles}
+            character={streamer.characters}
           />
         ))}
       </div>
