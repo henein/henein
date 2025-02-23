@@ -356,6 +356,7 @@ model characters {
   ocid       String     @unique
   users      users?     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   profiles   profiles[]
+  streamer   streamer[]
 
   @@schema("henein")
 }
@@ -406,16 +407,20 @@ model profiles {
   likes            likes[]
   characters       characters? @relation(fields: [master_character], references: [id], onDelete: Cascade)
   users            users       @relation(fields: [id], references: [id], onDelete: Cascade, map: "user_id_fkey")
+  streamer         streamer[]
 
   @@schema("henein")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model streamer {
-  id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id  String? @db.Uuid
-  nickname String  @unique
-  users    users?  @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profile_id   String       @db.Uuid
+  character_id String?      @db.Uuid
+  team         mamudae_team
+  characters   characters?  @relation(fields: [character_id], references: [id], onDelete: Cascade)
+  profiles     profiles     @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+  users        users        @relation(fields: [profile_id], references: [id], onUpdate: Restrict, map: "streamer_user_id_fkey")
 
   @@schema("mamudae")
 }
@@ -482,4 +487,12 @@ enum one_time_token_type {
   phone_change_token
 
   @@schema("auth")
+}
+
+/// This enum is commented in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+enum mamudae_team {
+  STAN
+  MAYA
+
+  @@schema("mamudae")
 }
