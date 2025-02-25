@@ -1,16 +1,30 @@
+import { characters as Character, profiles as Profile } from '@prisma/client';
 import { create } from 'zustand';
 
-type stateType = { id: string | null; character_id: string | null };
+type GetType = 'level' | 'combat';
+export type StateType = {
+  streamerId: string;
+  profile: Profile;
+  character: Character | null;
+};
 
 interface Store {
-  state: stateType;
-  select: (data: stateType) => void;
+  state: StateType[];
+  type: GetType;
+  select: (data: StateType) => void;
+  unselect: (id: string) => void;
+  selectType: (type: GetType) => void;
 }
 
 const useRecordSelect = create<Store>()((set) => ({
-  state: { id: null, character_id: null },
-  select: (data) =>
-    set(() => ({ state: { id: data.id, character_id: data.character_id } })),
+  state: [],
+  type: 'level',
+  select: (data) => set((prev) => ({ state: [...prev.state, data] })),
+  unselect: (selectId) =>
+    set((prev) => ({
+      state: prev.state.filter((item) => item.streamerId !== selectId),
+    })),
+  selectType: (type) => set(() => ({ type })),
 }));
 
 export default useRecordSelect;

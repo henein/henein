@@ -17,8 +17,8 @@ const Team = async (props: Props) => {
         {data.map((streamer) => (
           <StreamerBtn
             key={streamer.id}
-            id={streamer.id}
-            profiles={streamer.profiles}
+            streamerId={streamer.id}
+            profile={streamer.profiles}
             character={streamer.characters}
           />
         ))}
