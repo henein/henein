@@ -20,9 +20,9 @@ export const MamudaeHeader = () => {
               </svg>
             </Link>
             <div className="flex items-center">
-              {/* <Link href="/mamudae/prize"> */}
-              <NavigationItem isWIP>상금</NavigationItem>
-              {/* </Link> */}
+              <Link href="/mamudae/prize">
+                <NavigationItem>상금</NavigationItem>
+              </Link>
               <Link href="/mamudae/boss">
                 <NavigationItem>보스</NavigationItem>
               </Link>
@@ -31,10 +31,10 @@ export const MamudaeHeader = () => {
               {/* </Link> */}
               <Link href="/community">
                 <NavigationItem>커뮤니티</NavigationItem>
-              </Link> 
+              </Link>
             </div>
           </div>
-          <AccountButton />
+        <AccountButton />
         </div>
       </div>
     </header>

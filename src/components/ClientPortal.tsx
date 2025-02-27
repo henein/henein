@@ -33,7 +33,7 @@ const ClientPortal = ({ children, show, onClose }: Props) => {
           onClick={onClose}
         >
           <div
-            className="rounded-md bg-white p-6 shadow-md"
+            className="rounded-md bg-white"
             onClick={(e) => e.stopPropagation()}
           >
             {children}

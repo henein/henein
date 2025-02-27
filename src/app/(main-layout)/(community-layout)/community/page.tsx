@@ -118,9 +118,6 @@ const CommunityCategoryPage = async (props: {
             author={post.users.profiles?.nickname ?? ''}
             authorImageUrl={post.users.profiles?.profile_img ?? undefined}
             createTime={getTimeDifference(post.created_at.toISOString())}
-            views={0}
-            commentNum={post._count.comments}
-            recommendNum={0}
           />
         ))}
       </div>
