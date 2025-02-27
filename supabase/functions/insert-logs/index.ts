@@ -5,13 +5,14 @@ const supabase = createClient(
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
 );
 
-function getQueryParams(url: string, ocid: string, token: string) {
+function getQueryParams(url: string, token: string) {
   const urlObj = new URL(url);
   const queryParams = urlObj.searchParams;
-  const queryOcidParam = queryParams.get(ocid);
   const queryTokenParam = queryParams.get(token);
 
-  return { ocid: queryOcidParam ?? "", token: queryTokenParam ?? "" };
+  return {
+    token: queryTokenParam ?? "",
+  };
 }
 
 async function fetchNexonApis(
@@ -37,6 +38,7 @@ async function fetchNexonApis(
     "hexamatrix",
     "hexamatrix-stat",
     "dojang",
+    "basic",
   ];
 
   // 모든 API 요청을 병렬 실행
@@ -71,16 +73,17 @@ async function fetchNexonApis(
   );
 }
 
-async function postNexonData(response: any) {
+async function postNexonData(
+  created_at: string,
+  character_id: string,
+  response: any,
+) {
   try {
     const { error } = await supabase.schema("mamudae").from("logs")
       .insert({
-        "created_at": new Date().toISOString(),
-        "character_id": "2d0c9e0a-3666-4c81-894d-63461ac4abdb",
-        "level": 3,
-        "exp": "12",
-        "exp_rate": "31",
-        "combat": 55,
+        created_at,
+        character_id,
+        "basic": response["basic"],
         "popularity": response["popularity"],
         "stat": response["stat"],
         "hyper_stat": response["hyper-stat"],
@@ -111,14 +114,22 @@ async function postNexonData(response: any) {
 
 async function handlePostRequest(req: Request) {
   try {
-    const { ocid, token } = getQueryParams(req.url, "ocid", "token");
-    const response = await fetchNexonApis({ ocid, token });
+    const { token } = getQueryParams(req.url, "token");
 
-    await postNexonData(response);
+    const { data: characters, error } = await supabase
+      .schema("mamudae")
+      .from("streamer_with_character")
+      .select("*");
 
-    const { data } = await supabase.schema("mamudae").from("logs").select("*");
+    if (error) throw new Error(error.message);
 
-    return new Response(JSON.stringify({ data }), {
+    const created_at = new Date().toISOString();
+    for (const character of characters) {
+      const response = await fetchNexonApis({ ocid: character.ocid, token });
+      await postNexonData(created_at, character.id, response);
+    }
+
+    return new Response(JSON.stringify({ message: "success edge functions" }), {
       headers: { "Content-Type": "application/json" },
       status: 200,
     });
@@ -130,9 +141,9 @@ async function handlePostRequest(req: Request) {
 Deno.serve(async (req) => {
   const { method } = req;
 
-  // if (method === "POST") {
-  return await handlePostRequest(req);
-  // }
+  if (method === "POST") {
+    return await handlePostRequest(req);
+  }
 
-  // return new Response("Method not allowed", { status: 405 });
+  return new Response("Method not allowed", { status: 405 });
 });
