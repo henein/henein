@@ -48,7 +48,7 @@ const OverlayPage = async ({ params, searchParams }: Props) => {
 
   return (
     <div className="p-4">
-      <Refresher />
+      {/* <Refresher /> */}
       <div className="bg-grey-800 w-full rounded-2xl px-5 py-4 opacity-95 shadow-md">
         <div className="flex h-8 items-center justify-between">
           <div className="flex items-center gap-0.5">
