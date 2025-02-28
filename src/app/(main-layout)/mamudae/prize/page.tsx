@@ -95,59 +95,11 @@ const PrizePage = () => {
     <div className="mx-auto w-full max-w-5xl">
       <h2 className="my-6 pl-1 text-3xl font-bold">상금</h2>
       <div className="flex">
-        {/* 누렁즈 */}
-        <div className="flex flex-auto flex-col items-center gap-5">
-          <strong className="text-2xl font-bold">누렁단</strong>
-          <div
-            className="bg-grey-800 hover:bg-grey-700 active:bg-grey-600 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)]"
-            onClick={() => openTeamModal('STAN')}
-          >
-            ₩
-            {stanPrizes
-              .reduce(
-                (acc, cur) =>
-                  acc +
-                  cur.prizes.reduce((sum, prize) => sum + prize.amount, 0),
-                0,
-              )
-              .toLocaleString('ko-KR')}
-          </div>
-          <div>
-            <UserColumn
-              data={stanPrizes}
-              streamerId={StreamerId.JIMYEONG}
-              onClick={openStreamerModal}
-            />
-            <UserColumn
-              data={stanPrizes}
-              streamerId={StreamerId.JJANGJJUNG}
-              onClick={openStreamerModal}
-            />
-            <UserColumn
-              data={stanPrizes}
-              streamerId={StreamerId.NAMJIO}
-              onClick={openStreamerModal}
-            />
-            <UserColumn
-              data={stanPrizes}
-              streamerId={StreamerId.YUHIHI}
-              onClick={openStreamerModal}
-            />
-            <UserColumn
-              data={stanPrizes}
-              streamerId={StreamerId.BAEKDOA}
-              onClick={openStreamerModal}
-            />
-          </div>
-        </div>
-
-        <div className="border-default mx-6 w-0 border-l" />
-
         {/* 절절승절절배 */}
         <div className="flex flex-auto flex-col items-center gap-5">
           <strong className="text-2xl font-bold">절절승절절배</strong>
           <div
-            className="bg-grey-800 hover:bg-grey-700 active:bg-grey-600 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)]"
+            className="bg-[#0075CA]/50 hover:bg-[#0075CA]/60 active:bg-[#0075CA]/70 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)]"
             onClick={() => openTeamModal('MAYA')}
           >
             ₩
@@ -184,6 +136,54 @@ const PrizePage = () => {
             <UserColumn
               data={mayaPrizes}
               streamerId={StreamerId.KONGJU}
+              onClick={openStreamerModal}
+            />
+          </div>
+        </div>
+        
+        <div className="border-default mx-6 w-0 border-l" />
+
+        {/* 누렁즈 */}
+        <div className="flex flex-auto flex-col items-center gap-5">
+          <strong className="text-2xl font-bold">누렁단</strong>
+          <div
+            className="bg-[#DE9300]/50 hover:bg-[#DE9300]/60 active:bg-[#DE9300]/70 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)]"
+            onClick={() => openTeamModal('STAN')}
+          >
+            ₩
+            {stanPrizes
+              .reduce(
+                (acc, cur) =>
+                  acc +
+                  cur.prizes.reduce((sum, prize) => sum + prize.amount, 0),
+                0,
+              )
+              .toLocaleString('ko-KR')}
+          </div>
+          <div>
+            <UserColumn
+              data={stanPrizes}
+              streamerId={StreamerId.JIMYEONG}
+              onClick={openStreamerModal}
+            />
+            <UserColumn
+              data={stanPrizes}
+              streamerId={StreamerId.JJANGJJUNG}
+              onClick={openStreamerModal}
+            />
+            <UserColumn
+              data={stanPrizes}
+              streamerId={StreamerId.NAMJIO}
+              onClick={openStreamerModal}
+            />
+            <UserColumn
+              data={stanPrizes}
+              streamerId={StreamerId.YUHIHI}
+              onClick={openStreamerModal}
+            />
+            <UserColumn
+              data={stanPrizes}
+              streamerId={StreamerId.BAEKDOA}
               onClick={openStreamerModal}
             />
           </div>
