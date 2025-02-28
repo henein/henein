@@ -97,7 +97,7 @@ const PrizePage = () => {
       <div className="flex">
         {/* 누렁즈 */}
         <div className="flex flex-auto flex-col items-center gap-5">
-          <strong className="text-2xl font-bold">누렁즈</strong>
+          <strong className="text-2xl font-bold">누렁단</strong>
           <div
             className="bg-grey-800 hover:bg-grey-700 active:bg-grey-600 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)]"
             onClick={() => openTeamModal('STAN')}
