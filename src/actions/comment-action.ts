@@ -1,7 +1,7 @@
 'use server';
 
+import { prisma } from '@/utils/prisma';
 import { createClient } from '@/utils/supabase/server';
-import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 
 const WriteCommentOption = z.object({
@@ -18,7 +18,6 @@ export async function writeComment(option: z.infer<typeof WriteCommentOption>) {
     const validOption = WriteCommentOption.parse(option);
 
     const supabase = await createClient();
-    const prisma = new PrismaClient();
 
     const {
       data: { user },

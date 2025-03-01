@@ -1,5 +1,5 @@
+import { prisma } from '@/utils/prisma';
 import { createClient } from '@/utils/supabase/server';
-import { PrismaClient } from '@prisma/client';
 import { notFound } from 'next/navigation';
 import { NextResponse } from 'next/server';
 
@@ -12,7 +12,6 @@ export async function GET(request: Request) {
   if (code) {
     // Supabase, db 클라이언트 생성
     const supabase = await createClient();
-    const prisma = new PrismaClient();
 
     // 인증 코드로 세션 교환
     const {

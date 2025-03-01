@@ -1,5 +1,5 @@
+import { prisma } from '@/utils/prisma';
 import { createClient } from '@/utils/supabase/server';
-import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
@@ -8,7 +8,6 @@ export async function GET(
 ) {
   try {
     const { uid } = await params;
-    const prisma = new PrismaClient();
     // DB 작업 요청
     const profile = await prisma.profiles.findFirst({
       where: { id: uid },
@@ -35,7 +34,6 @@ export async function PUT(
     const image = formData.get('image');
 
     const supabase = await createClient();
-    const prisma = new PrismaClient();
 
     // 이미지 storage 저장
     let storageImageUrl = null;

@@ -1,16 +1,14 @@
 import { CommentForm } from './comment-form';
 import { Card } from '@/components/card';
 import { CardHeader } from '@/components/card-header';
+import { prisma } from '@/utils/prisma';
 import { getTimeDifference } from '@/utils/time';
-import { PrismaClient } from '@prisma/client';
 
 export interface CommentBoxProps {
   postId: bigint;
 }
 
 export const CommentBox = async (props: CommentBoxProps) => {
-  const prisma = new PrismaClient();
-
   const comments = await prisma.comments.findMany({
     where: {
       post_id: props.postId,

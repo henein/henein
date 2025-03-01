@@ -1,10 +1,8 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
+import { prisma } from "@/utils/prisma";
 
 export const fetchPrizes = async () => {
-  const prisma = new PrismaClient();
-
   const streamers = await prisma.streamer.findMany({
     include: { daily_mission_prizes: { include: { daily_missions: true } } },
   });

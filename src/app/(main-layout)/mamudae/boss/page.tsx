@@ -1,7 +1,7 @@
 import { BossDifficultyLabel, BossIcon, BossImage } from '@/components';
 import { BossDifficulty, BossId } from '@/constants';
-import { getTimeDifference, getTimeString } from '@/utils/time';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/utils/prisma';
+import { getTimeString } from '@/utils/time';
 import classNames from 'classnames';
 import type { Metadata } from 'next';
 
@@ -106,8 +106,6 @@ export const metadata: Metadata = {
 };
 
 const MamudaeBossPage = async () => {
-  const prisma = new PrismaClient();
-
   const bossData = await prisma.bosses.findMany({
     include: { streamer: true },
   });
@@ -115,7 +113,7 @@ const MamudaeBossPage = async () => {
   return (
     <div className="mx-auto w-full max-w-5xl">
       <h2 className="my-6 pl-1 text-3xl font-bold">보스 현황</h2>
-      <div className="border-dark-border bg-black-900 flex flex-col gap-4 rounded-2xl border px-6 py-5">
+      <div className="border-dark-border bg-black-900 flex flex-col gap-4 rounded-2xl border px-6 py-5 md:w-5xl">
         {BossList.map((bosses, index) => (
           <div
             key={index}
@@ -152,7 +150,7 @@ const MamudaeBossPage = async () => {
                     key={boss.bossId + boss.difficulty}
                     className="flex items-center gap-6 px-6 py-5"
                   >
-                    <div className="relative">
+                    <div className="relative mr-4">
                       <BossIcon bossId={boss.bossId} />
                       <BossDifficultyLabel
                         className="absolute -bottom-2 -left-1"

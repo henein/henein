@@ -1,10 +1,9 @@
 'use server';
 
+import { prisma } from '@/utils/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { editorExtensions } from '@/utils/tiptap';
-import { PrismaClient } from '@prisma/client';
 import { generateText } from '@tiptap/react';
-import { Redis } from '@upstash/redis';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
@@ -14,8 +13,6 @@ const FetchPostOption = z.object({
 
 export async function fetchPost(option: z.infer<typeof FetchPostOption>) {
   const validOption = FetchPostOption.parse(option);
-
-  const prisma = new PrismaClient();
 
   const post = await prisma.posts.findUnique({
     where: { id: Number(validOption.id) },
@@ -56,7 +53,6 @@ export async function writePost(option: z.infer<typeof WritePostOption>) {
     const validOption = WritePostOption.parse(option);
 
     const supabase = await createClient();
-    const prisma = new PrismaClient();
 
     const {
       data: { user },
@@ -159,7 +155,6 @@ export async function modifyPost(option: z.infer<typeof ModifyPostOption>) {
     const validOption = ModifyPostOption.parse(option);
 
     const supabase = await createClient();
-    const prisma = new PrismaClient();
 
     const {
       data: { user },
@@ -206,7 +201,6 @@ export async function deletePost(option: z.infer<typeof DeletePostOption>) {
   const validOption = DeletePostOption.parse(option);
 
   const supabase = await createClient();
-  const prisma = new PrismaClient();
 
   const {
     data: { user },
@@ -231,8 +225,6 @@ export async function deletePost(option: z.infer<typeof DeletePostOption>) {
 }
 
 export const fetchCounts = async (postId: string) => {
-  const prisma = new PrismaClient();
-
   const post = await prisma.posts.findUnique({
     where: { id: Number(postId), deleted_at: null },
   });

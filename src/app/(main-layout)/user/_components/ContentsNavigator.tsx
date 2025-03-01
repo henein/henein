@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/utils/prisma';
 import clsx from 'clsx';
 import Link from 'next/link';
 import React, { use } from 'react';
@@ -56,8 +56,6 @@ const ContentsNavigator = ({ uid, type, isMyProfile }: Props) => {
 export default ContentsNavigator;
 
 const fetchCount = async (uid: string) => {
-  const prisma = new PrismaClient();
-
   try {
     const postsCount = await prisma.posts.count({ where: { author_id: uid } });
     const commentsPostsCount = await prisma.comments.groupBy({

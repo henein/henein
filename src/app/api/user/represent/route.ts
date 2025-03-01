@@ -1,9 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/utils/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function PATCH(request: NextRequest) {
   try {
-    const prisma = new PrismaClient();
     const { uid, char_id } = await request.json(); // body에서 token 받기
 
     const profile = await prisma.profiles.findUnique({

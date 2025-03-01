@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/utils/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
@@ -7,7 +7,6 @@ export async function GET(
 ) {
   try {
     const { uid } = await params;
-    const prisma = new PrismaClient();
 
     // DB 작업 요청
     const characters = await prisma.characters.findMany({

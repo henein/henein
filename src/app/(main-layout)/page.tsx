@@ -55,9 +55,10 @@ export default async function Home() {
     })),
   ).then((results) => Object.assign({}, ...results));
 
+  // min-h-[calc(100vh-8rem)]
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col items-center leading-6">
-      <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center pb-16">
+      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center pb-16">
         <Image
           className="rounded-2xl"
           src="/images/mamudae/poster.png"

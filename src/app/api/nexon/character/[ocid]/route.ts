@@ -1,7 +1,7 @@
 import { getCharacterDetail } from '@/utils/nexon/getCharacterDetail';
 import { getCharacterStat } from '@/utils/nexon/getCharacterStat';
 import { handleNexonApiError } from '@/utils/nexon/handleNexonApiError';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/utils/prisma';
 import dayjs from 'dayjs';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -10,7 +10,6 @@ export async function POST(
   { params }: { params: Promise<{ ocid: string }> },
 ) {
   try {
-    const prisma = new PrismaClient();
     const { ocid } = await params;
     const token = `${process.env.NEXON_LIVE_API_KEY}`;
 
