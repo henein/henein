@@ -24,7 +24,7 @@ export const getTimeDifference = (createTime: string) => {
 
 export const getTimeString = (isoString: string) => {
   return DateTime.fromISO(isoString, {
-    zone: 'KST',
+    zone: 'asia/seoul',
   })
     .setZone(DateTime.local().zoneName)
     .toFormat('yyLLdd HH:mm');
