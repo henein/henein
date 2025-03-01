@@ -15,6 +15,7 @@ export const fetchPrizes = async () => {
       title: prize.daily_missions.title,
       createdAt: prize.daily_missions.created_at,
       amount: prize.amount,
+      isWin: prize.is_win,
     })),
   }));
 };

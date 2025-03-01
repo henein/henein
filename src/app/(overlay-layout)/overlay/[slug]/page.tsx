@@ -41,7 +41,14 @@ const OverlayPage = async ({ params, searchParams }: Props) => {
       0,
     );
 
-  const winCount = myPrize?.prizes.length ?? 0;
+  let winCount = 0
+
+  myPrize?.prizes.forEach((prize) => {
+    if (prize.isWin) {
+      winCount++;
+    }
+  });
+
   const loseCount = (await prisma.daily_missions.count()) - winCount;
 
   return (

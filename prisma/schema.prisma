@@ -455,6 +455,7 @@ model daily_mission_prizes {
   streamer_id    String         @db.Uuid
   amount         Int
   mission_id     BigInt
+  is_win         Boolean        @default(false)
   daily_missions daily_missions @relation(fields: [mission_id], references: [id], onDelete: Cascade)
   streamer       streamer       @relation(fields: [streamer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
