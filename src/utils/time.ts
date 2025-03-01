@@ -27,5 +27,5 @@ export const getTimeString = (isoString: string) => {
     zone: 'asia/seoul',
   })
     .setZone(DateTime.local().zoneName)
-    .toFormat('yyLLdd HH:mm');
+    .toFormat('L월 d일 HH:mm');
 };
