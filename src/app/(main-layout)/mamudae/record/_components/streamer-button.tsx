@@ -1,23 +1,17 @@
 'use client';
 
 import useRecordSelect from '@/store/zustand/useRecordSelect';
-import { characters as Characters, profiles as Profiles } from '@prisma/client';
+import { profiles as Profile, streamer as Streamer } from '@prisma/client';
 import clsx from 'clsx';
 import Image from 'next/image';
 import React from 'react';
 
-interface Props {
-  streamerId: string;
-  profile: Profiles;
-  character: Characters | null;
-}
-
-const StreamerBtn = (props: Props) => {
+const StreamerBtn = (props: Streamer & { profiles: Profile }) => {
   const { state, select, unselect } = useRecordSelect();
-  const isSelect = state.find((item) => item.streamerId === props.streamerId);
+  const isSelect = state.find((item) => item.nickname === props.nickname);
 
   const handleClick = () => {
-    if (isSelect) return unselect(props.streamerId);
+    if (isSelect) return unselect(props.id);
     return select(props);
   };
 
@@ -27,7 +21,7 @@ const StreamerBtn = (props: Props) => {
       onClick={handleClick}
     >
       <Image
-        src={props.profile.profile_img || '/images/dark-defaultImg.svg'}
+        src={props.profiles.profile_img || '/images/dark-defaultImg.svg'}
         alt="streamer"
         width={48}
         height={48}
