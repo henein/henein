@@ -1,6 +1,6 @@
 import { BossDifficultyLabel, BossIcon, BossImage } from '@/components';
 import { BossDifficulty, BossId } from '@/constants';
-import { getTimeDifference } from '@/utils/time';
+import { getTimeDifference, getTimeString } from '@/utils/time';
 import { PrismaClient } from '@prisma/client';
 import classNames from 'classnames';
 import type { Metadata } from 'next';
@@ -149,40 +149,60 @@ const MamudaeBossPage = async () => {
                     key={boss.bossId + boss.difficulty}
                     className="flex items-center gap-6 px-6 py-5"
                   >
-                    <BossIcon bossId={boss.bossId} />
-                    <BossDifficultyLabel difficulty={boss.difficulty} isMini />
-                    <p className="flex-1 text-center">
+                    <div className="relative">
+                      <BossIcon bossId={boss.bossId} />
+                      <BossDifficultyLabel
+                        className="absolute -bottom-2 -left-1"
+                        difficulty={boss.difficulty}
+                        isMini
+                      />
+                    </div>
+                    <p className="text-secondary flex flex-1 flex-col items-center text-center">
                       {left ? (
                         <>
                           <span
                             className={classNames(
-                              'mr-1 text-sm font-bold',
-                              winner === left && 'text-brand',
+                              'flex items-center text-sm',
+                              winner === left
+                                ? 'text-brand mr-1 font-bold'
+                                : 'text-primary font-semibold',
                             )}
                           >
+                            {winner === left && (
+                              <span className="icon icon-16-fill mr-0.5">
+                                crown
+                              </span>
+                            )}
                             {left.streamer.nickname}
                           </span>
-                          <span className="text-[10px]">
-                            {getTimeDifference(left.created_at.toISOString())}
+                          <span className="flex text-xs">
+                            {getTimeString(left.created_at.toISOString())}
                           </span>
                         </>
                       ) : (
                         '-'
                       )}
                     </p>
-                    <p className="flex-1 text-center">
+                    <p className="text-secondary flex flex-1 flex-col items-center text-center">
                       {right ? (
                         <>
                           <span
                             className={classNames(
-                              'mr-1 text-sm  font-bold',
-                              winner === right && 'text-brand',
+                              'flex items-center text-sm',
+                              winner === right
+                                ? 'text-brand mr-1 font-bold'
+                                : 'text-primary font-semibold',
                             )}
                           >
+                            {winner === right && (
+                              <span className="icon icon-16-fill mr-0.5">
+                                crown
+                              </span>
+                            )}
                             {right.streamer.nickname}
                           </span>
-                          <span className="text-[10px]">
-                            {getTimeDifference(right.created_at.toISOString())}
+                          <span className="flex text-xs">
+                            {getTimeString(right.created_at.toISOString())}
                           </span>
                         </>
                       ) : (

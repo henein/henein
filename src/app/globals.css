@@ -325,10 +325,10 @@
     'opsz' 16;
 }
 
-@utility icon-16 {
+@utility icon-16-fill {
   font-size: 16px;
   font-variation-settings:
-    'FILL' 0,
+    'FILL' 1,
     'wght' 400,
     'GRAD' 0,
     'opsz' 16;
@@ -338,6 +338,15 @@
   font-size: 20px;
   font-variation-settings:
     'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 20;
+}
+
+@utility icon-20-fill {
+  font-size: 20px;
+  font-variation-settings:
+    'FILL' 1,
     'wght' 400,
     'GRAD' 0,
     'opsz' 20;
