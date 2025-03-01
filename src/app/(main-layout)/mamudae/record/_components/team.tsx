@@ -1,5 +1,5 @@
+import { prisma } from '@/utils/prisma';
 import StreamerBtn from './streamer-button';
-import { PrismaClient } from '@prisma/client';
 import React from 'react';
 
 interface Props {
@@ -30,8 +30,6 @@ const Team = async (props: Props) => {
 export default Team;
 
 const fetchTeam = async (type: 'STAN' | 'MAYA') => {
-  const prisma = new PrismaClient();
-
   try {
     const data = await prisma.streamer.findMany({
       where: {

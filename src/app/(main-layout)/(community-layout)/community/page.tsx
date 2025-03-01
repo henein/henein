@@ -1,12 +1,10 @@
-import { Button } from '@/components';
 import { PaginationLink } from '@/components/pagination/pagination-link';
 import PostItem from '@/components/post-item';
+import { prisma } from '@/utils/prisma';
 import { getTimeDifference } from '@/utils/time';
 import { editorExtensions } from '@/utils/tiptap';
-import { PrismaClient } from '@prisma/client';
 import { generateText } from '@tiptap/react';
 import { Metadata, ResolvingMetadata } from 'next';
-import Link from 'next/link';
 import React from 'react';
 
 const MAX_POST_COUNT = 20;
@@ -27,8 +25,6 @@ export async function generateMetadata(
       title: '전체',
     };
   }
-
-  const prisma = new PrismaClient();
 
   const category = await prisma.categories.findUnique({
     where: {
@@ -70,8 +66,6 @@ const CommunityCategoryPage = async (props: {
 
   const category = searchParams.category as string | undefined;
   const page = Number(searchParams.page ?? 1);
-
-  const prisma = new PrismaClient();
 
   const posts = await prisma.posts.findMany({
     include: {

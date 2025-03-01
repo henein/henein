@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from "@/utils/prisma";
 
 export const fetchPostsFromType = async (uid: string, type: string) => {
-  const prisma = new PrismaClient();
-
   // type에 따라 조건 분기
   if (type === 'post') {
     // 내가 작성한 게시글

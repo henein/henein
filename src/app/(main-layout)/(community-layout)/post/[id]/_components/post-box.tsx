@@ -1,9 +1,9 @@
+import { prisma } from '@/utils/prisma';
 import Like from './like';
 import { PostHeader } from './post-header';
 import { Card } from '@/components/card';
 import { createClient } from '@/utils/supabase/server';
 import { proseStyles } from '@/utils/tiptap';
-import { PrismaClient } from '@prisma/client';
 import classNames from 'classnames';
 import React from 'react';
 
@@ -53,7 +53,6 @@ export const PostBox = async (props: PostBoxProps) => {
 };
 
 const getRecommended = async (postId: number) => {
-  const prisma = new PrismaClient();
   const supabase = await createClient();
 
   const {

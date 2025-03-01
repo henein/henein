@@ -1,13 +1,11 @@
 'use server';
 
+import { prisma } from '@/utils/prisma';
 import { createClient } from '@/utils/supabase/server';
-import { PrismaClient } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
 
 export async function patchLike(postId: number) {
   try {
     const supabase = await createClient();
-    const prisma = new PrismaClient();
 
     const {
       data: { user },

@@ -4,17 +4,14 @@ import {
   CharacterSignatureType,
   NexonAccountListType,
 } from '@/utils/nexon/returnType';
+import { prisma } from '@/utils/prisma';
 import { createClient } from '@/utils/supabase/server';
-import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const prisma = new PrismaClient();
     const { token } = await request.json();
-
-    console.log(token);
 
     // 유저 로그인 확인
     const {

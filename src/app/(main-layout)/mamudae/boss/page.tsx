@@ -1,7 +1,7 @@
 import { BossDifficultyLabel, BossIcon, BossImage } from '@/components';
 import { BossDifficulty, BossId } from '@/constants';
-import { getTimeDifference, getTimeString } from '@/utils/time';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/utils/prisma';
+import { getTimeString } from '@/utils/time';
 import classNames from 'classnames';
 import type { Metadata } from 'next';
 
@@ -106,8 +106,6 @@ export const metadata: Metadata = {
 };
 
 const MamudaeBossPage = async () => {
-  const prisma = new PrismaClient();
-
   const bossData = await prisma.bosses.findMany({
     include: { streamer: true },
   });

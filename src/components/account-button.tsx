@@ -4,7 +4,7 @@ import { Card } from './card';
 import { NavigationItem } from './navigation-item';
 import { fetchProfile } from '@/actions/profile-action';
 import { createClient } from '@/utils/supabase/client';
-import { PrismaClient, profiles } from '@prisma/client';
+import { profiles } from '@prisma/client';
 import { User } from '@supabase/supabase-js';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -68,7 +68,7 @@ export const AccountButton = () => {
             onClick={() => setIsOpen(!isOpen)}
           >
             <Image
-              className='aspect-square'
+              className="aspect-square"
               src={profile?.profile_img ?? '/images/dark-defaultImg.svg'}
               alt={''}
               width={32}

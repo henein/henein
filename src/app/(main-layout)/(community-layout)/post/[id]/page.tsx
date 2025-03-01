@@ -2,11 +2,11 @@ import { CommentBox } from './_components/comment-box';
 import { PostBox } from './_components/post-box';
 import { PostDeleteButton } from './_components/post-delete-button';
 import { ReportView } from './_components/report-view';
-import { deletePost, fetchCounts } from '@/actions/post-action';
+import { fetchCounts } from '@/actions/post-action';
 import { Button } from '@/components';
+import { prisma } from '@/utils/prisma';
 import { createClient } from '@/utils/supabase/server';
 import { editorExtensions } from '@/utils/tiptap';
-import { PrismaClient } from '@prisma/client';
 import { generateHTML } from '@tiptap/html';
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
@@ -16,8 +16,6 @@ const fetchPost = async (id: string) => {
   if (!id) {
     return null;
   }
-
-  const prisma = new PrismaClient();
 
   const post = await prisma.posts.findUnique({
     where: { id: Number(id), deleted_at: null },

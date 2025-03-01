@@ -1,7 +1,7 @@
 import { Refresher } from './_components/refresher';
 import { fetchPrizes } from '@/actions/prize-action';
 import { Streamers } from '@/constants';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/utils/prisma';
 import { notFound } from 'next/navigation';
 
 export const revalidate = 5;
@@ -13,8 +13,6 @@ type Props = {
 
 const OverlayPage = async ({ params, searchParams }: Props) => {
   const { slug } = await params;
-
-  const prisma = new PrismaClient();
 
   const nickname = (
     Streamers.find((streamer) => streamer.id === slug) ?? Streamers[0]
