@@ -414,12 +414,15 @@ model profiles {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model streamer {
-  id           String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  profile_id   String       @db.Uuid
-  character_id String?      @db.Uuid
-  team         mamudae_team
-  characters   characters?  @relation(fields: [character_id], references: [id], onDelete: Cascade)
-  users        profiles     @relation(fields: [profile_id], references: [id], onDelete: Cascade, map: "streamer_user_id_fkey")
+  id                   String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profile_id           String                 @db.Uuid
+  character_id         String?                @db.Uuid
+  team                 mamudae_team
+  nickname             String                 @unique
+  bosses               bosses[]
+  daily_mission_prizes daily_mission_prizes[]
+  characters           characters?            @relation(fields: [character_id], references: [id], onDelete: Cascade)
+  profiles             profiles               @relation(fields: [profile_id], references: [id], onDelete: Cascade)
 
   @@schema("mamudae")
 }
@@ -448,6 +451,28 @@ model likes {
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model daily_mission_prizes {
+  streamer_id    String         @db.Uuid
+  amount         Int
+  mission_id     BigInt
+  daily_missions daily_missions @relation(fields: [mission_id], references: [id], onDelete: Cascade)
+  streamer       streamer       @relation(fields: [streamer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([streamer_id, mission_id])
+  @@schema("mamudae")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model daily_missions {
+  id                   BigInt                 @id @default(autoincrement())
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  title                String
+  daily_mission_prizes daily_mission_prizes[]
+
+  @@schema("mamudae")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model logs {
   id                 BigInt     @id @default(autoincrement())
   created_at         DateTime   @default(now()) @db.Timestamptz(6)
@@ -473,6 +498,19 @@ model logs {
   basic              Json?
   characters         characters @relation(fields: [character_id], references: [id], onDelete: Cascade)
 
+  @@schema("mamudae")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model bosses {
+  created_at  DateTime     @default(now()) @db.Timestamptz(6)
+  team        mamudae_team
+  boss_id     String
+  difficulty  String
+  streamer_id String       @db.Uuid
+  streamer    streamer     @relation(fields: [streamer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([team, boss_id, difficulty])
   @@schema("mamudae")
 }
 

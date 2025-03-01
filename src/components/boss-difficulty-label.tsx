@@ -12,7 +12,7 @@ export const BossDifficultyLabel = (props: BossDifficultyLabelProps) => {
       className={classNames(
         'h-fit rounded-full bg-linear-to-b text-center select-none',
         props.isMini
-          ? 'w-[54px] py-[2px] text-[0.625rem] font-semibold'
+          ? 'w-[48px] py-[2px] text-[0.625rem] font-semibold'
           : 'w-[72px] py-[5px] text-[0.625rem] font-bold',
         props.className,
         props.difficulty === 'chaos' ? 'text-[#FFE4C4]' : 'text-white-900',

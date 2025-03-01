@@ -267,10 +267,28 @@
       'opsz' 16;
   }
 
+  .icon-16-fill {
+    font-size: 16px;
+    font-variation-settings:
+      'FILL' 1,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 16;
+  }
+
   .icon-20 {
     font-size: 20px;
     font-variation-settings:
       'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 20;
+  }
+
+  .icon-20-fill {
+    font-size: 20px;
+    font-variation-settings:
+      'FILL' 1,
       'wght' 400,
       'GRAD' 0,
       'opsz' 20;
@@ -287,7 +305,6 @@
 }
 
 body {
-  line-height: 1;
   font-family:
     'Pretendard Variable',
     Pretendard,
@@ -304,6 +321,7 @@ body {
     'Segoe UI Emoji',
     'Segoe UI Symbol',
     sans-serif;
+  line-height: 1;
 }
 
 :root {

@@ -1,6 +1,12 @@
 import { BossDifficultyLabel, BossIcon, BossImage } from '@/components';
 import { BossDifficulty, BossId } from '@/constants';
+import { getTimeDifference, getTimeString } from '@/utils/time';
+import { PrismaClient } from '@prisma/client';
+import classNames from 'classnames';
 import type { Metadata } from 'next';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const BossList: { bossId: BossId; difficulty: BossDifficulty }[][] = [
   [{ bossId: BossId.ZAKUM, difficulty: 'easy' }],
@@ -99,7 +105,13 @@ export const metadata: Metadata = {
   title: '보스',
 };
 
-const MamudaeBossPage = () => {
+const MamudaeBossPage = async () => {
+  const prisma = new PrismaClient();
+
+  const bossData = await prisma.bosses.findMany({
+    include: { streamer: true },
+  });
+
   return (
     <div className="mx-auto w-full max-w-5xl">
       <h2 className="my-6 pl-1 text-3xl font-bold">보스 현황</h2>
@@ -115,17 +127,94 @@ const MamudaeBossPage = () => {
               ))}
             </div>
             <div className="border-dark-border bg-grey-900 h-fit rounded-2xl border max-md:w-full md:w-[400px]">
-              {bosses.map((boss) => (
-                <div
-                  key={boss.bossId + boss.difficulty}
-                  className="flex items-center gap-6 px-6 py-5"
-                >
-                  <BossIcon bossId={boss.bossId} />
-                  <BossDifficultyLabel difficulty={boss.difficulty} isMini />
-                  <p className="flex-1 text-center">-</p>
-                  <p className="flex-1 text-center">-</p>
-                </div>
-              ))}
+              {bosses.map((boss) => {
+                const b = bossData.filter(
+                  (data) =>
+                    data.boss_id === boss.bossId &&
+                    data.difficulty === boss.difficulty,
+                );
+
+                const left = b.find((data) => data.team === 'MAYA');
+                const right = b.find((data) => data.team === 'STAN');
+
+                let winner = null;
+
+                if (!left) {
+                  winner = right;
+                } else if (!right) {
+                  winner = left;
+                } else {
+                  winner = left.created_at < right.created_at ? left : right;
+                }
+
+                return (
+                  <div
+                    key={boss.bossId + boss.difficulty}
+                    className="flex items-center gap-6 px-6 py-5"
+                  >
+                    <div className="relative">
+                      <BossIcon bossId={boss.bossId} />
+                      <BossDifficultyLabel
+                        className="absolute -bottom-2 -left-1"
+                        difficulty={boss.difficulty}
+                        isMini
+                      />
+                    </div>
+                    <p className="text-secondary flex flex-1 flex-col items-center text-center">
+                      {left ? (
+                        <>
+                          <span
+                            className={classNames(
+                              'flex items-center text-sm',
+                              winner === left
+                                ? 'text-brand mr-1 font-bold'
+                                : 'text-primary font-semibold',
+                            )}
+                          >
+                            {winner === left && (
+                              <span className="icon icon-16-fill mr-0.5">
+                                crown
+                              </span>
+                            )}
+                            {left.streamer.nickname}
+                          </span>
+                          <span className="flex text-xs">
+                            {getTimeString(left.created_at.toISOString())}
+                          </span>
+                        </>
+                      ) : (
+                        '-'
+                      )}
+                    </p>
+                    <p className="text-secondary flex flex-1 flex-col items-center text-center">
+                      {right ? (
+                        <>
+                          <span
+                            className={classNames(
+                              'flex items-center text-sm',
+                              winner === right
+                                ? 'text-brand mr-1 font-bold'
+                                : 'text-primary font-semibold',
+                            )}
+                          >
+                            {winner === right && (
+                              <span className="icon icon-16-fill mr-0.5">
+                                crown
+                              </span>
+                            )}
+                            {right.streamer.nickname}
+                          </span>
+                          <span className="flex text-xs">
+                            {getTimeString(right.created_at.toISOString())}
+                          </span>
+                        </>
+                      ) : (
+                        '-'
+                      )}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         ))}
