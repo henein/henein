@@ -5,6 +5,9 @@ import { PrismaClient } from '@prisma/client';
 import classNames from 'classnames';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const BossList: { bossId: BossId; difficulty: BossDifficulty }[][] = [
   [{ bossId: BossId.ZAKUM, difficulty: 'easy' }],
   [
