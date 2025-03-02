@@ -199,6 +199,7 @@ export const BossRecord = ({
           streamers={props.streamers}
           createdAt={data.created_at}
           defaultStreamerId={data.streamerId}
+          defaultParty={data.party ?? undefined}
           onSubmit={async (data) => {
             if (
               await updateBoss({
