@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchPrizes } from '@/actions/prize-action';
+import { fetchPrizes, postPrizes } from '@/actions/prize-action';
 import { Button, StreamerImage } from '@/components';
 import ClientPortal from '@/components/ClientPortal';
 import { StreamerId, Streamers } from '@/constants';
@@ -95,6 +95,9 @@ const PrizePage = () => {
     <div className="mx-auto w-full max-w-5xl">
       <h2 className="my-6 pl-1 text-3xl font-bold">상금</h2>
       <div className="flex">
+      <Button sort='primary' onClick={() => postPrizes()}>
+        Test
+      </Button>
         {/* 절절승절절배 */}
         <div className="flex flex-auto flex-col items-center gap-5">
           <strong className="text-2xl font-bold">절절승절절배</strong>

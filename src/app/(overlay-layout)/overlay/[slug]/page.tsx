@@ -1,55 +1,45 @@
-import { Refresher } from './_components/refresher';
-import { fetchPrizes } from '@/actions/prize-action';
-import { Streamers } from '@/constants';
-import { prisma } from '@/utils/prisma';
-import { notFound } from 'next/navigation';
+'use client';
 
-export const revalidate = 5;
+import { fetchData } from './_actions/overlay-action';
+import { createClient } from '@/utils/supabase/client';
+import { useParams, useRouter } from 'next/navigation';
+import { use, useEffect, useState } from 'react';
 
-type Props = {
-  params: Promise<{ slug: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-};
+const OverlayPage = () => {
+  const { slug } = useParams();
 
-const OverlayPage = async ({ params, searchParams }: Props) => {
-  const { slug } = await params;
+  const router = useRouter();
 
-  const nickname = (
-    Streamers.find((streamer) => streamer.id === slug) ?? Streamers[0]
-  ).nickname;
-
-  const streamer = await prisma.streamer.findUnique({
-    where: { nickname },
+  const [data, setData] = useState({
+    winCount: 0,
+    loseCount: 0,
+    myPrizeAmount: 0,
+    teamPrizeAmount: 0,
   });
 
-  if (!streamer) {
-    return notFound();
-  }
+  const { winCount, loseCount, myPrizeAmount, teamPrizeAmount } = data;
 
-  const prizes = await fetchPrizes();
+  useEffect(() => {
+    fetchData(slug as string).then((data) => {
+      setData(data);
+    });
+  }, [slug]);
 
-  const myPrize = prizes.find((prize) => prize.nickname === streamer?.nickname);
-  const myPrizeAmount = myPrize?.prizes.reduce(
-    (acc, cur) => acc + cur.amount,
-    0,
-  );
+  useEffect(() => {
+    const supabase = createClient();
 
-  const teamPrizeAmount = prizes
-    .filter((prize) => prize.team === streamer?.team)
-    .reduce(
-      (acc, cur) => acc + cur.prizes.reduce((acc, cur) => acc + cur.amount, 0),
-      0,
-    );
+    const changes = supabase
+      .channel('overlay', { config: { private: true } })
+      .on('broadcast', { event: 'refresh' }, () => {
+        router.refresh();
+        console.log('refresh');
+      })
+      .subscribe();
 
-  let winCount = 0
-
-  myPrize?.prizes.forEach((prize) => {
-    if (prize.isWin) {
-      winCount++;
-    }
-  });
-
-  const loseCount = (await prisma.daily_missions.count()) - winCount;
+    return () => {
+      changes.unsubscribe();
+    };
+  }, [router]);
 
   return (
     <div className="p-4">
