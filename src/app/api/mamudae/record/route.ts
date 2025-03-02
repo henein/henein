@@ -1,60 +1,59 @@
 import { prisma } from "@/utils/prisma";
-import { JsonValue } from "@prisma/client/runtime/library";
 import { NextRequest, NextResponse } from "next/server";
 
-type GroupedRecordType = Record<
+type SqlReturnType = {
+  character_id: string;
+  created_at: Date;
+  character_level: number;
+  character_combat: number;
+};
+
+export type GroupedRecordType = Record<
   string,
   Array<
     {
       character_id: string;
-      stat: JsonValue | null;
-      basic: JsonValue | null;
+      character_combat: number;
+      character_level: number;
     }
   >
 >;
 
 export async function GET(request: NextRequest) {
   try {
-    const url = new URL(request.url);
-    const characterIds = url.searchParams.get("characterIds");
-
-    if (!characterIds) {
-      return NextResponse.json({ logs: [] }, { status: 200 });
-    }
-
-    const characterIdsArray = characterIds.split(",");
-
     // DB 작업
-    const logs = await prisma.logs.findMany({
-      where: {
-        character_id: {
-          in: characterIdsArray,
-        },
-      },
-    });
+    const logs: SqlReturnType[] = await prisma.$queryRaw`
+      SELECT
+      character_id,
+      created_at,
+      (basic->>'character_level')::INTEGER
+        + (ROUND((basic->>'character_exp_rate')::NUMERIC / 100, 2)) AS character_level,
+      (
+        SELECT elem->>'stat_value'
+        FROM jsonb_array_elements(stat->'final_stat') AS elem
+        WHERE elem->>'stat_name' = '전투력'
+        LIMIT 1
+      ) AS character_combat
+    FROM mamudae.logs
+    ORDER BY created_at ASC
+    `;
 
-    // return 값 핸들링
-    const serializedLogs = logs.map((log) => ({
-      ...log,
-      id: Number(log.id),
-    }));
+    // created_at을 기준으로 그룹화
+    const groupedLogs = logs.reduce((acc, cur) => {
+      const createdAtKey = cur.created_at.toISOString();
 
-    const groupedLogs = serializedLogs.reduce(
-      (acc, log) => {
-        const createdAt = log.created_at.toISOString();
+      if (!acc[createdAtKey]) {
+        acc[createdAtKey] = [];
+      }
 
-        if (!acc[createdAt]) acc[createdAt] = [];
+      acc[createdAtKey].push({
+        character_id: cur.character_id,
+        character_combat: Number(cur.character_combat),
+        character_level: Number(cur.character_level),
+      });
 
-        acc[createdAt].push({
-          character_id: log.character_id,
-          stat: log.stat,
-          basic: log.basic,
-        });
-
-        return acc;
-      },
-      {} as GroupedRecordType,
-    );
+      return acc;
+    }, {} as GroupedRecordType);
 
     return NextResponse.json({ logs: groupedLogs }, { status: 200 });
   } catch (error) {

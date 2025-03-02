@@ -21,7 +21,7 @@ import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
 const Chart = () => {
   const { state, type } = useRecordSelect();
-  const { query } = useRecordQuery(state.map((item) => item.character_id));
+  const { query } = useRecordQuery();
   const { chartConfig, chartData } = useChart({
     state,
     type,
@@ -76,7 +76,7 @@ const Chart = () => {
                 tickMargin={8}
                 tickFormatter={(value) => dayjs(value).format('MM/DD')}
                 interval={'preserveStartEnd'}
-                minTickGap={32}
+                minTickGap={60}
               />
               <YAxis
                 tickLine={false}

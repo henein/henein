@@ -1,3 +1,4 @@
+import { GroupedRecordType } from "@/app/api/mamudae/record/route";
 import { STREAMER_COLOR } from "@/constants";
 import { profiles as Profile, streamer as Streamer } from "@prisma/client";
 import { useMemo } from "react";
@@ -5,7 +6,7 @@ import { useMemo } from "react";
 interface Props {
   state: (Streamer & { profiles: Profile })[];
   type: "level" | "combat";
-  logs: Record<string, any[]>;
+  logs: GroupedRecordType;
 }
 
 export const useChart = ({ state, type, logs }: Props) => {
@@ -52,22 +53,11 @@ const transformLogsToChartData = (
       if (!character) return;
 
       const nickname = character.nickname;
-      chartDataMap[date][nickname] = getStatValue(record, type);
+      chartDataMap[date][nickname] = type === "level"
+        ? record.character_level
+        : record.character_combat;
     });
   });
 
   return Object.values(chartDataMap);
-};
-
-const getStatValue = (record: any, type: "level" | "combat") => {
-  if (type === "level") {
-    return (
-      (record.basic?.character_level || 0) +
-      Number(record.basic?.character_exp_rate || 0)
-    );
-  }
-  if (type === "combat") {
-    return Number(record.stat?.final_stat?.[0]?.stat_value || 0);
-  }
-  return 0;
 };
