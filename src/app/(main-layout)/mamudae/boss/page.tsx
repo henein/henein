@@ -1,4 +1,10 @@
 import { BossDifficultyLabel, BossIcon, BossImage } from '@/components';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/shadcnUI/tooltip';
 import { BossDifficulty, BossId } from '@/constants';
 import { prisma } from '@/utils/prisma';
 import { getTimeString } from '@/utils/time';
@@ -110,10 +116,16 @@ const MamudaeBossPage = async () => {
     include: { streamer: true },
   });
 
+  const streamers = await prisma.streamer.findMany();
+
+  const getStreamerName = (id: string) => {
+    return streamers.find((streamer) => streamer.id === id)?.nickname;
+  };
+
   return (
     <div className="mx-auto w-full max-w-5xl">
       <h2 className="my-6 pl-1 text-3xl font-bold">보스 현황</h2>
-      <div className="border-dark-border bg-black-900 flex flex-col gap-4 rounded-2xl border px-6 py-5 md:w-5xl">
+      <div className="border-dark-border bg-black-900 md:w-5xl flex flex-col gap-4 rounded-2xl border px-6 py-5">
         {BossList.map((bosses, index) => (
           <div
             key={index}
@@ -158,32 +170,50 @@ const MamudaeBossPage = async () => {
                         isMini
                       />
                     </div>
-                    <p className="text-secondary flex flex-1 flex-col items-center text-center">
-                      {left ? (
-                        <>
-                          <span
-                            className={classNames(
-                              'flex items-center text-sm',
-                              winner === left
-                                ? 'text-brand mr-1 font-bold'
-                                : 'text-primary font-semibold',
-                            )}
-                          >
-                            {winner === left && (
-                              <span className="icon icon-16-fill mr-0.5">
-                                crown
+                    {left ? (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="text-secondary flex flex-1 flex-col items-center text-center">
+                              <span
+                                className={classNames(
+                                  'flex items-center text-sm',
+                                  winner === left
+                                    ? 'text-brand mr-1 font-bold'
+                                    : 'text-primary font-semibold',
+                                )}
+                              >
+                                {winner === left && (
+                                  <span className="icon icon-16-fill mr-0.5">
+                                    crown
+                                  </span>
+                                )}
+                                {left.streamer.nickname}
+                                {left.party.length > 0
+                                  ? ` + ${left.party.length}`
+                                  : ''}
                               </span>
+                              <span className="flex text-xs">
+                                {getTimeString(left.created_at.toISOString())}
+                              </span>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            {left.party.length > 0 && (
+                              <p>
+                                {left.party
+                                  .map((v) => getStreamerName(v))
+                                  .join(', ')}
+                              </p>
                             )}
-                            {left.streamer.nickname}
-                          </span>
-                          <span className="flex text-xs">
-                            {getTimeString(left.created_at.toISOString())}
-                          </span>
-                        </>
-                      ) : (
-                        '-'
-                      )}
-                    </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    ) : (
+                      <div className="text-secondary flex flex-1 flex-col items-center text-center">
+                        -
+                      </div>
+                    )}
                     <p className="text-secondary flex flex-1 flex-col items-center text-center">
                       {right ? (
                         <>
