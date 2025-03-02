@@ -509,7 +509,7 @@ model bosses {
   boss_id     String
   difficulty  String
   streamer_id String       @db.Uuid
-  party       String[]     @db.Uuid
+  party       String?
   streamer    streamer     @relation(fields: [streamer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([team, boss_id, difficulty])
