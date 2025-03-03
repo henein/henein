@@ -4,6 +4,7 @@ import { fetchPrizes } from '@/actions/prize-action';
 import { Button, StreamerImage } from '@/components';
 import ClientPortal from '@/components/ClientPortal';
 import { StreamerId, Streamers } from '@/constants';
+import NumberFlow from '@number-flow/react';
 import { $Enums } from '@prisma/client';
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
@@ -99,18 +100,18 @@ const PrizePage = () => {
         <div className="flex flex-auto flex-col items-center gap-5">
           <strong className="text-2xl font-bold">절절승절절배</strong>
           <div
-            className="bg-maya/50 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#0075CA]/60 active:bg-[#0075CA]/70"
+            className="bg-maya/50 w-full cursor-pointer select-none rounded-2xl py-8 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#0075CA]/60 active:bg-[#0075CA]/70"
             onClick={() => openTeamModal('MAYA')}
           >
-            ₩
-            {mayaPrizes
-              .reduce(
+            <NumberFlow
+              value={mayaPrizes.reduce(
                 (acc, cur) =>
                   acc +
                   cur.prizes.reduce((sum, prize) => sum + prize.amount, 0),
                 0,
-              )
-              .toLocaleString('ko-KR')}
+              )}
+              prefix="₩"
+            />
           </div>
           <div>
             <UserColumn
@@ -150,15 +151,15 @@ const PrizePage = () => {
             className="bg-stan/50 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#DE9300]/60 active:bg-[#DE9300]/70"
             onClick={() => openTeamModal('STAN')}
           >
-            ₩
-            {stanPrizes
-              .reduce(
+            <NumberFlow
+              value={stanPrizes.reduce(
                 (acc, cur) =>
                   acc +
                   cur.prizes.reduce((sum, prize) => sum + prize.amount, 0),
                 0,
-              )
-              .toLocaleString('ko-KR')}
+              )}
+              prefix="₩"
+            />
           </div>
           <div>
             <UserColumn
@@ -227,7 +228,9 @@ const UserColumn = (props: {
           streamer={streamer}
           size={48}
         />
-        <span className="text-[32px] font-bold">{`₩${total.toLocaleString('ko-KR')}`}</span>
+        <span className="text-[32px] font-bold">
+          <NumberFlow value={total} prefix="₩" />
+        </span>
       </div>
     </div>
   );
