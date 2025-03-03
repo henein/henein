@@ -44,6 +44,7 @@ export const fetchData = async (slug: string) => {
   const loseCount = (await prisma.daily_missions.count()) - winCount;
 
   return {
+    nickname,
     myTeam,
     winCount,
     loseCount,
