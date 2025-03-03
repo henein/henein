@@ -59,7 +59,7 @@ export const BossRecord = ({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger
           className={classNames(
-            'text-secondary flex flex-1 items-center justify-center rounded-[8px]',
+            'text-secondary flex flex-1 cursor-pointer items-center justify-center rounded-[8px]',
             isAdmin && 'hover:bg-white-25',
           )}
         >
