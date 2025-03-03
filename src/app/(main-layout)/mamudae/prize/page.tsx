@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchPrizes, postPrizes } from '@/actions/prize-action';
+import { fetchPrizes } from '@/actions/prize-action';
 import { Button, StreamerImage } from '@/components';
 import ClientPortal from '@/components/ClientPortal';
 import { StreamerId, Streamers } from '@/constants';
@@ -95,14 +95,11 @@ const PrizePage = () => {
     <div className="mx-auto w-full max-w-5xl">
       <h2 className="my-6 pl-1 text-3xl font-bold">상금</h2>
       <div className="flex">
-      <Button sort='primary' onClick={() => postPrizes()}>
-        Test
-      </Button>
         {/* 절절승절절배 */}
         <div className="flex flex-auto flex-col items-center gap-5">
           <strong className="text-2xl font-bold">절절승절절배</strong>
           <div
-            className="bg-[#0075CA]/50 hover:bg-[#0075CA]/60 active:bg-[#0075CA]/70 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)]"
+            className="w-full cursor-pointer select-none rounded-2xl bg-[#0075CA]/50 py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#0075CA]/60 active:bg-[#0075CA]/70"
             onClick={() => openTeamModal('MAYA')}
           >
             ₩
@@ -143,14 +140,14 @@ const PrizePage = () => {
             />
           </div>
         </div>
-        
+
         <div className="border-default mx-6 w-0 border-l" />
 
         {/* 누렁즈 */}
         <div className="flex flex-auto flex-col items-center gap-5">
           <strong className="text-2xl font-bold">누렁단</strong>
           <div
-            className="bg-[#DE9300]/50 hover:bg-[#DE9300]/60 active:bg-[#DE9300]/70 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)]"
+            className="w-full cursor-pointer select-none rounded-2xl bg-[#DE9300]/50 py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#DE9300]/60 active:bg-[#DE9300]/70"
             onClick={() => openTeamModal('STAN')}
           >
             ₩
