@@ -22,7 +22,7 @@ export const Button = ({
   ...props
 }: React.PropsWithChildren<ButtonProps>) => {
   const baseStyles =
-    'flex items-center justify-center rounded-lg h-10 px-4 text-sm cursor-pointer transition-all border border-default';
+    'flex items-center justify-center rounded-lg h-10 px-4 text-sm cursor-pointer transition-all border border-default hover:ring-4 hover:ring-black-25 active:ring-2 active:ring-black-50';
 
   const sortStyles = {
     primary:
@@ -30,8 +30,8 @@ export const Button = ({
       'enabled:hover:bg-primary-400 enabled:dark:hover:bg-primary-300 ' +
       'enabled:active:bg-primary-700 enabled:dark:active:bg-primary-600',
     secondary:
-      'bg-grey-700 text-black border-grey-700' +
-      'enabled:hover:bg-buttonHover enabled:active:bg-buttonActive',
+      'bg-white-900 dark:bg-grey-700 text-black border-grey-700' +
+      'enabled:hover:text-brand-hover enabled:active:text-brand-active',
     danger:
       'bg-danger-300 dark:bg-danger-400 text-white-900 ' +
       'enabled:hover:bg-danger-200 enabled:dark:hover:bg-danger-300 ' +
