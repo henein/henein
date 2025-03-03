@@ -99,7 +99,7 @@ const PrizePage = () => {
         <div className="flex flex-auto flex-col items-center gap-5">
           <strong className="text-2xl font-bold">절절승절절배</strong>
           <div
-            className="w-full cursor-pointer select-none rounded-2xl bg-[#0075CA]/50 py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#0075CA]/60 active:bg-[#0075CA]/70"
+            className="bg-maya/50 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#0075CA]/60 active:bg-[#0075CA]/70"
             onClick={() => openTeamModal('MAYA')}
           >
             ₩
@@ -147,7 +147,7 @@ const PrizePage = () => {
         <div className="flex flex-auto flex-col items-center gap-5">
           <strong className="text-2xl font-bold">누렁단</strong>
           <div
-            className="w-full cursor-pointer select-none rounded-2xl bg-[#DE9300]/50 py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#DE9300]/60 active:bg-[#DE9300]/70"
+            className="bg-stan/50 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#DE9300]/60 active:bg-[#DE9300]/70"
             onClick={() => openTeamModal('STAN')}
           >
             ₩

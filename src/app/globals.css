@@ -76,6 +76,8 @@
   --color-white-700: #ffffffcc;
   --color-white-800: #ffffffe5;
   --color-white-900: #ffffff;
+  --color-maya: #0075ca;
+  --color-stan: #de9300;
   --color-border: var(--color-black-50);
   --color-dark-border: var(--color-white-50);
   --color-brand: var(--color-primary-600);

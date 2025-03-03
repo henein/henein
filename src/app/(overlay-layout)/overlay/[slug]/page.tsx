@@ -1,9 +1,12 @@
 'use client';
 
 import { fetchData } from './_actions/overlay-action';
+import { cn } from '@/utils/shadcn';
 import { createClient } from '@/utils/supabase/client';
+import { $Enums } from '@prisma/client';
 import { useParams, useRouter } from 'next/navigation';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import SlotCounter from 'react-slot-counter';
 
 const OverlayPage = () => {
   const { slug } = useParams();
@@ -11,6 +14,7 @@ const OverlayPage = () => {
   const router = useRouter();
 
   const [data, setData] = useState({
+    myTeam: '',
     winCount: 0,
     loseCount: 0,
     myPrizeAmount: 0,
@@ -32,7 +36,6 @@ const OverlayPage = () => {
       .channel('overlay', { config: { private: true } })
       .on('broadcast', { event: 'refresh' }, () => {
         router.refresh();
-        console.log('refresh');
       })
       .subscribe();
 
@@ -44,8 +47,14 @@ const OverlayPage = () => {
   return (
     <div className="p-4">
       {/* <Refresher /> */}
-      <div className="bg-grey-800 w-full rounded-2xl px-5 py-4 opacity-95 shadow-md">
-        <div className="flex h-8 items-center justify-between">
+      <div className="bg-grey-800 w-full overflow-hidden rounded-2xl opacity-95 shadow-md">
+        <div
+          className={cn(
+            'flex h-10 items-center justify-between px-5 py-6',
+            data.myTeam === 'MAYA' && 'bg-maya/50',
+            data.myTeam === 'STAN' && 'bg-stan/50',
+          )}
+        >
           <div className="flex items-center gap-0.5">
             <svg
               className="fill-brand dark:fill-white-600"
@@ -61,11 +70,13 @@ const OverlayPage = () => {
             </p>
           </div>
           <p className="text-secondary text-2xl font-bold">
-            ₩{teamPrizeAmount?.toLocaleString('ko-KR') ?? 0}
+            <SlotCounter
+              value={teamPrizeAmount?.toLocaleString('ko-KR') ?? 0}
+            />
           </p>
         </div>
         <h1 className="py-6 text-center text-5xl font-black">
-          ₩{myPrizeAmount?.toLocaleString('ko-KR') ?? 0}
+          <SlotCounter value={myPrizeAmount?.toLocaleString('ko-KR') ?? 0} />
         </h1>
       </div>
     </div>
