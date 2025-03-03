@@ -100,6 +100,16 @@ const BossList: { bossId: BossId; difficulty: BossDifficulty }[][] = [
     { bossId: BossId.CHOSEN_SEREN, difficulty: 'normal' },
   ],
   [{ bossId: BossId.BLACK_MAGE, difficulty: 'hard' }],
+  [
+    { bossId: BossId.KALOS_THE_GUARDIAN, difficulty: 'easy' },
+    { bossId: BossId.CHOSEN_SEREN, difficulty: 'hard' },
+  ],
+  [
+    { bossId: BossId.KALING, difficulty: 'easy' },
+  ],
+  // [
+  //   { bossId: BossId.KALOS_THE_GUARDIAN, difficulty: 'normal' },
+  // ]
 ];
 
 export const metadata: Metadata = {
