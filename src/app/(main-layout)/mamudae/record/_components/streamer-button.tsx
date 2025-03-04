@@ -25,7 +25,7 @@ const StreamerBtn = (props: Streamer & { profiles: Profile }) => {
         alt="streamer"
         width={48}
         height={48}
-        className={`rounded-full ${clsx(!isSelect && 'brightness-50')}`}
+        className={`aspect-square rounded-full ${clsx(!isSelect && 'brightness-50')}`}
       />
     </button>
   );
