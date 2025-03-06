@@ -4,6 +4,7 @@ import { fetchPrizes } from '@/actions/prize-action';
 import { Button, StreamerImage } from '@/components';
 import ClientPortal from '@/components/ClientPortal';
 import { StreamerId, Streamers } from '@/constants';
+import NumberFlow from '@number-flow/react';
 import { $Enums } from '@prisma/client';
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
@@ -99,18 +100,18 @@ const PrizePage = () => {
         <div className="flex flex-auto flex-col items-center gap-5">
           <strong className="text-2xl font-bold">절절승절절배</strong>
           <div
-            className="bg-[#0075CA]/50 hover:bg-[#0075CA]/60 active:bg-[#0075CA]/70 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)]"
+            className="bg-maya/100 hover:bg-maya/90 active:bg-maya/80 text-white-900 dark:bg-maya/50 dark:hover:bg-maya/60 dark:active:bg-maya/70 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)]"
             onClick={() => openTeamModal('MAYA')}
           >
-            ₩
-            {mayaPrizes
-              .reduce(
+            <NumberFlow
+              value={mayaPrizes.reduce(
                 (acc, cur) =>
                   acc +
                   cur.prizes.reduce((sum, prize) => sum + prize.amount, 0),
                 0,
-              )
-              .toLocaleString('ko-KR')}
+              )}
+              prefix="₩"
+            />
           </div>
           <div>
             <UserColumn
@@ -140,25 +141,25 @@ const PrizePage = () => {
             />
           </div>
         </div>
-        
+
         <div className="border-default mx-6 w-0 border-l" />
 
         {/* 누렁즈 */}
         <div className="flex flex-auto flex-col items-center gap-5">
           <strong className="text-2xl font-bold">누렁단</strong>
           <div
-            className="bg-[#DE9300]/50 hover:bg-[#DE9300]/60 active:bg-[#DE9300]/70 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)]"
+            className="text-white-900 bg-stan hover:bg-stan/90 active:bg-stan/80 dark:bg-stan/50 w-full cursor-pointer select-none rounded-2xl py-10 text-center text-5xl font-black [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)] dark:hover:bg-[#DE9300]/60 dark:active:bg-[#DE9300]/70"
             onClick={() => openTeamModal('STAN')}
           >
-            ₩
-            {stanPrizes
-              .reduce(
+            <NumberFlow
+              value={stanPrizes.reduce(
                 (acc, cur) =>
                   acc +
                   cur.prizes.reduce((sum, prize) => sum + prize.amount, 0),
                 0,
-              )
-              .toLocaleString('ko-KR')}
+              )}
+              prefix="₩"
+            />
           </div>
           <div>
             <UserColumn
@@ -216,7 +217,7 @@ const UserColumn = (props: {
   return (
     <div
       className={classNames(
-        'hover:bg-white-25 active:bg-white-50 flex w-[290px] cursor-pointer select-none flex-col gap-8 rounded-2xl p-2.5',
+        'hover:bg-black-25 active:bg-black-50 dark:hover:bg-white-50 dark:active:bg-white-100 flex w-[290px] cursor-pointer select-none flex-col gap-8 rounded-2xl p-2.5',
         props.className,
       )}
       onClick={() => props.onClick?.(streamer.nickname)}
@@ -227,7 +228,9 @@ const UserColumn = (props: {
           streamer={streamer}
           size={48}
         />
-        <span className="text-[32px] font-bold">{`₩${total.toLocaleString('ko-KR')}`}</span>
+        <span className="text-[32px] font-bold">
+          <NumberFlow value={total} prefix="₩" />
+        </span>
       </div>
     </div>
   );
@@ -236,7 +239,7 @@ const UserColumn = (props: {
 const PrizeModal = (props: { data?: PrizeData; onClose: () => void }) => {
   return (
     <div className="flex w-[420px] flex-col overflow-hidden rounded-2xl shadow-lg">
-      <div className="dark:bg-grey-800 flex flex-col gap-6 px-6 py-5">
+      <div className="bg-white-900 dark:bg-grey-800 flex flex-col gap-6 px-6 py-5">
         <h1 className="text-grey-900 dark:text-grey-200 text-xl font-bold">
           상금 내역
         </h1>
@@ -263,7 +266,7 @@ const PrizeModal = (props: { data?: PrizeData; onClose: () => void }) => {
         )}
       </div>
 
-      <div className="bg-grey-700a flex justify-end gap-2 rounded-b-lg px-6 py-4 backdrop-blur-sm">
+      <div className="bg-white-800 dark:bg-grey-700a flex justify-end gap-2 rounded-b-lg px-6 py-4 backdrop-blur-sm">
         <Button sort="secondary" onClick={props.onClose}>
           닫기
         </Button>
