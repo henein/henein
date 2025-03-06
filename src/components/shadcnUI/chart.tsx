@@ -180,7 +180,8 @@ function ChartTooltipContent({
     >
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
-        {payload.map((item, index) => {
+        {/* TODO: sort 방식을 itemSorter 활용하도록 변경 */}
+        {payload.sort((a, b) => Number(b.value) - Number(a.value)).map((item, index) => {
           const key = `${nameKey || item.name || item.dataKey || 'value'}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
           const indicatorColor = color || item.payload.fill || item.color;

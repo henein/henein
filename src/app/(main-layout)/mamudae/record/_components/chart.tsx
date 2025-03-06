@@ -16,6 +16,7 @@ import { useChart } from '@/hooks/useChart';
 import { useRecordQuery } from '@/store/query/record';
 import useRecordSelect from '@/store/zustand/useRecordSelect';
 import { formatNumber } from '@/utils/number';
+import { scalePow } from 'd3-scale';
 import dayjs from 'dayjs';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
@@ -74,14 +75,14 @@ const Chart = () => {
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                tickFormatter={(value) => dayjs(value).format('MM/DD')}
+                tickFormatter={(value) => dayjs(value).format('MM/DD HH:mm')}
                 interval={'preserveStartEnd'}
                 minTickGap={60}
               />
               <YAxis
                 tickLine={false}
                 axisLine={false}
-                tickMargin={30}
+                scale={type === 'level' ? scalePow().exponent(10) : 'linear'}
                 tickFormatter={(value) =>
                   type === 'level'
                     ? formatNumber(value) + ' lv'
@@ -89,7 +90,7 @@ const Chart = () => {
                 }
               />
               <ChartTooltip
-                cursor={false}
+                cursor={{ strokeWidth: 2 }}
                 content={
                   <ChartTooltipContent
                     valueFormatter={(value) =>
@@ -116,6 +117,7 @@ const Chart = () => {
                   stroke={chartConfig[key].color}
                   strokeWidth={2}
                   dot={false}
+                  connectNulls
                   activeDot={{
                     r: 6,
                   }}
