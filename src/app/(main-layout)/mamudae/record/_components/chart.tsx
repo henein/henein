@@ -1,6 +1,7 @@
 'use client';
 
 import ChartNav from './chart-nav';
+import ChartRangeSelector from './chart-range-selector';
 import {
   Card,
   CardContent,
@@ -20,11 +21,12 @@ import dayjs from 'dayjs';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
 const Chart = () => {
-  const { state, type } = useRecordSelect();
+  const { state, type, timeRange } = useRecordSelect();
   const { query } = useRecordQuery();
-  const { chartConfig, chartData } = useChart({
+  const { chartConfig, chartData, grades } = useChart({
     state,
     type,
+    range: timeRange,
     logs: query.data.logs,
   });
 
@@ -52,10 +54,21 @@ const Chart = () => {
             </ul>
           </div>
         </CardTitle>
+
+        {/* header range selector */}
+        <ChartRangeSelector />
       </CardHeader>
 
       <CardContent>
-        {state.length ? (
+        {state.length === 0 ? (
+          <h2 className="flex h-[358px] items-center justify-center text-3xl font-bold">
+            조회하고 싶은 스트리머를 선택해 주세요.
+          </h2>
+        ) : chartData.length === 0 ? (
+          <h2 className="flex h-[358px] items-center justify-center text-3xl font-bold">
+            조회된 데이터가 없습니다.
+          </h2>
+        ) : (
           <ChartContainer
             config={chartConfig}
             className="aspect-auto h-[350px] w-full"
@@ -73,20 +86,22 @@ const Chart = () => {
                 dataKey="date"
                 tickLine={false}
                 axisLine={false}
-                tickMargin={8}
                 tickFormatter={(value) => dayjs(value).format('MM/DD')}
                 interval={'preserveStartEnd'}
-                minTickGap={60}
+                domain={['dataMin', 'dataMax']}
+                tickMargin={14}
+                padding={{ left: 0, right: 20 }}
+                minTickGap={100}
               />
               <YAxis
                 tickLine={false}
                 axisLine={false}
-                tickMargin={30}
+                padding={{ top: 20, bottom: 20 }}
                 tickFormatter={(value) =>
-                  type === 'level'
-                    ? formatNumber(value) + ' lv'
-                    : formatNumber(value)
+                  type === 'level' ? `${value} lv` : formatNumber(value)
                 }
+                domain={['dataMin', 'dataMax']}
+                ticks={grades}
               />
               <ChartTooltip
                 cursor={false}
@@ -97,14 +112,14 @@ const Chart = () => {
                         ? `${value}lv`
                         : formatNumber(Number(value))
                     }
-                    labelFormatter={(value) => {
-                      return new Date(value).toLocaleString('ko-KR', {
+                    labelFormatter={(value) =>
+                      new Date(value).toLocaleString('ko-KR', {
                         month: 'short',
                         day: 'numeric',
                         hour: '2-digit',
                         minute: '2-digit',
-                      });
-                    }}
+                      })
+                    }
                   />
                 }
               />
@@ -123,10 +138,6 @@ const Chart = () => {
               ))}
             </LineChart>
           </ChartContainer>
-        ) : (
-          <h2 className="flex h-[358px] items-center justify-center text-3xl font-bold">
-            조회하고 싶은 스트리머를 선택해 주세요.
-          </h2>
         )}
       </CardContent>
     </Card>
