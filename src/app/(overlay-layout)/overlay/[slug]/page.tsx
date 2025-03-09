@@ -4,6 +4,7 @@ import { fetchData } from './_actions/overlay-action';
 import { cn } from '@/utils/shadcn';
 import { createClient } from '@/utils/supabase/client';
 import NumberFlow from '@number-flow/react';
+import type { $Enums } from '@prisma/client';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -12,9 +13,16 @@ const OverlayPage = () => {
 
   const router = useRouter();
 
-  const [data, setData] = useState({
+  const [data, setData] = useState<{
+    nickname: string;
+    myTeam: $Enums.mamudae_team | null;
+    winCount: number;
+    loseCount: number;
+    myPrizeAmount: number;
+    teamPrizeAmount: number;
+  }>({
     nickname: '',
-    myTeam: '',
+    myTeam: null,
     winCount: 0,
     loseCount: 0,
     myPrizeAmount: 0,
