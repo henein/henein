@@ -19,10 +19,13 @@ interface Store {
 }
 
 const useRecordSelect = create<Store>()((set) => {
+  const to = DateTime.now().toJSDate();
+  const from = DateTime.now().minus({ days: 1 }).toJSDate();
+
   return {
     state: [],
     type: 'level',
-    timeRange: {},
+    timeRange: { from, to },
     select: (data) => set((prev) => ({ state: [...prev.state, data] })),
     unselect: (select_id) =>
       set((prev) => ({
