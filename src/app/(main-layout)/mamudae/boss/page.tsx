@@ -1,8 +1,9 @@
+import { checkAdmin } from '@/actions/role-action';
+import { BossRecord } from './_components/boss-record';
 import { BossDifficultyLabel, BossIcon, BossImage } from '@/components';
 import { BossDifficulty, BossId } from '@/constants';
 import { prisma } from '@/utils/prisma';
-import { getTimeString } from '@/utils/time';
-import classNames from 'classnames';
+import { $Enums } from '@prisma/client';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -99,6 +100,16 @@ const BossList: { bossId: BossId; difficulty: BossDifficulty }[][] = [
     { bossId: BossId.CHOSEN_SEREN, difficulty: 'normal' },
   ],
   [{ bossId: BossId.BLACK_MAGE, difficulty: 'hard' }],
+  [
+    { bossId: BossId.KALOS_THE_GUARDIAN, difficulty: 'easy' },
+    { bossId: BossId.CHOSEN_SEREN, difficulty: 'hard' },
+  ],
+  [
+    { bossId: BossId.KALING, difficulty: 'easy' },
+  ],
+  // [
+  //   { bossId: BossId.KALOS_THE_GUARDIAN, difficulty: 'normal' },
+  // ]
 ];
 
 export const metadata: Metadata = {
@@ -106,14 +117,66 @@ export const metadata: Metadata = {
 };
 
 const MamudaeBossPage = async () => {
-  const bossData = await prisma.bosses.findMany({
+  const rawBosses = await prisma.bosses.findMany({
     include: { streamer: true },
   });
+
+  const streamers = await prisma.streamer.findMany();
+
+  const bossData = ([] as { bossId: BossId; difficulty: BossDifficulty }[])
+    .concat(...BossList)
+    .map((boss) => {
+      const record = rawBosses
+        .filter(
+          (data) =>
+            data.boss_id === boss.bossId && data.difficulty === boss.difficulty,
+        )
+        .map((boss) => {
+          return {
+            ...boss,
+            streamer: boss.streamer.nickname,
+          };
+        });
+
+      const maya = record.find((data) => data.team === 'MAYA');
+
+      const stan = record.find((data) => data.team === 'STAN');
+
+      let winner: $Enums.mamudae_team = 'MAYA';
+
+      if (!maya) {
+        winner = 'STAN';
+      } else if (!stan) {
+        winner = 'MAYA';
+      } else {
+        winner = maya.created_at < stan.created_at ? 'MAYA' : 'STAN';
+      }
+
+      return {
+        bossId: boss.bossId,
+        difficulty: boss.difficulty,
+        maya: maya && {
+          streamer: maya.streamer,
+          streamerId: maya.streamer_id,
+          created_at: maya.created_at,
+          party: maya.party,
+        },
+        stan: stan && {
+          streamer: stan.streamer,
+          streamerId: stan.streamer_id,
+          created_at: stan.created_at,
+          party: stan.party,
+        },
+        winner: winner,
+      };
+    });
+
+  const isAdmin = await checkAdmin();
 
   return (
     <div className="mx-auto w-full max-w-5xl">
       <h2 className="my-6 pl-1 text-3xl font-bold">보스 현황</h2>
-      <div className="border-dark-border bg-black-900 flex flex-col gap-4 rounded-2xl border px-6 py-5 md:w-5xl">
+      <div className="border-dark-border bg-black-900 md:w-5xl flex flex-col gap-4 rounded-2xl border px-6 py-5">
         {BossList.map((bosses, index) => (
           <div
             key={index}
@@ -126,29 +189,16 @@ const MamudaeBossPage = async () => {
             </div>
             <div className="border-dark-border bg-grey-900 h-fit rounded-2xl border max-md:w-full md:w-[400px]">
               {bosses.map((boss) => {
-                const b = bossData.filter(
+                const data = bossData.find(
                   (data) =>
-                    data.boss_id === boss.bossId &&
+                    data.bossId === boss.bossId &&
                     data.difficulty === boss.difficulty,
-                );
-
-                const left = b.find((data) => data.team === 'MAYA');
-                const right = b.find((data) => data.team === 'STAN');
-
-                let winner = null;
-
-                if (!left) {
-                  winner = right;
-                } else if (!right) {
-                  winner = left;
-                } else {
-                  winner = left.created_at < right.created_at ? left : right;
-                }
+                )!;
 
                 return (
                   <div
                     key={boss.bossId + boss.difficulty}
-                    className="flex items-center gap-6 px-6 py-5"
+                    className="flex items-stretch gap-6 px-6 py-5"
                   >
                     <div className="relative mr-4">
                       <BossIcon bossId={boss.bossId} />
@@ -158,58 +208,24 @@ const MamudaeBossPage = async () => {
                         isMini
                       />
                     </div>
-                    <p className="text-secondary flex flex-1 flex-col items-center text-center">
-                      {left ? (
-                        <>
-                          <span
-                            className={classNames(
-                              'flex items-center text-sm',
-                              winner === left
-                                ? 'text-brand mr-1 font-bold'
-                                : 'text-primary font-semibold',
-                            )}
-                          >
-                            {winner === left && (
-                              <span className="icon icon-16-fill mr-0.5">
-                                crown
-                              </span>
-                            )}
-                            {left.streamer.nickname}
-                          </span>
-                          <span className="flex text-xs">
-                            {getTimeString(left.created_at.toISOString())}
-                          </span>
-                        </>
-                      ) : (
-                        '-'
-                      )}
-                    </p>
-                    <p className="text-secondary flex flex-1 flex-col items-center text-center">
-                      {right ? (
-                        <>
-                          <span
-                            className={classNames(
-                              'flex items-center text-sm',
-                              winner === right
-                                ? 'text-brand mr-1 font-bold'
-                                : 'text-primary font-semibold',
-                            )}
-                          >
-                            {winner === right && (
-                              <span className="icon icon-16-fill mr-0.5">
-                                crown
-                              </span>
-                            )}
-                            {right.streamer.nickname}
-                          </span>
-                          <span className="flex text-xs">
-                            {getTimeString(right.created_at.toISOString())}
-                          </span>
-                        </>
-                      ) : (
-                        '-'
-                      )}
-                    </p>
+                    <BossRecord
+                      data={data.maya}
+                      boss_id={boss.bossId}
+                      team={'MAYA'}
+                      difficulty={boss.difficulty}
+                      isWinner={data.winner === 'MAYA'}
+                      isAdmin={isAdmin}
+                      streamers={streamers}
+                    />
+                    <BossRecord
+                      data={data.stan}
+                      boss_id={boss.bossId}
+                      team={'STAN'}
+                      difficulty={boss.difficulty}
+                      isWinner={data.winner === 'STAN'}
+                      isAdmin={isAdmin}
+                      streamers={streamers}
+                    />
                   </div>
                 );
               })}

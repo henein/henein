@@ -24,8 +24,14 @@ export const getTimeDifference = (createTime: string) => {
 
 export const getTimeString = (isoString: string) => {
   return DateTime.fromISO(isoString, {
-    zone: 'asia/seoul',
+    zone: 'utc',
   })
-    .setZone(DateTime.local().zoneName)
+    .setZone('asia/seoul')
     .toFormat('L월 d일 HH:mm');
+};
+
+export const convertSeoulToUtc = (date: Date) => {
+  return DateTime.fromJSDate(date, { zone: 'asia/seoul' })
+    .setZone('utc')
+    .toJSDate();
 };

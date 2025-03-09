@@ -23,6 +23,8 @@ export enum BossId {
   DARKNELL = 'darknell',
   GUARDIAN_ANGEL_SLIME = 'guardian-angel-slime',
   CHOSEN_SEREN = 'chosen-seren',
+  KALOS_THE_GUARDIAN = 'kalos-the-guardian',
+  KALING = 'kaling',
 }
 
 export type BossDifficulty = 'easy' | 'normal' | 'hard' | 'chaos';

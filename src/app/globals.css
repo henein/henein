@@ -76,8 +76,8 @@
   --color-white-700: #ffffffcc;
   --color-white-800: #ffffffe5;
   --color-white-900: #ffffff;
-  --color-border: var(--color-black-50);
-  --color-dark-border: var(--color-white-50);
+  --color-maya: #0075ca;
+  --color-stan: #de9300;
   --color-brand: var(--color-primary-600);
   --color-dark-brand: var(--color-primary-500);
   --color-brand-hover: var(--color-primary-400);
@@ -144,31 +144,31 @@
   }
 
   .border-default {
-    border-color: var(--color-border);
+    border-color: var(--color-black-50);
   }
 
   .dark .border-default {
-    border-color: var(--color-dark-border);
+    border-color: var(--color-white-50);
   }
 
   .divide-default {
-    @apply divide-border dark:divide-dark-border;
+    @apply divide-black-50 dark:divide-white-50;
   }
 
   .ring-default {
-    --tw-ring-color: var(--color-border);
+    --tw-ring-color: var(--color-black-50);
   }
 
   .dark .ring-default {
-    --tw-ring-color: var(--color-dark-border);
+    --tw-ring-color: var(--color-white-50);
   }
 
   .inset-ring-default {
-    --tw-inset-ring-color: var(--color-border);
+    --tw-inset-ring-color: var(--color-black-50);
   }
 
   .dark .inset-ring-default {
-    --tw-inset-ring-color: var(--color-dark-border);
+    --tw-inset-ring-color: var(--color-white-50);
   }
 
   .text-primary {
@@ -397,9 +397,16 @@ body {
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-black-50 dark:border-white-50 outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
   }
 }
