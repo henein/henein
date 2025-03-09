@@ -1,22 +1,27 @@
 import { GroupedRecordType } from "@/app/api/mamudae/record/route";
 import { STREAMER_COLOR } from "@/constants";
+import { GetType, TimeRange } from "@/store/zustand/useRecordSelect";
 import { profiles as Profile, streamer as Streamer } from "@prisma/client";
 import { useMemo } from "react";
 
 interface Props {
   state: (Streamer & { profiles: Profile })[];
-  type: "level" | "combat";
+  type: GetType;
   logs: GroupedRecordType;
 }
 
-export const useChart = ({ state, type, logs }: Props) => {
+export const useChart = (
+  { state, type, logs, range }: Props & { range: TimeRange },
+) => {
   const chartData = useMemo(
-    () => transformLogsToChartData({ state, type, logs }),
-    [
-      state,
-      type,
-      logs,
-    ],
+    () => {
+      return transformLogsToChartData({ state, type, logs }).filter((item) => {
+        if (!range.from || !range.to) return false;
+        const date = new Date(item.date);
+        return date >= range.from && date <= range.to;
+      });
+    },
+    [state, type, logs, range],
   );
 
   const chartConfig = useMemo(
@@ -34,7 +39,12 @@ export const useChart = ({ state, type, logs }: Props) => {
     [state],
   );
 
-  return { chartData, chartConfig };
+  const grades = useMemo(
+    () => genTickGrade({ data: chartData }).grades,
+    [chartData],
+  );
+
+  return { chartData, chartConfig, grades };
 };
 
 const transformLogsToChartData = (
@@ -61,3 +71,38 @@ const transformLogsToChartData = (
 
   return Object.values(chartDataMap);
 };
+interface ParamsTick {
+  data: any[];
+}
+
+export function genTickGrade({ data }: ParamsTick) {
+  const min = Math.floor(
+    Math.min(
+      ...data.map((item) =>
+        Math.min(
+          ...(Object.values(item).filter(
+            (value) => typeof value === "number",
+          ) as number[]),
+        )
+      ),
+    ),
+  );
+
+  const max = Math.floor(
+    Math.max(
+      ...data.map((item) =>
+        Math.max(
+          ...(Object.values(item).filter(
+            (value) => typeof value === "number",
+          ) as number[]),
+        )
+      ),
+    ),
+  );
+
+  if (min === max) return { grades: [min] };
+
+  const step = Math.round((max - min) / 3);
+  const grades = [min, min + step, min + step * 2, max];
+  return { grades };
+}

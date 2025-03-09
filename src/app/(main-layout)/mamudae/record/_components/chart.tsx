@@ -1,6 +1,7 @@
 'use client';
 
 import ChartNav from './chart-nav';
+import ChartRangeSelector from './chart-range-selector';
 import {
   Card,
   CardContent,
@@ -16,15 +17,17 @@ import { useChart } from '@/hooks/useChart';
 import { useRecordQuery } from '@/store/query/record';
 import useRecordSelect from '@/store/zustand/useRecordSelect';
 import { formatNumber } from '@/utils/number';
+import { scalePow } from 'd3-scale';
 import dayjs from 'dayjs';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
 const Chart = () => {
-  const { state, type } = useRecordSelect();
+  const { state, type, timeRange } = useRecordSelect();
   const { query } = useRecordQuery();
-  const { chartConfig, chartData } = useChart({
+  const { chartConfig, chartData, grades } = useChart({
     state,
     type,
+    range: timeRange,
     logs: query.data.logs,
   });
 
@@ -52,10 +55,21 @@ const Chart = () => {
             </ul>
           </div>
         </CardTitle>
+
+        {/* header range selector */}
+        <ChartRangeSelector />
       </CardHeader>
 
       <CardContent>
-        {state.length ? (
+        {state.length === 0 ? (
+          <h2 className="flex h-[358px] items-center justify-center text-3xl font-bold">
+            조회하고 싶은 스트리머를 선택해 주세요.
+          </h2>
+        ) : chartData.length === 0 ? (
+          <h2 className="flex h-[358px] items-center justify-center text-3xl font-bold">
+            조회된 데이터가 없습니다.
+          </h2>
+        ) : (
           <ChartContainer
             config={chartConfig}
             className="aspect-auto h-[350px] w-full"
@@ -64,32 +78,35 @@ const Chart = () => {
               accessibilityLayer
               data={chartData}
               margin={{
-                left: 12,
                 right: 12,
               }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="date"
-                tickLine={false}
-                axisLine={false}
+                tickLine={true}
+                axisLine={true}
+                tickFormatter={(value) => dayjs(value).format('MM/DD HH:mm')}
+                interval={'equidistantPreserveStart'}
+                domain={['dataMin', 'dataMax']}
+                tick={<CustomizedTick />}
+                padding={{ right: 20 }}
                 tickMargin={8}
-                tickFormatter={(value) => dayjs(value).format('MM/DD')}
-                interval={'preserveStartEnd'}
                 minTickGap={60}
               />
               <YAxis
-                tickLine={false}
-                axisLine={false}
-                tickMargin={30}
+                tickLine={true}
+                axisLine={true}
+                padding={{ top: 20, bottom: 20 }}
                 tickFormatter={(value) =>
-                  type === 'level'
-                    ? formatNumber(value) + ' lv'
-                    : formatNumber(value)
+                  type === 'level' ? `${value} lv` : formatNumber(value)
                 }
+                domain={['dataMin', 'dataMax']}
+                ticks={grades}
+                tickMargin={5}
               />
               <ChartTooltip
-                cursor={false}
+                cursor={{ strokeWidth: 2 }}
                 content={
                   <ChartTooltipContent
                     valueFormatter={(value) =>
@@ -97,14 +114,14 @@ const Chart = () => {
                         ? `${value}lv`
                         : formatNumber(Number(value))
                     }
-                    labelFormatter={(value) => {
-                      return new Date(value).toLocaleString('ko-KR', {
+                    labelFormatter={(value) =>
+                      new Date(value).toLocaleString('ko-KR', {
                         month: 'short',
                         day: 'numeric',
                         hour: '2-digit',
                         minute: '2-digit',
-                      });
-                    }}
+                      })
+                    }
                   />
                 }
               />
@@ -116,6 +133,7 @@ const Chart = () => {
                   stroke={chartConfig[key].color}
                   strokeWidth={2}
                   dot={false}
+                  connectNulls
                   activeDot={{
                     r: 6,
                   }}
@@ -123,10 +141,6 @@ const Chart = () => {
               ))}
             </LineChart>
           </ChartContainer>
-        ) : (
-          <h2 className="flex h-[358px] items-center justify-center text-3xl font-bold">
-            조회하고 싶은 스트리머를 선택해 주세요.
-          </h2>
         )}
       </CardContent>
     </Card>
@@ -134,3 +148,19 @@ const Chart = () => {
 };
 
 export default Chart;
+
+const CustomizedTick = ({ ...props }) => {
+  const { x, y, payload } = props;
+  const [date, time] = dayjs(payload.value).format('MM/DD HH:mm').split(' ');
+
+  return (
+    <g transform={`translate(${x},${y})`} textAnchor="middle">
+      <text y={-5} fill="#666" fontSize={12} dy={10}>
+        {date}
+      </text>
+      <text y={10} fill="#666" fontSize={10} dy={6}>
+        {time}
+      </text>
+    </g>
+  );
+};
