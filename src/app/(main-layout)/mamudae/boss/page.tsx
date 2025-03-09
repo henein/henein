@@ -1,4 +1,4 @@
-import { checkAdmin } from '@/actions/boss-action';
+import { checkAdmin } from '@/actions/role-action';
 import { BossRecord } from './_components/boss-record';
 import { BossDifficultyLabel, BossIcon, BossImage } from '@/components';
 import { BossDifficulty, BossId } from '@/constants';

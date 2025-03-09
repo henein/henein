@@ -11,11 +11,11 @@ import * as React from 'react';
 
 export function DateTimePicker({
   className,
-  date,
+  value: date,
   onChange,
 }: {
   className?: string;
-  date?: Date;
+  value?: Date;
   onChange: (date: Date) => void;
 }) {
   const [isOpen, setIsOpen] = React.useState(false);

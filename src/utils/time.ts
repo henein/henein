@@ -1,18 +1,18 @@
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
 export const getTimeDifference = (createTime: string) => {
   const userTimezone = DateTime.local().zoneName;
   const now = DateTime.now().setZone(userTimezone);
-  const created = DateTime.fromISO(createTime, { zone: "utc" }).setZone(
+  const created = DateTime.fromISO(createTime, { zone: 'utc' }).setZone(
     userTimezone,
   );
 
   const diff = now.diff(created, [
-    "years",
-    "days",
-    "hours",
-    "minutes",
-    "seconds",
+    'years',
+    'days',
+    'hours',
+    'minutes',
+    'seconds',
   ]);
 
   if (diff.years >= 1) return `${Math.floor(diff.years)}년 전`;
@@ -24,8 +24,14 @@ export const getTimeDifference = (createTime: string) => {
 
 export const getTimeString = (isoString: string) => {
   return DateTime.fromISO(isoString, {
-    zone: "utc",
+    zone: 'utc',
   })
-    .setZone("asia/seoul")
-    .toFormat("L월 d일 HH:mm");
+    .setZone('asia/seoul')
+    .toFormat('L월 d일 HH:mm');
+};
+
+export const convertSeoulToUtc = (date: Date) => {
+  return DateTime.fromJSDate(date, { zone: 'asia/seoul' })
+    .setZone('utc')
+    .toJSDate();
 };

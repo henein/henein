@@ -418,7 +418,7 @@ model streamer {
   id                   String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   profile_id           String                 @db.Uuid
   character_id         String?                @db.Uuid
-  team                 mamudae_team?
+  team                 mamudae_team
   nickname             String                 @unique
   order                Int                    @default(0)
   bosses               bosses[]

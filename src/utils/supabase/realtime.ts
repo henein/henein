@@ -5,6 +5,16 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
-export const overlayChannel = supabase.channel('overlay', {
-  config: { private: true },
-});
+export const broadcastMessage = async (event: string, payload?: any) => {
+  const overlayChannel = supabase.channel('overlay', {
+    config: { private: true },
+  });
+
+  overlayChannel.subscribe((status) => {
+    if (status !== 'SUBSCRIBED') {
+      return null;
+    }
+
+    overlayChannel.send({ type: 'broadcast', event, payload });
+  });
+};

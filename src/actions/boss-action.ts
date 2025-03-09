@@ -1,24 +1,8 @@
 'use server';
 
 import { prisma } from '@/utils/prisma';
-import { createClient } from '@/utils/supabase/server';
 import { $Enums } from '@prisma/client';
-
-export const checkAdmin = async () => {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (user) {
-    return (
-      user.email === 'nacho@henein.kr' || user.email === 'ahb0327@kakao.com'
-    );
-  }
-
-  return false;
-};
+import { checkAdmin } from './role-action';
 
 export const postBoss = async (data: {
   boss_id: string;

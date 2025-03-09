@@ -48,17 +48,25 @@ const OverlayPage = () => {
       .on('broadcast', { event: 'reload' }, () => {
         window.location.reload();
       })
+      .on('broadcast', { event: 'prize' }, () => {
+        fetchData(slug as string).then((data) => {
+          setData(data);
+        });
+      })
+      .on('broadcast', { event: 'notice' }, (payload) => {
+        const { message, backgroundColor } = payload;
+      })
       .subscribe();
 
     return () => {
       changes.unsubscribe();
     };
-  }, [router]);
+  }, [router, slug]);
 
   return (
     <div className="p-4">
       {/* <Refresher /> */}
-      <div className="bg-grey-800 w-full overflow-hidden rounded-2xl opacity-95 shadow-md">
+      <div className="bg-grey-800 relative w-full overflow-hidden rounded-2xl opacity-95 shadow-md">
         <div
           className={cn(
             'flex h-10 items-center justify-between px-5 py-6',
@@ -86,6 +94,10 @@ const OverlayPage = () => {
         <h1 className="py-6 text-center text-5xl font-black">
           <NumberFlow value={myPrizeAmount ?? 0} prefix="₩" />
         </h1>
+
+        {/* <div className="absolute top-19 z-10 bg-stan w-full overflow-hidden rounded-2xl text-2xl opacity-95 shadow-md">
+          절절승절절배 이스터님이 하드 세렌을 격파하였습니다.
+        </div> */}
       </div>
     </div>
   );
