@@ -409,4 +409,8 @@ body {
     margin: 0;
     -webkit-appearance: none;
   }
+
+  .recharts-cartesian-grid-horizontal line {
+    stroke: var(--color-white-25);
+  }
 }

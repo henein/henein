@@ -26,9 +26,9 @@ export const MamudaeHeader = () => {
               <Link href="/mamudae/boss">
                 <NavigationItem>보스</NavigationItem>
               </Link>
-              {/* <Link href="/mamudae/record"> */}
-                <NavigationItem isWIP>기록</NavigationItem>
-              {/* </Link> */}
+              <Link href="/mamudae/record">
+                <NavigationItem>기록</NavigationItem>
+              </Link>
               <Link href="/community">
                 <NavigationItem>커뮤니티</NavigationItem>
               </Link>
