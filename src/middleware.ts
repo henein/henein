@@ -3,7 +3,11 @@ import { type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
   // update user's auth session
-  return await updateSession(request);
+  const result = await updateSession(request);
+
+  result.headers.set("x-pathname", request.nextUrl.pathname);
+
+  return result;
 }
 
 export const config = {
