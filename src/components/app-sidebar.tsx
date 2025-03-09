@@ -10,6 +10,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/shadcnUI/sidebar';
+import { headers } from 'next/headers';
 import Link from 'next/link';
 import * as React from 'react';
 
@@ -18,20 +19,29 @@ const data = {
   // versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
-      title: '기본',
-      url: '#',
+      title: '대시보드',
+      items: [
+        {
+          title: '대시보드',
+          url: '/satto',
+        },
+      ],
+    },
+    {
+      title: '상금',
       items: [
         {
           title: '상금 관리',
-          url: '#',
-          isActive: true,
+          url: '/satto/prize-management',
         },
       ],
     },
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = (await headers()).get('x-pathname') ?? '';
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -56,7 +66,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <SidebarMenu>
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={item.isActive}>
+                    <SidebarMenuButton asChild isActive={item.url === pathname}>
                       <a href={item.url}>{item.title}</a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

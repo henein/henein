@@ -34,14 +34,15 @@ export const fetchData = async (slug: string) => {
     );
 
   let winCount = 0;
+  let loseCount = 0;
 
   myPrize?.prizes.forEach((prize) => {
     if (prize.isWin) {
       winCount++;
+    } else {
+      loseCount++;
     }
   });
-
-  const loseCount = (await prisma.daily_missions.count()) - winCount;
 
   return {
     nickname,

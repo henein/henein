@@ -17,10 +17,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/shadcnUI/tooltip';
-import { getTimeString } from '@/utils/time';
+import { convertSeoulToUtc, getTimeString } from '@/utils/time';
 import type { $Enums, streamer } from '@prisma/client';
 import classNames from 'classnames';
-import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -254,9 +253,7 @@ const UpsetForm = (props: {
 
     if (date && streamerId) {
       props.onSubmit({
-        date: DateTime.fromJSDate(date, { zone: 'asia/seoul' })
-          .setZone('utc')
-          .toJSDate(),
+        date: convertSeoulToUtc(date),
         streamerId,
         party: party ?? undefined,
       });
@@ -275,7 +272,7 @@ const UpsetForm = (props: {
           <Label>시간</Label>
           <DateTimePicker
             className="col-span-2 h-8"
-            date={date}
+            value={date}
             onChange={setDate}
           />
         </div>
