@@ -1,4 +1,3 @@
-import Chart from './_components/chart';
 import Team from './_components/team';
 import {
   Card,
@@ -8,19 +7,21 @@ import {
 } from '@/components/shadcnUI/card';
 import { Skeleton } from '@/components/shadcnUI/skeleton';
 import { prisma } from '@/utils/prisma';
+import { lazy, Suspense } from 'react';
 
-// const Chart = lazy(() => import('./_components/chart'));
+const Chart = lazy(() => import('./_components/chart'));
 
 const RecordPage = async () => {
-  const streamers = await prisma.streamer.findMany();
+  const promiseStreamers = prisma.streamer.findMany();
+  const streamers = await promiseStreamers;
 
   return (
     <div className="mx-auto w-full max-w-5xl">
       <h2 className="my-6 pl-1 text-3xl font-bold">성장 현황</h2>
-      {/* <Suspense fallback={<SkeletonFallbackUI />}> */}
-      <Chart streamers={streamers} />
-      {/* </Suspense> */}
-      <div className="flex flex-wrap justify-around gap-y-4 my-8">
+      <Suspense fallback={<SkeletonFallbackUI />}>
+        <Chart streamers={promiseStreamers} />
+      </Suspense>
+      <div className="my-8 flex flex-wrap justify-around gap-y-4">
         <Team type="MAYA" streamers={streamers} />
         <Team type="STAN" streamers={streamers} />
       </div>
