@@ -1,11 +1,7 @@
 'use client';
 
 import { DailyMissionTable } from './daily-mission-table';
-import {
-  createDailyMission,
-  deleteDailyMission,
-  upsertDailyMission,
-} from '@/actions/prize-action';
+import { createDailyMission, upsertDailyMission } from '@/actions/prize-action';
 import { DateTimePicker } from '@/components/date-time-picker';
 import { Button } from '@/components/shadcnUI/button';
 import { Input } from '@/components/shadcnUI/input';
@@ -42,9 +38,7 @@ export const PrizeManagementForm = (props: {
     | undefined
   >();
 
-  const [prizes, setPrizes] = useState<
-    Record<string, { amount: number; isWin: boolean }>
-  >({});
+  const [prizes, setPrizes] = useState<Record<string, { amount: number }>>({});
 
   const [isMayaWin, setIsMayaWin] = useState(false);
   const [isStanWin, setIsStanWin] = useState(false);
@@ -65,26 +59,17 @@ export const PrizeManagementForm = (props: {
         (acc, prize) => {
           acc[prize.streamer.id] = {
             amount: prize.amount,
-            isWin: prize.is_win,
           };
           return acc;
         },
-        {} as Record<string, { amount: number; isWin: boolean }>,
+        {} as Record<string, { amount: number }>,
       ) ?? {},
     );
   }, [selectedMission, setValue]);
 
   useEffect(() => {
-    setIsMayaWin(
-      streamers
-        .filter((streamer) => streamer.team === 'MAYA')
-        .every((streamer) => prizes[streamer.id]?.isWin),
-    );
-    setIsStanWin(
-      streamers
-        .filter((streamer) => streamer.team === 'STAN')
-        .every((streamer) => prizes[streamer.id]?.isWin),
-    );
+    setIsMayaWin(selectedMission?.win_team === 'MAYA');
+    setIsStanWin(selectedMission?.win_team === 'STAN');
     setMayaAmount(
       streamers
         .filter((streamer) => streamer.team === 'MAYA')
@@ -109,10 +94,13 @@ export const PrizeManagementForm = (props: {
           <PopoverContent className="w-96">
             <CreateMissionForm
               onSubmit={async (data) => {
+                const winTeam = isMayaWin ? 'MAYA' : isStanWin ? 'STAN' : null;
+
                 if (
                   await createDailyMission({
                     title: data.title,
                     date: data.date,
+                    winTeam,
                   })
                 ) {
                   setOpen(false);
@@ -142,10 +130,10 @@ export const PrizeManagementForm = (props: {
               dailyMissionId: selectedMission.id,
               title: values.title,
               date: convertSeoulToUtc(values.date),
+              winTeam: isMayaWin ? 'MAYA' : isStanWin ? 'STAN' : null,
               prizes: Object.entries(prizes).map(([streamerId, prize]) => ({
                 streamerId,
                 amount: prize.amount,
-                isWin: prize.isWin,
               })),
             });
 
@@ -185,20 +173,13 @@ export const PrizeManagementForm = (props: {
                     <Label className="text-secondary mr-2">승리</Label>
                     <Switch
                       checked={isMayaWin}
-                      onCheckedChange={(checked) =>
-                        setPrizes((value) => {
-                          const result = { ...value };
-                          streamers
-                            .filter((streamer) => streamer.team === 'MAYA')
-                            .forEach((streamer) => {
-                              result[streamer.id] = {
-                                ...result[streamer.id],
-                                isWin: checked,
-                              };
-                            });
-                          return result;
-                        })
-                      }
+                      onCheckedChange={(checked) => {
+                        setIsMayaWin(checked);
+
+                        if (checked) {
+                          setIsStanWin(!checked);
+                        }
+                      }}
                     />
                   </div>
                 </div>
@@ -230,20 +211,13 @@ export const PrizeManagementForm = (props: {
                     <Label className="text-secondary mr-2">승리</Label>
                     <Switch
                       checked={isStanWin}
-                      onCheckedChange={(checked) =>
-                        setPrizes((value) => {
-                          const result = { ...value };
-                          streamers
-                            .filter((streamer) => streamer.team === 'STAN')
-                            .forEach((streamer) => {
-                              result[streamer.id] = {
-                                ...result[streamer.id],
-                                isWin: checked,
-                              };
-                            });
-                          return result;
-                        })
-                      }
+                      onCheckedChange={(checked) => {
+                        setIsStanWin(checked);
+
+                        if (checked) {
+                          setIsMayaWin(!checked);
+                        }
+                      }}
                     />
                   </div>
                 </div>
@@ -274,18 +248,6 @@ export const PrizeManagementForm = (props: {
                     {streamer.nickname}
                     <div className="flex items-center">
                       <Label className="text-secondary mr-2">승리</Label>
-                      <Switch
-                        checked={prizes[streamer.id]?.isWin}
-                        onCheckedChange={(checked) =>
-                          setPrizes((value) => {
-                            value[streamer.id] = {
-                              ...value[streamer.id],
-                              isWin: checked,
-                            };
-                            return { ...value };
-                          })
-                        }
-                      />
                     </div>
                   </div>
                   <Input

@@ -37,9 +37,11 @@ export const fetchData = async (slug: string) => {
   let loseCount = 0;
 
   myPrize?.prizes.forEach((prize) => {
-    if (prize.isWin) {
+    const team = prize.id <= 11 && streamer.is_moved ? myTeam === 'MAYA' ? 'STAN' : 'MAYA' : myTeam;
+
+    if (prize.winTeam === team) {
       winCount++;
-    } else {
+    } else if (prize.winTeam !== null) {
       loseCount++;
     }
   });

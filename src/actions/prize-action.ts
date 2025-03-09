@@ -3,6 +3,7 @@
 import { checkAdmin } from './role-action';
 import { prisma } from '@/utils/prisma';
 import { broadcastMessage } from '@/utils/supabase/realtime';
+import { $Enums } from '@prisma/client';
 
 export const fetchPrizes = async () => {
   const streamers = await prisma.streamer.findMany({
@@ -18,7 +19,7 @@ export const fetchPrizes = async () => {
       title: prize.daily_missions.title,
       createdAt: prize.daily_missions.created_at,
       amount: prize.amount,
-      isWin: prize.is_win,
+      winTeam: prize.daily_missions.win_team,
     })),
   }));
 };
@@ -27,17 +28,18 @@ export const upsertDailyMission = async (data: {
   dailyMissionId: bigint;
   title: string;
   date: Date;
-  prizes: { streamerId: string; amount: number; isWin: boolean }[];
+  winTeam: $Enums.mamudae_team | null;
+  prizes: { streamerId: string; amount: number; }[];
 }) => {
   if (!(await checkAdmin())) {
     return;
   }
 
-  const { dailyMissionId, title, date, prizes } = data;
+  const { dailyMissionId, title, date, winTeam, prizes } = data;
 
   await prisma.daily_missions.update({
     where: { id: dailyMissionId },
-    data: { title, created_at: date },
+    data: { title, created_at: date, win_team: winTeam },
   });
 
   const result = await prisma.$transaction(
@@ -49,12 +51,11 @@ export const upsertDailyMission = async (data: {
             streamer_id: cur.streamerId,
           },
         },
-        update: { amount: cur.amount, is_win: cur.isWin },
+        update: { amount: cur.amount },
         create: {
           mission_id: dailyMissionId,
           streamer_id: cur.streamerId,
           amount: cur.amount,
-          is_win: cur.isWin,
         },
       }),
     ),
@@ -68,17 +69,19 @@ export const upsertDailyMission = async (data: {
 export const createDailyMission = async (data: {
   title: string;
   date: Date;
+  winTeam: $Enums.mamudae_team | null;
 }) => {
   if (!(await checkAdmin())) {
     return;
   }
 
-  const { title, date } = data;
+  const { title, date, winTeam } = data;
 
   const dailyMission = await prisma.daily_missions.create({
     data: {
       title,
       created_at: date,
+      win_team: winTeam,
     },
   });
 
