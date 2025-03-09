@@ -77,31 +77,31 @@ const Chart = () => {
               accessibilityLayer
               data={chartData}
               margin={{
-                left: 12,
                 right: 12,
               }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="date"
-                tickLine={false}
-                axisLine={false}
+                tickLine={true}
+                axisLine={true}
                 tickFormatter={(value) => dayjs(value).format('MM/DD')}
-                interval={'preserveStartEnd'}
+                interval={'equidistantPreserveStart'}
                 domain={['dataMin', 'dataMax']}
-                tickMargin={14}
                 padding={{ left: 0, right: 20 }}
-                minTickGap={100}
+                tickMargin={10}
+                minTickGap={60}
               />
               <YAxis
-                tickLine={false}
-                axisLine={false}
+                tickLine={true}
+                axisLine={true}
                 padding={{ top: 20, bottom: 20 }}
                 tickFormatter={(value) =>
                   type === 'level' ? `${value} lv` : formatNumber(value)
                 }
                 domain={['dataMin', 'dataMax']}
                 ticks={grades}
+                tickMargin={5}
               />
               <ChartTooltip
                 cursor={false}
