@@ -17,12 +17,12 @@ import { useChart } from '@/hooks/useChart';
 import { useRecordQuery } from '@/store/query/record';
 import useRecordSelect from '@/store/zustand/useRecordSelect';
 import { formatNumber } from '@/utils/number';
+import type { streamer } from '@prisma/client';
 import { scalePow } from 'd3-scale';
 import dayjs from 'dayjs';
-import { use } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
-const Chart = () => {
+const Chart = (props: { streamers: streamer[] }) => {
   const { state, type, timeRange } = useRecordSelect();
   const { query } = useRecordQuery();
   const { chartConfig, chartData, grades } = useChart({
@@ -132,7 +132,9 @@ const Chart = () => {
                   key={key}
                   dataKey={key}
                   type="monotone"
-      
+                  stroke={
+                    props.streamers.find((s) => s.nickname === key)?.color ?? ''
+                  }
                   strokeWidth={2}
                   dot={false}
                   connectNulls

@@ -18,7 +18,7 @@ const RecordPage = async () => {
     <div className="mx-auto w-full max-w-5xl">
       <h2 className="my-6 pl-1 text-3xl font-bold">성장 현황</h2>
       <Suspense fallback={<SkeletonFallbackUI />}>
-        <Chart />
+        <Chart streamers={streamers} />
       </Suspense>
       <div className="my-8 flex flex-wrap justify-around gap-y-4">
         <Team type="MAYA" streamers={streamers} />
