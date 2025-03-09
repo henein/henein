@@ -7,9 +7,10 @@ import {
 } from '@/components/shadcnUI/card';
 import { Skeleton } from '@/components/shadcnUI/skeleton';
 import { prisma } from '@/utils/prisma';
-import React, { lazy, Suspense } from 'react';
+import dynamic from 'next/dynamic';
+import React, { Suspense } from 'react';
 
-const Chart = lazy(() => import('./_components/chart'));
+const Chart = dynamic(() => import('./_components/chart'),  { ssr: false });
 
 const RecordPage = async () => {
   const streamers = await prisma.streamer.findMany();

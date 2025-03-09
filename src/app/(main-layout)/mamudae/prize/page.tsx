@@ -4,9 +4,11 @@ import { fetchPrizes } from '@/actions/prize-action';
 import { Button, StreamerImage } from '@/components';
 import ClientPortal from '@/components/ClientPortal';
 import { StreamerId, Streamers } from '@/constants';
+import { createClient } from '@/utils/supabase/client';
 import NumberFlow from '@number-flow/react';
 import { $Enums } from '@prisma/client';
 import classNames from 'classnames';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 type PrizeData = {
@@ -22,6 +24,8 @@ type PrizeData = {
 };
 
 const PrizePage = () => {
+  const router = useRouter();
+
   const [showModal, setShowModal] = useState<boolean>(false);
   const [prizes, setPrizes] = useState<PrizeData[]>([]);
   const [modalData, setModalData] = useState<PrizeData>();
@@ -94,6 +98,28 @@ const PrizePage = () => {
     setModalData(data);
     setShowModal(true);
   };
+
+
+    useEffect(() => {
+      const supabase = createClient();
+  
+      const changes = supabase
+        .channel('overlay', { config: { private: true } })
+        .on('broadcast', { event: 'refresh' }, () => {
+          router.refresh();
+        })
+        .on('broadcast', { event: 'reload' }, () => {
+          window.location.reload();
+        })
+        .on('broadcast', { event: 'prize' }, () => {
+          fetchPrizes().then((data) => setPrizes(data));
+        })
+        .subscribe();
+  
+      return () => {
+        changes.unsubscribe();
+      };
+    }, [router]);
 
   return (
     <div className="mx-auto w-full max-w-5xl">
