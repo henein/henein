@@ -421,6 +421,7 @@ model streamer {
   team                 mamudae_team
   nickname             String                 @unique
   order                Int                    @default(0)
+  color                String?
   bosses               bosses[]
   daily_mission_prizes daily_mission_prizes[]
   characters           characters?            @relation(fields: [character_id], references: [id], onDelete: Cascade)

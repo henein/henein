@@ -1,9 +1,11 @@
 import StreamerBtn from './streamer-button';
 import { prisma } from '@/utils/prisma';
+import type { streamer } from '@prisma/client';
 import React from 'react';
 
 interface Props {
   type: 'STAN' | 'MAYA';
+  streamers: streamer[]
 }
 const Team = async (props: Props) => {
   const data = await fetchTeam(props.type);
@@ -15,7 +17,7 @@ const Team = async (props: Props) => {
       </h2>
       <div className="flex flex-wrap justify-center gap-x-8">
         {data.map((streamer) => (
-          <StreamerBtn key={streamer.id} {...streamer} />
+          <StreamerBtn key={streamer.id} borderColor={streamer.color ?? ''} {...streamer} />
         ))}
       </div>
     </div>

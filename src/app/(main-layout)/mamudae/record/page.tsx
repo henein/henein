@@ -6,19 +6,22 @@ import {
   CardTitle,
 } from '@/components/shadcnUI/card';
 import { Skeleton } from '@/components/shadcnUI/skeleton';
+import { prisma } from '@/utils/prisma';
 import React, { lazy, Suspense } from 'react';
 
 const Chart = lazy(() => import('./_components/chart'));
 
-const RecordPage = () => {
+const RecordPage = async () => {
+  const streamers = await prisma.streamer.findMany();
+
   return (
     <div className="mx-auto my-auto flex h-full w-full max-w-[1024px] flex-col gap-8">
       <Suspense fallback={<SkeletonFallbackUI />}>
-        <Chart />
+        <Chart streamers={streamers} />
       </Suspense>
       <div className="flex flex-wrap justify-around gap-y-4">
-        <Team type="STAN" />
-        <Team type="MAYA" />
+        <Team type="MAYA" streamers={streamers} />
+        <Team type="STAN" streamers={streamers} />
       </div>
     </div>
   );
