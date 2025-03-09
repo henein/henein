@@ -9,6 +9,7 @@ import useRecordSelect from '@/store/zustand/useRecordSelect';
 import { cn } from '@/utils/shadcn';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
+import { DateTime } from 'luxon';
 
 const ChartRangeCalendar = () => {
   const { timeRange, selectRange } = useRecordSelect();
@@ -48,7 +49,13 @@ const ChartRangeCalendar = () => {
             }}
             onSelect={(range) => {
               if (!range) return;
-              selectRange(range);
+
+              if (!range.to) {
+                selectRange({from: range.from});
+                return;
+              }
+
+              selectRange({from: range.from, to: DateTime.fromJSDate(range.to).plus({hours: 23, minutes: 59}).toJSDate()});
             }}
             className=""
             disabled={(date) =>
