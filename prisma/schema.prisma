@@ -407,6 +407,7 @@ model profiles {
   likes            likes[]
   characters       characters? @relation(fields: [master_character], references: [id], onDelete: Cascade)
   users            users       @relation(fields: [id], references: [id], onDelete: Cascade, map: "user_id_fkey")
+  roles            roles?
   streamer         streamer[]
 
   @@schema("henein")
@@ -417,8 +418,9 @@ model streamer {
   id                   String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   profile_id           String                 @db.Uuid
   character_id         String?                @db.Uuid
-  team                 mamudae_team
+  team                 mamudae_team?
   nickname             String                 @unique
+  order                Int                    @default(0)
   bosses               bosses[]
   daily_mission_prizes daily_mission_prizes[]
   characters           characters?            @relation(fields: [character_id], references: [id], onDelete: Cascade)
@@ -475,29 +477,20 @@ model daily_missions {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model logs {
-  id                 BigInt     @id @default(autoincrement())
-  created_at         DateTime   @default(now()) @db.Timestamptz(6)
-  character_id       String     @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  popularity         Json?
-  stat               Json?
-  hyper_stat         Json?
-  ability            Json?
-  item_equipment     Json?
-  cashitem_equipment Json?
-  symbol_equipment   Json?
-  set_effect         Json?
-  beauty_equipment   Json?
-  android_equipment  Json?
-  pet_equipment      Json?
-  skill              Json?
-  link_skill         Json?
-  vmatrix            Json?
-  hexamatrix         Json?
-  hexamatrix_stat    Json?
-  dojang             Json?
-  propensity         Json?
-  basic              Json?
-  characters         characters @relation(fields: [character_id], references: [id], onDelete: Cascade)
+  id               BigInt     @id @default(autoincrement())
+  created_at       DateTime   @default(now()) @db.Timestamptz(6)
+  character_id     String     @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  popularity       Json?
+  stat             Json?
+  hyper_stat       Json?
+  symbol_equipment Json?
+  vmatrix          Json?
+  hexamatrix       Json?
+  hexamatrix_stat  Json?
+  dojang           Json?
+  propensity       Json?
+  basic            Json?
+  characters       characters @relation(fields: [character_id], references: [id], onDelete: Cascade)
 
   @@schema("mamudae")
 }
@@ -514,6 +507,15 @@ model bosses {
 
   @@id([team, boss_id, difficulty])
   @@schema("mamudae")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model roles {
+  user_id  String   @id @db.Uuid
+  rule     rule
+  profiles profiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@schema("henein")
 }
 
 enum aal_level {
@@ -563,4 +565,10 @@ enum mamudae_team {
   MAYA
 
   @@schema("mamudae")
+}
+
+enum rule {
+  ADMIN
+
+  @@schema("henein")
 }

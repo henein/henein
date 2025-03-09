@@ -11,7 +11,8 @@ import React, { useEffect, useState } from 'react';
 
 type PrizeData = {
   nickname: string;
-  team: $Enums.mamudae_team;
+  team: $Enums.mamudae_team | null;
+  order: number;
   prizes: {
     id: bigint;
     title: string;
@@ -29,8 +30,8 @@ const PrizePage = () => {
     fetchPrizes().then((data) => setPrizes(data));
   }, []);
 
-  const stanPrizes = prizes.filter((prize) => prize.team === 'STAN');
   const mayaPrizes = prizes.filter((prize) => prize.team === 'MAYA');
+  const stanPrizes = prizes.filter((prize) => prize.team === 'STAN');
 
   const openTeamModal = (team: $Enums.mamudae_team) => {
     const data = prizes
@@ -53,6 +54,7 @@ const PrizePage = () => {
         {
           team: team,
           nickname: '',
+          order: 0,
           prizes: [] as {
             id: bigint;
             title: string;
@@ -79,6 +81,7 @@ const PrizePage = () => {
         {
           team: 'STAN',
           nickname: nickname,
+          order: 0,
           prizes: [] as {
             id: bigint;
             title: string;
@@ -114,31 +117,13 @@ const PrizePage = () => {
             />
           </div>
           <div>
-            <UserColumn
-              data={mayaPrizes}
-              streamerId={StreamerId.NAENGIKIM}
-              onClick={openStreamerModal}
-            />
-            <UserColumn
-              data={mayaPrizes}
-              streamerId={StreamerId.ISEUTEO}
-              onClick={openStreamerModal}
-            />
-            <UserColumn
-              data={mayaPrizes}
-              streamerId={StreamerId.UDEONG}
-              onClick={openStreamerModal}
-            />
-            <UserColumn
-              data={mayaPrizes}
-              streamerId={StreamerId.NUSEUNYANG}
-              onClick={openStreamerModal}
-            />
-            <UserColumn
-              data={mayaPrizes}
-              streamerId={StreamerId.KONGJU}
-              onClick={openStreamerModal}
-            />
+            {mayaPrizes.sort((a, b) => b.order - a.order).map((prize) => (
+              <UserColumn
+                key={prize.nickname}
+                data={prize}
+                onClick={openStreamerModal}
+              />
+            ))}
           </div>
         </div>
 
@@ -162,31 +147,13 @@ const PrizePage = () => {
             />
           </div>
           <div>
-            <UserColumn
-              data={stanPrizes}
-              streamerId={StreamerId.JIMYEONG}
-              onClick={openStreamerModal}
-            />
-            <UserColumn
-              data={stanPrizes}
-              streamerId={StreamerId.JJANGJJUNG}
-              onClick={openStreamerModal}
-            />
-            <UserColumn
-              data={stanPrizes}
-              streamerId={StreamerId.NAMJIO}
-              onClick={openStreamerModal}
-            />
-            <UserColumn
-              data={stanPrizes}
-              streamerId={StreamerId.YUHIHI}
-              onClick={openStreamerModal}
-            />
-            <UserColumn
-              data={stanPrizes}
-              streamerId={StreamerId.BAEKDOA}
-              onClick={openStreamerModal}
-            />
+            {stanPrizes.sort((a, b) => b.order - a.order).map((prize) => (
+              <UserColumn
+                key={prize.nickname}
+                data={prize}
+                onClick={openStreamerModal}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -201,18 +168,15 @@ export default PrizePage;
 
 const UserColumn = (props: {
   className?: string;
-  streamerId: StreamerId;
-  data: PrizeData[];
+  data: PrizeData;
   onClick?: (nickname: string) => void;
 }) => {
   const streamer =
-    Streamers.find((streamer) => streamer.id === props.streamerId) ??
+    Streamers.find((streamer) => streamer.nickname === props.data.nickname) ??
     Streamers[0];
 
   const total =
-    props.data
-      .find((prize) => prize.nickname === streamer.nickname)
-      ?.prizes.reduce((sum, prize) => sum + prize.amount, 0) || 0;
+    props.data.prizes.reduce((sum, prize) => sum + prize.amount, 0) || 0;
 
   return (
     <div
