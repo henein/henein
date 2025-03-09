@@ -10,6 +10,7 @@ export const fetchPrizes = async () => {
   return streamers.map((streamer) => ({
     nickname: streamer.nickname,
     team: streamer.team,
+    order: streamer.order,
     prizes: streamer.daily_mission_prizes.map((prize) => ({
       id: prize.daily_missions.id,
       title: prize.daily_missions.title,
