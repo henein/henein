@@ -12,14 +12,13 @@ import { lazy, Suspense } from 'react';
 const Chart = lazy(() => import('./_components/chart'));
 
 const RecordPage = async () => {
-  const promiseStreamers = prisma.streamer.findMany();
-  const streamers = await promiseStreamers;
+  const streamers = await prisma.streamer.findMany();
 
   return (
     <div className="mx-auto w-full max-w-5xl">
       <h2 className="my-6 pl-1 text-3xl font-bold">성장 현황</h2>
       <Suspense fallback={<SkeletonFallbackUI />}>
-        <Chart streamers={promiseStreamers} />
+        <Chart />
       </Suspense>
       <div className="my-8 flex flex-wrap justify-around gap-y-4">
         <Team type="MAYA" streamers={streamers} />
