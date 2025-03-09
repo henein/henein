@@ -84,17 +84,20 @@ const Chart = () => {
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="date"
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
+                tickLine={true}
+                axisLine={true}
                 tickFormatter={(value) => dayjs(value).format('MM/DD HH:mm')}
-                interval={'preserveStartEnd'}
+                interval={'equidistantPreserveStart'}
+                domain={['dataMin', 'dataMax']}
+                tick={<CustomizedTick />}
+                padding={{ right: 20 }}
+                tickMargin={8}
                 minTickGap={60}
               />
               <YAxis
-                tickLine={false}
-                axisLine={false}
-                scale={type === 'level' ? scalePow().exponent(10) : 'linear'}
+                tickLine={true}
+                axisLine={true}
+                padding={{ top: 20, bottom: 20 }}
                 tickFormatter={(value) =>
                   type === 'level' ? `${value} lv` : formatNumber(value)
                 }
@@ -145,3 +148,19 @@ const Chart = () => {
 };
 
 export default Chart;
+
+const CustomizedTick = ({ ...props }) => {
+  const { x, y, payload } = props;
+  const [date, time] = dayjs(payload.value).format('MM/DD HH:mm').split(' ');
+
+  return (
+    <g transform={`translate(${x},${y})`} textAnchor="middle">
+      <text y={-5} fill="#666" fontSize={12} dy={10}>
+        {date}
+      </text>
+      <text y={10} fill="#666" fontSize={10} dy={6}>
+        {time}
+      </text>
+    </g>
+  );
+};
