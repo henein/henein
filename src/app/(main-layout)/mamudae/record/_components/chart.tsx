@@ -17,6 +17,7 @@ import { useChart } from '@/hooks/useChart';
 import { useRecordQuery } from '@/store/query/record';
 import useRecordSelect from '@/store/zustand/useRecordSelect';
 import { formatNumber } from '@/utils/number';
+import { scalePow } from 'd3-scale';
 import dayjs from 'dayjs';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
@@ -83,19 +84,17 @@ const Chart = () => {
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="date"
-                tickLine={true}
-                axisLine={true}
-                tickFormatter={(value) => dayjs(value).format('MM/DD')}
-                interval={'equidistantPreserveStart'}
-                domain={['dataMin', 'dataMax']}
-                padding={{ left: 0, right: 20 }}
-                tickMargin={10}
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) => dayjs(value).format('MM/DD HH:mm')}
+                interval={'preserveStartEnd'}
                 minTickGap={60}
               />
               <YAxis
-                tickLine={true}
-                axisLine={true}
-                padding={{ top: 20, bottom: 20 }}
+                tickLine={false}
+                axisLine={false}
+                scale={type === 'level' ? scalePow().exponent(10) : 'linear'}
                 tickFormatter={(value) =>
                   type === 'level' ? `${value} lv` : formatNumber(value)
                 }
@@ -104,7 +103,7 @@ const Chart = () => {
                 tickMargin={5}
               />
               <ChartTooltip
-                cursor={false}
+                cursor={{ strokeWidth: 2 }}
                 content={
                   <ChartTooltipContent
                     valueFormatter={(value) =>
@@ -131,6 +130,7 @@ const Chart = () => {
                   stroke={chartConfig[key].color}
                   strokeWidth={2}
                   dot={false}
+                  connectNulls
                   activeDot={{
                     r: 6,
                   }}
