@@ -14,6 +14,7 @@
 import { CardHeader } from '../card-header';
 import { ToolBarButton } from './ToolBarButton';
 import { ToolBarDivider } from './ToolBarDivider';
+import { uploadImage } from '@/actions/post-action';
 import { Editor } from '@tiptap/react';
 
 // import { useLocalStorage } from "../../hooks/storage/useLocalStorage";
@@ -121,7 +122,6 @@ export const ToolBar: React.FC<ToolBarProps> = ({ editor }) => {
       </ToolBarButton>
       <ToolBarDivider />
       <ToolBarButton
-        disabled
         onClick={() => {
           editor?.commands.focus();
 
@@ -136,13 +136,18 @@ export const ToolBar: React.FC<ToolBarProps> = ({ editor }) => {
 
             const files = Array.from(input.files);
 
-            // files.forEach(async (file) => {
-            //   const url = await uploadImage({
-            //     accessToken: accessToken,
-            //     image: file,
-            //   });
-            //   editor?.chain().focus().setImage({ src: url }).run();
-            // });
+            files.forEach(async (file) => {
+              const formData = new FormData();
+              formData.append('image', file);
+              const { url } = await uploadImage(formData);
+
+              if (!url) {
+                alert('이미지 업로드에 실패했습니다.');
+                return;
+              }
+
+              editor?.chain().focus().setImage({ src: url }).run();
+            });
           };
           input.click();
         }}

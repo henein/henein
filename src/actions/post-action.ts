@@ -243,3 +243,31 @@ export const fetchCounts = async (postId: string) => {
 
   return { viewCount: post.view_count, commentCount, likeCount };
 };
+
+export async function uploadImage(formData: FormData) {
+  const supabase = await createClient();
+  const image = formData.get('image') as File;
+
+  let storageImageUrl = null;
+  const filePath = `${Date.now()}_${crypto.randomUUID()}`;
+
+  if (image) {
+    const { error } = await supabase.storage
+      .from('post')
+      .upload(filePath, image);
+
+    if (error) {
+      console.log(error);
+      return { message: error.message };
+    }
+
+    // string 형식 이미지 url 조회
+    const { data } = supabase.storage
+      .from('post')
+      .getPublicUrl(filePath);
+
+    if (data) storageImageUrl = data.publicUrl;
+  }
+
+  return { url: storageImageUrl };
+}
