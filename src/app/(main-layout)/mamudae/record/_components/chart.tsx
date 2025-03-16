@@ -67,13 +67,13 @@ const Chart = ({ logs, streamers }: Props) => {
 
       <CardContent>
         {state.length === 0 ? (
-          <h2 className="flex h-[358px] items-center justify-center text-3xl font-bold">
+          <span className="flex h-[358px] items-center justify-center text-3xl font-bold">
             조회하고 싶은 스트리머를 선택해 주세요.
-          </h2>
+          </span>
         ) : chartData.length === 0 ? (
-          <h2 className="flex h-[358px] items-center justify-center text-3xl font-bold">
+          <span className="flex h-[358px] items-center justify-center text-3xl font-bold">
             조회된 데이터가 없습니다.
-          </h2>
+          </span>
         ) : (
           <ChartContainer
             config={chartConfig}
