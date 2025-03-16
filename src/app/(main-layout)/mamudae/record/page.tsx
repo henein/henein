@@ -1,24 +1,15 @@
+import Chart from './_components/chart';
 import Team from './_components/team';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/shadcnUI/card';
-import { Skeleton } from '@/components/shadcnUI/skeleton';
 import { prisma } from '@/utils/prisma';
-import React, { lazy, Suspense } from 'react';
-
-const Chart = lazy(() => import('./_components/chart'));
+import React from 'react';
 
 const RecordPage = async () => {
   const streamers = await prisma.streamer.findMany();
+  const data = await fetchLogs();
 
   return (
     <div className="mx-auto my-auto flex h-full w-full max-w-[1024px] flex-col gap-8">
-      <Suspense fallback={<SkeletonFallbackUI />}>
-        <Chart streamers={streamers} />
-      </Suspense>
+      <Chart logs={data.logs} streamers={streamers} />
       <div className="flex flex-wrap justify-around gap-y-4">
         <Team type="MAYA" streamers={streamers} />
         <Team type="STAN" streamers={streamers} />
@@ -29,26 +20,22 @@ const RecordPage = async () => {
 
 export default RecordPage;
 
-const SkeletonFallbackUI = () => {
-  return (
-    <Card className="w-full pt-0">
-      <CardHeader>
-        <div className="flex w-full gap-3 border-b">
-          <Skeleton className="h-[76px] w-1/2 rounded-none" />
-          <Skeleton className="h-[76px] w-1/2 rounded-none" />
-        </div>
-        <CardTitle className="my-3">
-          <Skeleton className="h-6 w-[120px]" />
-        </CardTitle>
+const fetchLogs = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/fetch-logs`,
+      {
+        headers: {
+          Authorization:
+            `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}` || '',
+        },
+        next: { revalidate: 360 },
+      },
+    );
 
-        <div className="flex justify-end">
-          <Skeleton className="h-8 w-[230px]" />
-        </div>
-      </CardHeader>
-
-      <CardContent>
-        <Skeleton className="h-[350px] w-full" />
-      </CardContent>
-    </Card>
-  );
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching logs 😭:', error);
+    return { logs: [] };
+  }
 };
