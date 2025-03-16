@@ -2,6 +2,7 @@
 
 import ChartNav from './chart-nav';
 import ChartRangeSelector from './chart-range-selector';
+import { GroupedRecordType } from '@/app/api/mamudae/record/route';
 import {
   Card,
   CardContent,
@@ -14,21 +15,25 @@ import {
   ChartTooltipContent,
 } from '@/components/shadcnUI/chart';
 import { useChart } from '@/hooks/useChart';
-import { useRecordQuery } from '@/store/query/record';
 import useRecordSelect from '@/store/zustand/useRecordSelect';
 import { formatNumber } from '@/utils/number';
 import type { streamer } from '@prisma/client';
+import { scalePow } from 'd3-scale';
 import dayjs from 'dayjs';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
-const Chart = (props: { streamers: streamer[] }) => {
+interface Props {
+  logs: GroupedRecordType;
+  streamers: streamer[];
+}
+
+const Chart = ({ logs, streamers }: Props) => {
   const { state, type, timeRange } = useRecordSelect();
-  const { query } = useRecordQuery();
   const { chartConfig, chartData, grades } = useChart({
     state,
     type,
     range: timeRange,
-    logs: query.data.logs,
+    logs,
   });
 
   return (
@@ -104,6 +109,7 @@ const Chart = (props: { streamers: streamer[] }) => {
                 domain={['dataMin', 'dataMax']}
                 ticks={grades}
                 tickMargin={5}
+                scale={type === 'level' ? scalePow().exponent(10) : 'linear'}
               />
               <ChartTooltip
                 cursor={{ strokeWidth: 2 }}
@@ -130,7 +136,9 @@ const Chart = (props: { streamers: streamer[] }) => {
                   key={key}
                   dataKey={key}
                   type="monotone"
-                  stroke={props.streamers.find((s) => s.nickname === key)?.color ?? ''}
+                  stroke={
+                    streamers.find((s) => s.nickname === key)?.color ?? ''
+                  }
                   strokeWidth={2}
                   dot={false}
                   connectNulls

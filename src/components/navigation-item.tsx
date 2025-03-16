@@ -12,7 +12,7 @@ export const NavigationItem = (props: NavigationItemProps) => {
   return (
     <div
       className={classNames(
-        'select-none relative flex flex-col justify-center box-border no-underline h-10 rounded-lg transition-all inset-ring-border dark:inset-ring-dark-border',
+        'select-none relative flex flex-col justify-center box-border no-underline h-10 rounded-lg transition-all inset-ring-default',
         props.isIcon ? 'w-10' : 'px-4',
         props.isWIP
           ? ''

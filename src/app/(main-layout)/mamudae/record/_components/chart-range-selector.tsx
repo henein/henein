@@ -9,6 +9,7 @@ import useRecordSelect from '@/store/zustand/useRecordSelect';
 import { cn } from '@/utils/shadcn';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
+import { DateTime } from 'luxon';
 
 const ChartRangeCalendar = () => {
   const { timeRange, selectRange } = useRecordSelect();
@@ -47,8 +48,34 @@ const ChartRangeCalendar = () => {
               to: timeRange.to,
             }}
             onSelect={(range) => {
-              if (!range) return;
-              selectRange(range);
+              if (!range?.from) return;
+
+              const fromDate = DateTime.fromJSDate(range.from)
+                .startOf('day')
+                .toJSDate();
+              const toDate = range.to
+                ? DateTime.fromJSDate(range.to).endOf('day').toJSDate()
+                : undefined;
+
+              // 사용자가 `to`를 `from`보다 이전 날짜로 설정하면, `from`을 유지하고 `to`만 변경
+              if (toDate && toDate < fromDate) {
+                selectRange({
+                  from: fromDate, // 기존 from 유지
+                  to: toDate, // 새로운 to 적용
+                });
+              } else if (toDate) {
+                // 일반적인 경우 (범위 선택)
+                selectRange({
+                  from: fromDate,
+                  to: toDate,
+                });
+              } else {
+                // 단일 날짜 선택 시, from 00:00 & to 23:59 설정
+                selectRange({
+                  from: fromDate,
+                  to: DateTime.fromJSDate(fromDate).endOf('day').toJSDate(),
+                });
+              }
             }}
             className=""
             disabled={(date) =>
