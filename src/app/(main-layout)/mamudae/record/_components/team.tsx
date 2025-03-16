@@ -7,6 +7,7 @@ interface Props {
   type: 'STAN' | 'MAYA';
   streamers: streamer[]
 }
+
 const Team = async (props: Props) => {
   const data = await fetchTeam(props.type);
 

@@ -18,6 +18,7 @@ import { useChart } from '@/hooks/useChart';
 import useRecordSelect from '@/store/zustand/useRecordSelect';
 import { formatNumber } from '@/utils/number';
 import type { streamer } from '@prisma/client';
+import { scalePow } from 'd3-scale';
 import dayjs from 'dayjs';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
@@ -108,6 +109,7 @@ const Chart = ({ logs, streamers }: Props) => {
                 domain={['dataMin', 'dataMax']}
                 ticks={grades}
                 tickMargin={5}
+                scale={type === 'level' ? scalePow().exponent(10) : 'linear'}
               />
               <ChartTooltip
                 cursor={{ strokeWidth: 2 }}

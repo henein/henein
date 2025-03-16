@@ -6,6 +6,10 @@ export const fetchLogs = async () => {
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/mamudae/record`,
     );
 
+    if (res.status === 404) {
+      return { logs: [] };
+    }
+
     return res.json();
   } catch (error) {
     console.error("API 요청 중 오류 발생:", error);

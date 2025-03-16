@@ -8,9 +8,10 @@ const RecordPage = async () => {
   const data = await fetchLogs();
 
   return (
-    <div className="mx-auto my-auto flex h-full w-full max-w-[1024px] flex-col gap-8">
+    <div className="mx-auto w-full max-w-5xl">
+      <h2 className="my-6 pl-1 text-3xl font-bold">성장 현황</h2>
       <Chart logs={data.logs} streamers={streamers} />
-      <div className="flex flex-wrap justify-around gap-y-4">
+      <div className="my-8 flex flex-wrap justify-around gap-y-4">
         <Team type="MAYA" streamers={streamers} />
         <Team type="STAN" streamers={streamers} />
       </div>
