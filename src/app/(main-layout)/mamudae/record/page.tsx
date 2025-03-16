@@ -30,7 +30,7 @@ const fetchLogs = async () => {
           Authorization:
             `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}` || '',
         },
-        next: { revalidate: 360 },
+        next: { revalidate: 60 },
       },
     );
 
