@@ -34,6 +34,10 @@ const fetchLogs = async () => {
       },
     );
 
+    if (res.status === 404) {
+      return { logs: [] };
+    }
+
     return res.json();
   } catch (error) {
     console.error('Error fetching logs 😭:', error);
