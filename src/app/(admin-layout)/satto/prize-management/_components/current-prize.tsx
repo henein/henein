@@ -20,7 +20,7 @@ import { MoreHorizontal } from 'lucide-react';
 import React from 'react';
 
 export const CurrentPrize = async () => {
-  const prizes = await fetchPrizes();
+  const prizes = (await fetchPrizes()).streamers;
 
   return (
     <Table>

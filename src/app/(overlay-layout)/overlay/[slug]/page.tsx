@@ -91,7 +91,7 @@ const OverlayPage = () => {
             <NumberFlow value={loseCount} suffix="패" />
           </p>
         </div>
-        <h1 className="py-6 text-center text-5xl font-black">
+        <h1 className="py-6 text-center font-mono text-5xl font-black">
           <NumberFlow value={myPrizeAmount ?? 0} prefix="₩" />
         </h1>
 

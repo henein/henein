@@ -10,18 +10,23 @@ export const fetchPrizes = async () => {
     include: { daily_mission_prizes: { include: { daily_missions: true } } },
   });
 
-  return streamers.map((streamer) => ({
-    nickname: streamer.nickname,
-    team: streamer.team,
-    order: streamer.order,
-    prizes: streamer.daily_mission_prizes.map((prize) => ({
-      id: prize.daily_missions.id,
-      title: prize.daily_missions.title,
-      createdAt: prize.daily_missions.created_at,
-      amount: prize.amount,
-      winTeam: prize.daily_missions.win_team,
+  const dailyMissions = await prisma.daily_missions.findMany();
+
+  return {
+    streamers: streamers.map((streamer) => ({
+      nickname: streamer.nickname,
+      team: streamer.team,
+      order: streamer.order,
+      prizes: streamer.daily_mission_prizes.map((prize) => ({
+        id: prize.daily_missions.id,
+        title: prize.daily_missions.title,
+        createdAt: prize.daily_missions.created_at,
+        amount: prize.amount,
+        winTeam: prize.daily_missions.win_team,
+      })),
     })),
-  }));
+    dailyMissions,
+  };
 };
 
 export const upsertDailyMission = async (data: {
@@ -29,7 +34,7 @@ export const upsertDailyMission = async (data: {
   title: string;
   date: Date;
   winTeam: $Enums.mamudae_team | null;
-  prizes: { streamerId: string; amount: number; }[];
+  prizes: { streamerId: string; amount: number }[];
 }) => {
   if (!(await checkAdmin())) {
     return;

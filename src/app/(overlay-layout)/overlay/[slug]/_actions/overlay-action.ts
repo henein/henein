@@ -20,7 +20,7 @@ export const fetchData = async (slug: string) => {
 
   const myTeam = streamer.team;
 
-  const prizes = await fetchPrizes();
+  const prizes = (await fetchPrizes()).streamers;
 
   const myPrize = prizes.find((prize) => prize.nickname === streamer?.nickname);
   const myPrizeAmount =
