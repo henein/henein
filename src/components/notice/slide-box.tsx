@@ -21,8 +21,6 @@ const SlideBox = ({ notices }: { notices: Notice[] }) => {
     slidesToScroll: 1,
   };
 
-  console.log(notices);
-
   return (
     <Slider {...settings}>
       {notices.map((item) => (
