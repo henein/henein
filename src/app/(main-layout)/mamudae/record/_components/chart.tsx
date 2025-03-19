@@ -33,7 +33,7 @@ const Chart = ({ logs, streamers }: Props) => {
     state,
     type,
     range: timeRange,
-    logs,
+    logs: logs || [],
   });
 
   return (
