@@ -25,7 +25,7 @@ async function fetchLive(streamer: Streamer) {
 
     const live = await client.live.detail(chzzkId);
 
-    return live.livePlayback?.media.length !== 0;
+    return live?.livePlayback?.media.length !== 0;
   } else if (soopLink) {
     const soopId = soopLink.replace('https://ch.sooplive.co.kr/', '');
 
