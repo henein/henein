@@ -8,7 +8,7 @@ export const MamudaeLayout = ({ children }: React.PropsWithChildren) => {
       <div id="modal-root" />
       <div className="flex min-h-screen flex-col">
         <MamudaeHeader />
-        {/* <Notice /> */}
+        <Notice />
         <div className="max-[66rem]:px-4 flex flex-1">{children}</div>
         <MamudaeFooter />
       </div>
