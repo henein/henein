@@ -1,13 +1,19 @@
-import { GroupedRecordType } from '@/app/api/mamudae/record/route';
 import { STREAMER_COLOR } from '@/constants';
 import { GetType, TimeRange } from '@/store/zustand/useRecordSelect';
 import { profiles as Profile, streamer as Streamer } from '@prisma/client';
 import { useMemo } from 'react';
 
+export type GroupedRecordType = {
+  created_at: string;
+  character_id: string;
+  character_combat: number;
+  character_level: number;
+};
+
 interface Props {
   state: (Streamer & { profiles: Profile })[];
   type: GetType;
-  logs: GroupedRecordType;
+  logs: GroupedRecordType[];
 }
 
 export const useChart = ({
@@ -50,21 +56,21 @@ export const useChart = ({
 const transformLogsToChartData = ({ state, type, logs }: Props) => {
   const chartDataMap: Record<string, Record<string, string | number>> = {};
 
-  Object.entries(logs).forEach(([createdAt, records]) => {
-    const date = new Date(createdAt).toISOString();
-    chartDataMap[date] = chartDataMap[date] || { date };
+  logs.forEach(
+    ({ created_at, character_id, character_level, character_combat }) => {
+      const date = new Date(created_at).toISOString();
+      chartDataMap[date] = chartDataMap[date] || { date };
 
-    records.forEach((record) => {
       const character = state.find(
-        ({ character_id }) => character_id === record.character_id,
+        ({ character_id: charId }) => charId === character_id,
       );
       if (!character) return;
 
       const nickname = character.nickname;
       chartDataMap[date][nickname] =
-        type === 'level' ? record.character_level : record.character_combat;
-    });
-  });
+        type === 'level' ? character_level : character_combat;
+    },
+  );
 
   return Object.values(chartDataMap);
 };
@@ -100,12 +106,6 @@ export function genTickGrade({ data }: ParamsTick) {
   if (min === max) return { grades: [min] };
 
   const step = Math.round((max - min) / 3);
-  const grades = [
-    min,
-    min + step,
-    min + step * 2,
-    min + step * 3,
-    max
-  ];
+  const grades = [min, min + step, min + step * 2, min + step * 3, max];
   return { grades };
 }
