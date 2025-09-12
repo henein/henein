@@ -2,7 +2,6 @@
 
 import ChartNav from './chart-nav';
 import ChartRangeSelector from './chart-range-selector';
-import { GroupedRecordType } from '@/app/api/mamudae/record/route';
 import {
   Card,
   CardContent,
@@ -14,7 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/shadcnUI/chart';
-import { useChart } from '@/hooks/useChart';
+import { GroupedRecordType, useChart } from '@/hooks/useChart';
 import useRecordSelect from '@/store/zustand/useRecordSelect';
 import { formatNumber } from '@/utils/number';
 import type { streamer } from '@prisma/client';
@@ -23,7 +22,7 @@ import dayjs from 'dayjs';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
 interface Props {
-  logs: GroupedRecordType;
+  logs: GroupedRecordType[];
   streamers: streamer[];
 }
 
